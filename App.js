@@ -24,8 +24,10 @@ const App = () => {
             {/* <AddTaskToCategoryScreen /> */}
             {/* <AddCategoryScreen /> */}
             {/* <AddNewChildScreen /> */}
-            {/* <EditChildScreen /> */}
-            <RemoveChildScreen />
+            {/* <EditChildScreen />
+            <RemoveChildScreen /> */}
+            {/* <CreateTaskListForChildScreen /> */}
+            <SelectATaskForChildScreen />
         </SafeAreaView>
     );
 };
