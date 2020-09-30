@@ -12,25 +12,35 @@ import AddNewChildScreen from "./screens/parent/manageChild/AddNewChildScreen";
 import EditChildScreen from "./screens/parent/manageChild/EditChildScreen";
 import RemoveChildScreen from "./screens/parent/manageChild/RemoveChildScreen.js";
 import LoginScreen from "./screens/login/LoginScreen";
+import StackNavigator from "./screens/NavigationScreen/StackNavigator";
+import { NavigationContainer } from "@react-navigation/native";
 
 const App = () => {
   return (
-    <SafeAreaView>
-      {/* <ParentDashBoardScreen /> */}
-      {/* <ParentChildDashBoardScreen /> */}
-      {/* <ManageRewardsScreen /> */}
-      {/* {<TrackPocketMoneyScreen />} */}
-      {/* <CreateTaskListForChildScreen /> */}
-      {/* <SelectATaskForChildScreen /> */}
-      {/* <AddTaskToCategoryScreen /> */}
-      {/* <AddCategoryScreen /> */}
-      {/* <AddNewChildScreen /> */}
-      {/* <EditChildScreen />
-            <RemoveChildScreen /> */}
-      {/* <CreateTaskListForChildScreen /> */}
-      {/* <SelectATaskForChildScreen /> */}
-      <LoginScreen />
-    </SafeAreaView>
+    // <SafeAreaView>
+    //   <LoginScreen />
+    // </SafeAreaView>
+    // <SafeAreaView>
+    <NavigationContainer>
+      <StackNavigator />
+    </NavigationContainer>
+    //   {/* <ParentDashBoardScreen /> */}
+    //   {/* <ParentChildDashBoardScreen /> */}
+    //   {/* <ManageRewardsScreen /> */}
+    //   {/* {<TrackPocketMoneyScreen />} */}
+    //   {/* <CreateTaskListForChildScreen /> */}
+    //   {/* <SelectATaskForChildScreen /> */}
+    //   {/* <AddTaskToCategoryScreen /> */}
+    //   {/* <AddCategoryScreen /> */}
+    //   {/* <AddNewChildScreen /> */}
+    //   {/* <EditChildScreen />
+    //         <RemoveChildScreen /> */}
+    //   {/* <CreateTaskListForChildScreen /> */}
+    //   {/* <SelectATaskForChildScreen /> */}
+    //   {/* <LoginScreen /> */}
+    // </SafeAreaView>
+
+    // <ParentDashBoardScreen />
   );
 };
 export default App;
