@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, StyleSheet, TextInput } from "react-native";
+import { View, StyleSheet, TextInput, Picker } from "react-native";
 
 import AppButton from "../../../components/appButton";
 import AppHeading from "../../../components/appHeading.js";
@@ -7,24 +7,27 @@ import AppHeading from "../../../components/appHeading.js";
 import AppLabel from "../../../components/appLabel";
 
 import AppMaterialIcon from "../../../components/appMaterialCommunityIcon";
+// import { Picker } from "@react-native-community/picker";
 
 function CreateTaskListForChildScreen(props) {
+    const [selectedValue, setSelectedValue] = useState("c1");
     return (
         <View style={styles.container}>
             <AppHeading title="Create Task For Child" />
 
-            <TextInput
-                defaultValue={"Select Child (drop down box here)"}
-                style={{
-                    height: 40,
-                    borderColor: "lightgrey",
-                    borderWidth: 1,
-                    width: "60%",
-                    alignSelf: "center",
-                    marginTop: 20,
-                    marginBottom: 20,
-                }}
-            />
+            <AppLabel labelText="Select Child:" />
+
+            <Picker
+                style={styles.picker}
+                selectedValue={selectedValue}
+                onValueChange={(itemValue, itemIndex) =>
+                    setSelectedValue(itemValue)
+                }
+            >
+                <Picker.Item label="Child 1" value="c1" />
+                <Picker.Item label="Child 2" value="c2" />
+                <Picker.Item label="Child 3" value="c3" />
+            </Picker>
 
             <AppLabel
                 labelText="PUT THE GRID ELEMENT HERE"
@@ -42,6 +45,12 @@ function CreateTaskListForChildScreen(props) {
 
 const styles = StyleSheet.create({
     container: {},
+    picker: {
+        marginBottom: 150,
+        height: 50,
+        width: 150,
+        alignSelf: "center",
+    },
 });
 
 export default CreateTaskListForChildScreen;
