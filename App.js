@@ -11,24 +11,26 @@ import AddCategoryScreen from "./screens/parent/manageCategories/AddCategoryScre
 import AddNewChildScreen from "./screens/parent/manageChild/AddNewChildScreen";
 import EditChildScreen from "./screens/parent/manageChild/EditChildScreen";
 import RemoveChildScreen from "./screens/parent/manageChild/RemoveChildScreen.js";
+import LoginScreen from "./screens/login/LoginScreen";
 
 const App = () => {
-    return (
-        <SafeAreaView>
-            {/* <ParentDashBoardScreen /> */}
-            {/* <ParentChildDashBoardScreen /> */}
-            {/* <ManageRewardsScreen /> */}
-            {/* {<TrackPocketMoneyScreen />} */}
-            {/* <CreateTaskListForChildScreen /> */}
-            {/* <SelectATaskForChildScreen /> */}
-            {/* <AddTaskToCategoryScreen /> */}
-            {/* <AddCategoryScreen /> */}
-            {/* <AddNewChildScreen /> */}
-            {/* <EditChildScreen />
+  return (
+    <SafeAreaView>
+      {/* <ParentDashBoardScreen /> */}
+      {/* <ParentChildDashBoardScreen /> */}
+      {/* <ManageRewardsScreen /> */}
+      {/* {<TrackPocketMoneyScreen />} */}
+      {/* <CreateTaskListForChildScreen /> */}
+      {/* <SelectATaskForChildScreen /> */}
+      {/* <AddTaskToCategoryScreen /> */}
+      {/* <AddCategoryScreen /> */}
+      {/* <AddNewChildScreen /> */}
+      {/* <EditChildScreen />
             <RemoveChildScreen /> */}
-            {/* <CreateTaskListForChildScreen /> */}
-            <SelectATaskForChildScreen />
-        </SafeAreaView>
-    );
+      {/* <CreateTaskListForChildScreen /> */}
+      {/* <SelectATaskForChildScreen /> */}
+      <LoginScreen />
+    </SafeAreaView>
+  );
 };
 export default App;
