@@ -1,4 +1,4 @@
-// this modules handles text input
+// this modules handles text input. Has a capital letter now
 
 import React from "react";
 import { View, TextInput, StyleSheet } from "react-native";
