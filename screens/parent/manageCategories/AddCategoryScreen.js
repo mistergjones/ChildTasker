@@ -22,7 +22,7 @@ const dummyChores = [
     { label: "Whatever", value: 9 },
 ];
 
-function AddCategoryScree({ navigation }) {
+function AddCategoryScreen({ navigation }) {
     return (
         <View style={styles.container}>
             <AppHeading title="Add a Category" />

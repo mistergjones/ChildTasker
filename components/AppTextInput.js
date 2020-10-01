@@ -1,41 +1,60 @@
-// this modules handles text input. Has a capital letter now
-
 import React from "react";
-import { View, TextInput, StyleSheet } from "react-native";
+import { View, StyleSheet, TextInput, Text } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-import defaultStyles from "../config/styles";
-
-function AppTextInput({ icon, width = "100%", ...otherProps }) {
+function AppTextInput({ icon, labelText, error, errorStyle, ...otherProps }) {
     return (
-        <View style={[styles.container, { width }]}>
-            {icon && (
-                <MaterialCommunityIcons
-                    name={icon}
-                    size={20}
-                    color={defaultStyles.colors.medium}
-                    style={styles.icon}
-                />
-            )}
-            <TextInput
-                placeholderTextColor={defaultStyles.colors.medium}
-                style={defaultStyles.text}
-                {...otherProps}
-            />
+        <View style={styles.mainContainer}>
+            <View style={styles.verticalContainer}>
+                <Text style={styles.text}>{labelText}</Text>
+                <View style={styles.iconLableContainer}>
+                    {icon && (
+                        <MaterialCommunityIcons
+                            name={icon}
+                            size={30}
+                            color={"grey"}
+                            style={styles.icon}
+                        />
+                    )}
+                    <TextInput style={styles.textInput} {...otherProps} />
+                </View>
+                {error && <Text style={errorStyle}>{error}</Text>}
+            </View>
         </View>
     );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        backgroundColor: defaultStyles.colors.light,
-        borderRadius: 25,
+    iconLableContainer: {
         flexDirection: "row",
-        padding: 15,
+        width: "100%",
         marginVertical: 10,
     },
     icon: {
         marginRight: 10,
+    },
+    label: {
+        color: "grey",
+        backgroundColor: "red",
+    },
+    text: {
+        fontWeight: "bold",
+        color: "grey",
+    },
+    textInput: {
+        fontSize: 18,
+        color: "black",
+        width: "100%",
+    },
+    verticalContainer: {
+        width: "90%",
+        marginVertical: 5,
+        borderBottomColor: "black",
+        borderBottomWidth: 1,
+    },
+    mainContainer: {
+        alignItems: "center",
+        marginTop: 10,
     },
 });
 
