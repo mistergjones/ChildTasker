@@ -78,7 +78,7 @@ const categories = [
     image: require("../../../assets/favicon.png"),
   },
 ];
-
+//this is add reward file
 function AddReward(props) {
   return (
     <Screen style={styles.container}>

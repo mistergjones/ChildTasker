@@ -66,6 +66,7 @@ const rewards = [
     image: require("../../../assets/favicon.png"),
   },
 ];
+//this is view reward file: changed from add reward to view reward
 function ViewReward(props) {
   return (
     <Screen style={styles.container}>
