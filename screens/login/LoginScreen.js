@@ -1,27 +1,25 @@
 import React from "react";
-import { View, StyleSheet, SafeAreaView, Button } from "react-native";
+import { View, StyleSheet, SafeAreaView, Button, Text } from "react-native";
 import AppTextInput from "../../components/AppTextInput";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import AppButton from "../../components/appButton";
-import { useNavigation } from "@react-navigation/native";
+import screens from "../../config/screens";
 
-const validationSchema = Yup.object().shape({
+const loginSchema = Yup.object().shape({
   username: Yup.string().required().label("Username"),
   password: Yup.string().required().min(4).label("Password"),
 });
 
 function LoginScreen({ navigation }) {
-  // useNavigation
   return (
     <SafeAreaView>
       <Formik
         initialValues={{ username: "", password: "" }}
-        onSubmit={(values) => {
-          console.log(values);
-          navigation.navigate("ParentDashBoard");
+        onSubmit={() => {
+          navigation.navigate(screens.ParentDashBoard);
         }}
-        validationSchema={validationSchema}
+        validationSchema={loginSchema}
       >
         {({ handleChange, handleSubmit, errors }) => (
           <>
