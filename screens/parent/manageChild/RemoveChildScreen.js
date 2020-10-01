@@ -8,66 +8,64 @@ import AppLabel from "../../../components/appLabel";
 import AppMaterialIcon from "../../../components/appMaterialCommunityIcon";
 import screens from "../../../config/screens";
 
-// import { Picker } from "@react-native-community/picker";
+import AppPicker from "../../../components/appPicker";
 
 function RemoveChildScreen({ navigation }) {
-  const [selectedValue, setSelectedValue] = useState("c1");
+    // the below will change once we have data from teh server/text file
+    const dummyTestChildren = [
+        { label: "Bob", value: 1 },
+        { label: "Alice", value: 2 },
+    ];
 
-  return (
-    <ScrollView style={styles.container}>
-      <AppHeading title="Remove Child" />
-      <View style={styles.rowAlignment}>
-        <AppMaterialIcon iconName="account-child" iconSize={24} />
-        <AppLabel labelText="Select Child's Name:" />
-      </View>
+    const dummyDecision = [
+        { label: "Yes", value: 1 },
+        { label: "No", value: 2 },
+    ];
 
-      <Picker
-        style={styles.picker}
-        selectedValue={selectedValue}
-        onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
-      >
-        <Picker.Item label="Child 1" value="c1" />
-        <Picker.Item label="Child 2" value="c2" />
-        <Picker.Item label="Child 3" value="c3" />
-      </Picker>
+    return (
+        <ScrollView style={styles.container}>
+            <AppHeading title="Remove Child" />
+            <View style={styles.rowAlignment}>
+                <AppMaterialIcon iconName="account-child" iconSize={24} />
+                <AppLabel labelText="Select Child's Name:" />
+            </View>
 
-      <View style={styles.rowAlignment}>
-        <AppMaterialIcon iconName="account-child" iconSize={24} />
-        <AppLabel labelText="Are you sure?" />
-      </View>
+            <AppPicker
+                items={dummyTestChildren}
+                icon="account-child"
+                placeholder="Select Child"
+            />
 
-      <Picker
-        style={styles.picker}
-        selectedValue={selectedValue}
-        onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
-      >
-        <Picker.Item label="No" value="no" />
-        <Picker.Item label="Yes" value="Yes" />
-      </Picker>
+            <View style={styles.rowAlignment}>
+                <AppMaterialIcon iconName="account-child" iconSize={24} />
+                <AppLabel labelText="Confirmation" />
+            </View>
 
-      <AppButton title="Save Changes" />
+            <AppPicker
+                items={dummyDecision}
+                icon="account-child"
+                placeholder="Yes or No"
+            />
 
-      <AppButton
-        title="Return"
-        onPress={() => navigation.navigate(screens.ParentChildDashBoard)}
-      />
-    </ScrollView>
-  );
+            <AppButton title="Save Changes" />
+
+            <AppButton
+                title="Return"
+                onPress={() =>
+                    navigation.navigate(screens.ParentChildDashBoard)
+                }
+            />
+        </ScrollView>
+    );
 }
 
 const styles = StyleSheet.create({
-  container: {},
-  rowAlignment: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  picker: {
-    marginBottom: 150,
-    height: 50,
-    width: 150,
-    alignSelf: "center",
-  },
+    container: {},
+    rowAlignment: {
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center",
+    },
 });
 
 export default RemoveChildScreen;
