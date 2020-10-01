@@ -1,16 +1,28 @@
 import React from "react";
-import { View, StyleSheet, FlatList } from "react-native";
+import { View, StyleSheet } from "react-native";
+import * as Yup from "yup";
 
-import Screen from "../../../components/appScreen";
 import AppButton from "../../../components/appButton";
 import AppHeading from "../../../components/appHeading.js";
 import AppLabel from "../../../components/appLabel";
-import AppText from "../../../components/appText";
-import ListItem from "../../../components/appListItem";
-
+import Screen from "../../../components/appScreen";
+import {
+  Form,
+  FormField,
+  FormPicker as Picker,
+  SubmitButton,
+} from "../../../components/forms";
+import CategoryPickerItem from "../../../components/appCategoryPickerItem";
 import AppMaterialIcon from "../../../components/appMaterialCommunityIcon";
 
-const rewards = [
+const validationSchema = Yup.object().shape({
+  title: Yup.string().required().min(1).label("Title"),
+  point: Yup.number().required().min(1).max(10000).label("point"),
+  description: Yup.string().label("Description"),
+  category: Yup.object().required().nullable().label("Category"),
+});
+
+const categories = [
   {
     id: 1,
     title: "Takeaway",
@@ -66,69 +78,46 @@ const rewards = [
     image: require("../../../assets/favicon.png"),
   },
 ];
+
 function AddReward(props) {
   return (
     <Screen style={styles.container}>
-      <FlatList
-        style={styles.rewardContainer}
-        numColumns={"3"}
-        data={rewards}
-        keyExtractor={(reward) => reward.id.toString()}
-        renderItem={({ item }) => (
-          <ListItem
-            title={item.title}
-            subTitle={item.points}
-            image={item.image}
-          />
-        )}
-        ListHeaderComponent={
-          <>
-            <AppHeading title="Add Reward" />
-            <AppLabel labelText="Add Reward Category & Points" />
-          </>
-        }
-        ListFooterComponent={
-          <>
-            <View style={styles.tabLinks}>
-              <View style={styles.tab}>
-                <AppMaterialIcon
-                  iconName="dice-5"
-                  iconSize={42}
-                  iconColor="blue"
-                />
-                <AppText>Tab 1</AppText>
-              </View>
-              <View style={styles.tab}>
-                <AppMaterialIcon iconName="table-large" iconSize={42} />
-                <AppText>Tab 2</AppText>
-              </View>
-            </View>
-            <View>
-              <AppButton title="Finalise Changes" />
-              <AppButton title="Return" />
-            </View>
-          </>
-        }
-      />
+      <AppLabel labelText="Add Reward Form" />
+      <Form
+        initialValues={{
+          title: "",
+          point: "",
+          description: "",
+          category: null,
+        }}
+        onSubmit={(values) => console.log(values)}
+        validationSchema={validationSchema}
+      >
+        <FormField maxLength={255} name="title" placeholder="Title" />
+        <FormField
+          keyboardType="numeric"
+          maxLength={8}
+          name="point"
+          placeholder="Point"
+          width={120}
+        />
+        <Picker
+          items={categories}
+          name="category"
+          numberOfColumns={3}
+          PickerItemComponent={CategoryPickerItem}
+          placeholder="Category"
+          width="50%"
+        />
+
+        <SubmitButton title="Submit" />
+      </Form>
     </Screen>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    marginVertical: 15,
-  },
-  rewardContainer: {
-    margin: 15,
-  },
-  tabLinks: {
-    textAlign: "center",
-    flexDirection: "row",
-    justifyContent: "center",
-  },
-  tab: {
-    margin: 10,
-  },
+  container: {},
 });
 
 export default AddReward;
