@@ -18,27 +18,27 @@ import {
 import CategoryPickerItem from "../../../components/appCategoryPickerItem";
 
 const dummyCategories = [
-    { label: "Kitchen", id: 1, backgroundColor: "red", icon: "scale" },
-    { label: "School", id: 2, backgroundColor: "green", icon: "scale" },
-    { label: "Bedroom", id: 3, backgroundColor: "blue", icon: "bed-empty" },
-    { label: "Home", id: 4, backgroundColor: "orange", icon: "home" },
-    { label: "Bathroom", id: 5, backgroundColor: "purple", icon: "shower" },
+    { label: "Kitchen", value: 1, backgroundColor: "red", icon: "scale" },
+    { label: "School", value: 2, backgroundColor: "green", icon: "scale" },
+    { label: "Bedroom", value: 3, backgroundColor: "blue", icon: "bed-empty" },
+    { label: "Home", value: 4, backgroundColor: "orange", icon: "home" },
+    { label: "Bathroom", value: 5, backgroundColor: "purple", icon: "shower" },
     {
         label: "Homework",
-        id: 6,
+        value: 6,
         backgroundColor: "teal",
         icon: "book-open-page-variant",
     },
-    { label: "Pets", id: 7, backgroundColor: "black", icon: "dog" },
+    { label: "Pets", value: 7, backgroundColor: "black", icon: "dog" },
     {
         label: "Good Behaviour",
-        id: 8,
+        value: 8,
         backgroundColor: "grey",
         icon: "hand-okay",
     },
     {
         label: "Whatever",
-        id: 9,
+        value: 9,
         backgroundColor: "brown",
         icon: "comment-question",
     },

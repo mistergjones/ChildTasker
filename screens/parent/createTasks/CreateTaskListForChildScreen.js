@@ -26,32 +26,42 @@ import AppPicker from "../../../components/appPicker";
 function CreateTaskListForChildScreen({ navigation }) {
     // the below will change once we have data from teh server/text file
     const dummyTestChildren = [
-        { label: "Bob", id: 1 },
-        { label: "Alice", id: 2 },
+        { label: "Bob", value: 1 },
+        { label: "Alice", value: 2 },
     ];
 
     const dummyCategories = [
-        { label: "Kitchen", id: 1, backgroundColor: "red", icon: "scale" },
-        { label: "School", id: 2, backgroundColor: "green", icon: "school" },
-        { label: "Bedroom", id: 3, backgroundColor: "blue", icon: "bed-empty" },
-        { label: "Home", id: 4, backgroundColor: "orange", icon: "home" },
-        { label: "Bathroom", id: 5, backgroundColor: "purple", icon: "shower" },
+        { label: "Kitchen", value: 1, backgroundColor: "red", icon: "scale" },
+        { label: "School", value: 2, backgroundColor: "green", icon: "school" },
+        {
+            label: "Bedroom",
+            value: 3,
+            backgroundColor: "blue",
+            icon: "bed-empty",
+        },
+        { label: "Home", value: 4, backgroundColor: "orange", icon: "home" },
+        {
+            label: "Bathroom",
+            value: 5,
+            backgroundColor: "purple",
+            icon: "shower",
+        },
         {
             label: "Homework",
-            id: 6,
+            value: 6,
             backgroundColor: "teal",
             icon: "book-open-page-variant",
         },
-        { label: "Pets", id: 7, backgroundColor: "black", icon: "dog" },
+        { label: "Pets", value: 7, backgroundColor: "black", icon: "dog" },
         {
             label: "Good Behaviour",
-            id: 8,
+            value: 8,
             backgroundColor: "grey",
             icon: "hand-okay",
         },
         {
             label: "Whatever",
-            id: 9,
+            value: 9,
             backgroundColor: "brown",
             icon: "comment-question",
         },
@@ -60,37 +70,37 @@ function CreateTaskListForChildScreen({ navigation }) {
     const dummyTasks = [
         {
             label: "Make the table",
-            id: 1,
+            value: 1,
             backgroundColor: "red",
             icon: "silverware-fork-knife",
         },
         {
             label: "Wash dishes",
-            id: 2,
+            value: 2,
             backgroundColor: "green",
             icon: "shower-head",
         },
         {
             label: "Dry dishes",
-            id: 3,
+            value: 3,
             backgroundColor: "blue",
             icon: "tumble-dryer",
         },
         {
             label: "Eat all fruit/vegetables",
-            id: 4,
+            value: 4,
             backgroundColor: "orange",
             icon: "food-apple",
         },
         {
             label: "Put dishes away",
-            id: 5,
+            value: 5,
             backgroundColor: "purple",
             icon: "alpha-x-circle-outline",
         },
         {
             label: "Empty Kitchen Bin",
-            id: 6,
+            value: 6,
             backgroundColor: "teal",
             icon: "delete-empty",
         },
