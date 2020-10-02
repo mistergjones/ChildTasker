@@ -14,6 +14,7 @@ import EditReward from "../parent/manageReward/EditReward";
 import AddNewChildScreen from "../parent/manageChild/AddNewChildScreen";
 import RemoveChildScreen from "../parent/manageChild/RemoveChildScreen";
 import EditChildScreen from "../parent/manageChild/EditChildScreen";
+import ViewReward from "../parent/manageReward/ViewReward";
 
 const Stack = createStackNavigator();
 
@@ -52,6 +53,7 @@ function StackNavigator(props) {
       <Stack.Screen name={screens.AddChild} component={AddNewChildScreen} />
       <Stack.Screen name={screens.EditChild} component={EditChildScreen} />
       <Stack.Screen name={screens.RemoveChild} component={RemoveChildScreen} />
+      <Stack.Screen name={screens.ViewReward} component={ViewReward} />
     </Stack.Navigator>
   );
 }

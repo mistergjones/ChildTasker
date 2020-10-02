@@ -7,7 +7,7 @@ import AppHeading from "../../../components/appHeading.js";
 import AppLabel from "../../../components/appLabel";
 import AppText from "../../../components/appText";
 import ListItem from "../../../components/appListItem";
-
+import screens from "../../../config/screens";
 import AppMaterialIcon from "../../../components/appMaterialCommunityIcon";
 
 const rewards = [
@@ -67,7 +67,7 @@ const rewards = [
   },
 ];
 //this is view reward file: changed from add reward to view reward
-function ViewReward(props) {
+function ViewReward({ navigation }) {
   return (
     <Screen style={styles.container}>
       <FlatList
@@ -84,7 +84,7 @@ function ViewReward(props) {
         )}
         ListHeaderComponent={
           <>
-            <AppButton title="Add Reward" />
+            {/* <AppButton title="Add Reward" /> */}
             <AppLabel labelText="Add Reward Category & Points" />
             {/* <AppHeading title="Add Reward" />
              */}
@@ -109,7 +109,10 @@ function ViewReward(props) {
             <View>
               {/* <AppButton title="Add Reward" />
               <AppButton title="Return" /> */}
-              <AppButton title="Return" />
+              <AppButton
+                title="Return"
+                onPress={() => navigation.navigate(screens.ManageRewards)}
+              />
             </View>
           </>
         }

@@ -15,7 +15,10 @@ function ManageRewardsScreen({ navigation }) {
       <View style={{ marginBottom: 30 }} />
       <AppLabel labelText="Trophy cabinet with icons here" />
       <View style={{ marginBottom: 30 }} />
-
+      <AppButton
+        title="View Reward"
+        onPress={() => navigation.navigate(screens.ViewReward)}
+      />
       <AppButton
         title="Add Reward"
         onPress={() => navigation.navigate(screens.AddReward)}
