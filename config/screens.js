@@ -12,4 +12,5 @@ export default {
   AddChild: "AddChild",
   EditChild: "EditChild",
   RemoveChild: "RemoveChild",
+  ViewReward: "ViewReward",
 };

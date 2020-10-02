@@ -14,9 +14,10 @@ import {
 } from "../../../components/forms";
 import CategoryPickerItem from "../../../components/appCategoryPickerItem";
 import AppMaterialIcon from "../../../components/appMaterialCommunityIcon";
+import screens from "../../../config/screens";
 
 const validationSchema = Yup.object().shape({
-  title: Yup.string().required().min(1).label("Title"),
+  label: Yup.string().required().min(1).label("label"),
   point: Yup.number().required().min(1).max(10000).label("point"),
   description: Yup.string().label("Description"),
   category: Yup.object().required().nullable().label("Category"),
@@ -24,76 +25,78 @@ const validationSchema = Yup.object().shape({
 
 const categories = [
   {
-    id: 1,
-    title: "Takeaway",
-    points: 10,
-    image: require("../../../assets/favicon.png"),
+    backgroundColor: "#fc5c65",
+    icon: "floor-lamp",
+    label: "Furniture",
+    value: 1,
   },
   {
-    id: 2,
-    title: "Games",
-    points: 15,
-    image: require("../../../assets/favicon.png"),
+    backgroundColor: "#fd9644",
+    icon: "car",
+    label: "Cars",
+    value: 2,
   },
   {
-    id: 3,
-    title: "Internet",
-    points: 15,
-    image: require("../../../assets/favicon.png"),
+    backgroundColor: "#fed330",
+    icon: "camera",
+    label: "Cameras",
+    value: 3,
   },
   {
-    id: 4,
-    title: "Whatever",
-    points: 10,
-    image: require("../../../assets/favicon.png"),
+    backgroundColor: "#26de81",
+    icon: "cards",
+    label: "Games",
+    value: 4,
   },
   {
-    id: 5,
-    title: "Whatever",
-    points: 10,
-    image: require("../../../assets/favicon.png"),
+    backgroundColor: "#2bcbba",
+    icon: "shoe-heel",
+    label: "Clothing",
+    value: 5,
   },
   {
-    id: 6,
-    title: "Whatever",
-    points: 10,
-    image: require("../../../assets/favicon.png"),
+    backgroundColor: "#45aaf2",
+    icon: "basketball",
+    label: "Sports",
+    value: 6,
   },
   {
-    id: 7,
-    title: "Whatever",
-    points: 10,
-    image: require("../../../assets/favicon.png"),
+    backgroundColor: "#4b7bec",
+    icon: "headphones",
+    label: "Movies & Music",
+    value: 7,
   },
   {
-    id: 8,
-    title: "Whatever",
-    points: 10,
-    image: require("../../../assets/favicon.png"),
+    backgroundColor: "#a55eea",
+    icon: "book-open-variant",
+    label: "Books",
+    value: 8,
   },
   {
-    id: 9,
-    title: "Whatever",
-    points: 10,
-    image: require("../../../assets/favicon.png"),
+    backgroundColor: "#778ca3",
+    icon: "application",
+    label: "Other",
+    value: 9,
   },
 ];
 //this is add reward file
-function AddReward(props) {
+function AddReward({ navigation }) {
   return (
     <Screen style={styles.container}>
       <AppLabel labelText="Add Reward Form" />
       <Form
         initialValues={{
-          title: "",
+          label: "",
           point: "",
-          description: "",
-          category: null,
+          icon: "",
         }}
-        onSubmit={(values) => console.log(values)}
+        onSubmit={(values) => {
+          console.log(values);
+          navigation.navigate("ViewReward");
+        }}
         validationSchema={validationSchema}
       >
-        <FormField maxLength={255} name="title" placeholder="Title" />
+        <FormField maxLength={255} name="label" placeholder="label" />
         <FormField
           keyboardType="numeric"
           maxLength={8}
@@ -103,10 +106,10 @@ function AddReward(props) {
         />
         <Picker
           items={categories}
-          name="category"
+          name="icon"
           numberOfColumns={3}
           PickerItemComponent={CategoryPickerItem}
-          placeholder="Category"
+          placeholder="Icon"
           width="50%"
         />
 
