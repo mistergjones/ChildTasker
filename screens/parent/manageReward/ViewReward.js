@@ -1,5 +1,13 @@
-import React from "react";
-import { View, StyleSheet, FlatList } from "react-native";
+import React, { useState } from "react";
+import {
+  View,
+  StyleSheet,
+  FlatList,
+  Modal,
+  Button,
+  TouchableHighlight,
+  Alert,
+} from "react-native";
 
 import Screen from "../../../components/appScreen";
 import AppButton from "../../../components/appButton";
@@ -68,26 +76,54 @@ const rewards = [
 ];
 //this is view reward file: changed from add reward to view reward
 function ViewReward({ navigation }) {
+  const [modalVisible, setModalVisible] = useState(false);
+
   return (
-    <Screen style={styles.container}>
+    <Screen>
       <FlatList
         style={styles.rewardContainer}
+        contentContainerStyle={styles.wrapper}
         numColumns={"3"}
         data={rewards}
         keyExtractor={(reward) => reward.id.toString()}
         renderItem={({ item }) => (
-          <ListItem
-            title={item.title}
-            subTitle={item.points}
-            image={item.image}
-          />
+          <TouchableHighlight
+            style={{ margin: 5 }}
+            onLongPress={() => {
+              setModalVisible(!modalVisible);
+            }}
+          >
+            <ListItem
+              title={item.title}
+              subTitle={item.points}
+              image={item.image}
+            />
+          </TouchableHighlight>
         )}
         ListHeaderComponent={
           <>
-            {/* <AppButton title="Add Reward" /> */}
             <AppLabel labelText="Add Reward Category & Points" />
-            {/* <AppHeading title="Add Reward" />
-             */}
+            <Modal visible={modalVisible} animationType="slide">
+              <Screen>
+                <Button title="Close" onPress={() => setModalVisible(false)} />
+                <View>
+                  <AppButton
+                    title="Delete"
+                    onPress={() => {
+                      setModalVisible(!modalVisible);
+                      Alert.alert("Deleted");
+                    }}
+                  />
+                  <AppButton
+                    title="Edit"
+                    onPress={() => {
+                      setModalVisible(!modalVisible);
+                      navigation.navigate("EditReward");
+                    }}
+                  />
+                </View>
+              </Screen>
+            </Modal>
           </>
         }
         ListFooterComponent={
@@ -122,9 +158,6 @@ function ViewReward({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    marginVertical: 15,
-  },
   rewardContainer: {
     margin: 15,
   },
@@ -135,6 +168,9 @@ const styles = StyleSheet.create({
   },
   tab: {
     margin: 10,
+  },
+  wrapper: {
+    alignItems: "center",
   },
 });
 

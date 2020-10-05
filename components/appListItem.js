@@ -1,5 +1,12 @@
 import React from "react";
-import { StyleSheet, Text, View, Image } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  Modal,
+} from "react-native";
 
 import AppText from "./appText";
 export default function appListItem({ title, subTitle, image }) {
