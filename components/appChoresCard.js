@@ -4,6 +4,7 @@ import { View, StyleSheet, Image } from "react-native";
 import Text from "./appText";
 import colors from "../config/colours";
 import AppMaterialCommunityIcon from "./appMaterialCommunityIcon";
+import colours from "../config/colours";
 
 function appChoresCard({ title, icon, subTitle }) {
   return (
@@ -17,7 +18,7 @@ function appChoresCard({ title, icon, subTitle }) {
         <AppMaterialCommunityIcon
           iconName={icon}
           iconSize={42}
-          iconColor="blue"
+          iconColor={colours.defaultButtonColour}
         />
       </View>
       <View style={styles.detailsContainer}>

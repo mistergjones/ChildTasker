@@ -5,6 +5,8 @@ import screens from "../../config/screens";
 import LoginScreen from "../login/LoginScreen";
 import ChoreStatusScreen from "../child/ChoreStatusScreen";
 import ChildDashBoardScreen from "../child/ChildDashBoardScreen";
+import ChoreProgressScreen from "../child/ChoreProgressScreen";
+import EditProfileScreen from "../child/EditProfileScreen";
 
 const Stack = createStackNavigator();
 
@@ -17,6 +19,11 @@ function ChildStackNavigator(props) {
         component={ChildDashBoardScreen}
       />
       <Stack.Screen name={screens.ChoreStatus} component={ChoreStatusScreen} />
+      <Stack.Screen
+        name={screens.ChoreProgress}
+        component={ChoreProgressScreen}
+      />
+      <Stack.Screen name={screens.EditProfile} component={EditProfileScreen} />
     </Stack.Navigator>
   );
 }
