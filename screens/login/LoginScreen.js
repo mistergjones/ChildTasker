@@ -11,13 +11,17 @@ const loginSchema = Yup.object().shape({
   password: Yup.string().required().min(4).label("Password"),
 });
 
-function LoginScreen({ navigation }) {
+function LoginScreen({ navigation, route }) {
   return (
     <SafeAreaView>
       <Formik
         initialValues={{ username: "", password: "" }}
         onSubmit={() => {
-          navigation.navigate(screens.ParentDashBoard);
+          if (route.name === screens.LoginParent) {
+            navigation.navigate(screens.ParentDashBoard);
+          } else if (route.name === screens.LoginChild) {
+            navigation.navigate(screens.ChildDashBoard);
+          }
         }}
         validationSchema={loginSchema}
       >

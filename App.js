@@ -1,11 +1,11 @@
 import React from "react";
-import StackNavigator from "./screens/NavigationScreen/StackNavigator";
 import { NavigationContainer } from "@react-navigation/native";
-import styles from "./config/styles";
+import BottomTabNavigator from "./screens/NavigationScreen/BottomTabNavigator";
+
 const App = () => {
   return (
     <NavigationContainer>
-      <StackNavigator />
+      <BottomTabNavigator />
     </NavigationContainer>
   );
 };

@@ -6,18 +6,19 @@ import ChoresCard from "../../components/appChoresCard";
 import Screen from "../../components/appScreen";
 import { Form, FormField, SubmitButton } from "../../components/forms";
 import Heading from "../../components/appHeading";
+import AppButton from "../../components/appButton";
+import screens from "../../config/screens";
 
-function ChoresStatusScreen() {
+function ChoreStatusScreen({ navigation, route }) {
   return (
     <Screen style={styles.container}>
       <Heading title="Chore Heading" />
       <View style={styles.body}>
         <View style={styles.bodyContent}>
           <ChoresCard
-            height={200}
-            title={"Task Name"}
-            image={require("../../assets/splash.png")}
-            subTitle={"Points: 11"}
+            title={route.params.title}
+            icon={route.params.icon}
+            subTitle={`Points: ${route.params.points}`}
           />
         </View>
         <View style={styles.bodyForm}>
@@ -25,9 +26,11 @@ function ChoresStatusScreen() {
             initialValues={{ completed: false }}
             onSubmit={(values) => console.log(values)}
           >
-            <SubmitButton title="Yes /No Dropdown" color="themeColor" />
             <SubmitButton title="Submit" color="defaultButtonColour" />
-            <SubmitButton title="Return" color="defaultButtonColour" />
+            <AppButton
+              title="Return"
+              onPress={() => navigation.navigate(screens.ChildDashBoard)}
+            />
           </Form>
         </View>
       </View>
@@ -37,33 +40,24 @@ function ChoresStatusScreen() {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 10,
+    // padding: 10,
+    // marginVertical: 30,
   },
   body: {
-    flex: 10,
-    justifyContent: "space-around",
-    alignItems: "center",
-    overflow: "hidden",
+    flex: 1,
+    padding: 10,
   },
   bodyContent: {
-    flex: 1,
-    justifyContent: "space-around",
+    justifyContent: "center",
     alignItems: "center",
-    overflow: "hidden",
     width: "100%",
-    position: "absolute",
-    top: 0,
-    padding: 20,
-    marginBottom: 25,
+    height: "50%",
   },
   bodyForm: {
-    flex: 1,
-    justifyContent: "space-around",
+    justifyContent: "center",
     alignItems: "center",
-    overflow: "hidden",
     width: "100%",
-    position: "absolute",
-    bottom: 0,
+    height: "50%",
   },
   footer: {
     flex: 0.5,
@@ -72,4 +66,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ChoresStatusScreen;
+export default ChoreStatusScreen;

@@ -1,5 +1,6 @@
 export default {
-  Login: "Login",
+  LoginChild: "Login Child",
+  LoginParent: "Login Parent",
   ParentDashBoard: "ParentDashBoard",
   CreateTaskListForChild: "CreateTaskListForChild",
   AddCategory: "AddCategory",
@@ -13,4 +14,6 @@ export default {
   EditChild: "EditChild",
   RemoveChild: "RemoveChild",
   ViewReward: "ViewReward",
+  ChildDashBoard: "ChildDashBoard",
+  ChoreStatus: "ChoreStatus",
 };
