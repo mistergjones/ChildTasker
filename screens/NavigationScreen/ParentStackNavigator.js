@@ -18,10 +18,10 @@ import ViewReward from "../parent/manageReward/ViewReward";
 
 const Stack = createStackNavigator();
 
-function StackNavigator(props) {
+function ParentStackNavigator(props) {
   return (
-    <Stack.Navigator>
-      <Stack.Screen name={screens.Login} component={LoginScreen} />
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name={screens.LoginParent} component={LoginScreen} />
       <Stack.Screen
         name={screens.ParentDashBoard}
         component={ParentDashBoardScreen}
@@ -62,4 +62,4 @@ const styles = StyleSheet.create({
   container: {},
 });
 
-export default StackNavigator;
+export default ParentStackNavigator;
