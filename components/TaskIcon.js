@@ -10,8 +10,9 @@ import {
 import { Text } from "react-native";
 import screens from "../config/screens";
 import AppMaterialIcon from "../components/appMaterialCommunityIcon";
+import colours from "../config/colours";
 
-function TaskIcon({ title, icon, points }) {
+function TaskIcon({ title, icon, points, style }) {
   const navigation = useNavigation();
   return (
     <TouchableOpacity
@@ -19,10 +20,14 @@ function TaskIcon({ title, icon, points }) {
         navigation.navigate(screens.ChoreStatus, { title, icon, points })
       }
     >
-      <View style={styles.container}>
+      <View style={style}>
         <Text>{title}</Text>
-        <AppMaterialIcon iconName={icon} iconSize={60} iconColor="blue" />
-        <Text>Points: {points}</Text>
+        <AppMaterialIcon
+          iconName={icon}
+          iconSize={60}
+          iconColor={colours.defaultButtonColour}
+        />
+        <Text>{points}</Text>
       </View>
     </TouchableOpacity>
   );

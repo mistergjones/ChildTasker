@@ -16,4 +16,6 @@ export default {
   ViewReward: "ViewReward",
   ChildDashBoard: "ChildDashBoard",
   ChoreStatus: "ChoreStatus",
+  ChoreProgress: "ChoreProgress",
+  EditProfile: "EditProfile",
 };

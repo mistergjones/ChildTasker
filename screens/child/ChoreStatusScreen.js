@@ -1,5 +1,5 @@
-import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import React, { useState } from "react";
+import { StyleSheet, Switch, Text, View } from "react-native";
 // import * as Yup from "yup";
 
 import ChoresCard from "../../components/appChoresCard";
@@ -8,11 +8,13 @@ import { Form, FormField, SubmitButton } from "../../components/forms";
 import Heading from "../../components/appHeading";
 import AppButton from "../../components/appButton";
 import screens from "../../config/screens";
+import colours from "../../config/colours";
 
 function ChoreStatusScreen({ navigation, route }) {
+  const [choreCompleted, setChoreCompleted] = useState(false);
   return (
     <Screen style={styles.container}>
-      <Heading title="Chore Heading" />
+      <Heading title="Chore Status" />
       <View style={styles.body}>
         <View style={styles.bodyContent}>
           <ChoresCard
@@ -26,7 +28,23 @@ function ChoreStatusScreen({ navigation, route }) {
             initialValues={{ completed: false }}
             onSubmit={(values) => console.log(values)}
           >
-            <SubmitButton title="Submit" color="defaultButtonColour" />
+            <View style={styles.switch}>
+              <Text>Completed</Text>
+              <Switch
+                value={choreCompleted}
+                onChange={() => setChoreCompleted(!choreCompleted)}
+                trackColor={{ true: colours.defaultButtonColour }}
+                thumbColor={"#dfe6ed"}
+              />
+              <Text>{choreCompleted ? "Yes" : "No"}</Text>
+            </View>
+
+            {choreCompleted && (
+              <AppButton
+                title="Save"
+                onPress={() => navigation.navigate(screens.ChoreProgress)}
+              />
+            )}
             <AppButton
               title="Return"
               onPress={() => navigation.navigate(screens.ChildDashBoard)}
@@ -58,6 +76,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: "100%",
     height: "50%",
+  },
+  switch: {
+    flexDirection: "row",
+    alignItems: "center",
+    width: "100%",
+    justifyContent: "space-between",
   },
   footer: {
     flex: 0.5,
