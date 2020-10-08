@@ -18,4 +18,5 @@ export default {
   ChoreStatus: "ChoreStatus",
   ChoreProgress: "ChoreProgress",
   EditProfile: "EditProfile",
+  TrackReward: "TrackReward",
 };

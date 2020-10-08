@@ -30,6 +30,11 @@ function ManageRewardsScreen({ navigation }) {
       />
 
       <AppButton
+        title="Track Reward"
+        onPress={() => navigation.navigate(screens.TrackReward)}
+      />
+
+      <AppButton
         title="Return"
         onPress={() => navigation.navigate(screens.ParentDashBoard)}
       />
