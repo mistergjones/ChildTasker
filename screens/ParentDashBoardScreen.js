@@ -7,45 +7,54 @@ import AppHeading from "../components/appHeading.js";
 import screens from "../config/screens";
 
 function ParentDashBoardScreen({ navigation }) {
-  return (
-    <ScrollView style={styles.container}>
-      <AppHeading title="Parent Dashboard" />
+    return (
+        <ScrollView style={styles.container}>
+            <AppHeading title="Parent Dashboard" />
 
-      <AppButton
-        title="Create Tasks for Child"
-        onPress={() => navigation.navigate(screens.CreateTaskListForChild)}
-      />
+            <AppButton
+                title="Create Tasks for Child"
+                onPress={() =>
+                    navigation.navigate(screens.CreateTaskListForChild)
+                }
+            />
 
-      <AppButton
-        title="Add Edit Categories"
-        onPress={() => navigation.navigate(screens.AddCategory)}
-      />
+            <AppButton
+                title="Add Edit Categories"
+                onPress={() => navigation.navigate(screens.AddCategory)}
+            />
 
-      <AppButton
-        title="Manage Rewards"
-        onPress={() => navigation.navigate(screens.ManageRewards)}
-      />
+            <AppButton
+                title="Manage Rewards"
+                onPress={() => navigation.navigate(screens.ManageRewards)}
+            />
 
-      <AppButton
-        title="Track Pocket Money"
-        onPress={() => navigation.navigate(screens.TrackPocketMoney)}
-      />
+            <AppButton
+                title="Track Pocket Money"
+                onPress={() => navigation.navigate(screens.TrackPocketMoney)}
+            />
 
-      <AppButton
-        title="View Accomplishments"
-        onPress={() => navigation.navigate(screens.ViewAccomplishments)}
-      />
+            <AppButton
+                title="View Accomplishments"
+                onPress={() => navigation.navigate(screens.ViewAccomplishments)}
+            />
 
-      <AppButton
-        title="Manage Child Details"
-        onPress={() => navigation.navigate(screens.ParentChildDashBoard)}
-      />
-    </ScrollView>
-  );
+            <AppButton
+                title="Manage Child Details"
+                onPress={() =>
+                    navigation.navigate(screens.ParentChildDashBoard)
+                }
+            />
+
+            <AppButton
+                title="View Database users"
+                onPress={() => navigation.navigate(screens.ViewDatabaseUsers)}
+            />
+        </ScrollView>
+    );
 }
 
 const styles = StyleSheet.create({
-  container: {},
+    container: {},
 });
 
 export default ParentDashBoardScreen;
