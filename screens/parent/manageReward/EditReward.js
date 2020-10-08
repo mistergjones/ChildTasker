@@ -88,7 +88,7 @@ let reward = {
 function EditReward({ navigation }) {
   return (
     <Screen style={styles.container}>
-      <AppLabel labelText="Edit Reward Form" />
+      <AppHeading title="Edit Reward Form" />
       <Form
         initialValues={{
           label: reward.label,
@@ -121,6 +121,12 @@ function EditReward({ navigation }) {
         />
 
         <SubmitButton title="Submit" />
+        <View>
+          <AppButton
+            title="Return"
+            onPress={() => navigation.navigate(screens.ManageRewards)}
+          />
+        </View>
       </Form>
     </Screen>
   );
