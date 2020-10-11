@@ -2,35 +2,110 @@
 // @refresh reset
 
 import React, { useEffect, createContext, useState } from "react";
-import { database } from "../components/database";
+import { database } from "../components/database.js";
 
+// Creates a Context object.
 export const UsersContext = createContext({});
 
+// We are set up to take an initial state through props when we create the UsersContextProvider, but those values are quickly overwritten with the useEffect call. I left the code here for reference.
 export const UsersContextProvider = (props) => {
     // Initial values are obtained from the props
-    const { users: initialUsers, children } = props;
+    // const { users: initialUsers, children } = props;
+    const { children } = props;
 
     // Use State to store the values
-    const [users, setUsers] = useState(initialUsers);
+    // const [users, setItems] = useState(initialUsers);
+    const [items, setItems] = useState();
 
+    // CATEGORIES
+    const [categories, setCategories] = useState();
+
+    // TASKS
+    const [tasks, setTasks] = useState();
+
+    // TASKS
+    const [rewards, setRewards] = useState();
+
+    // We have a useEffect call to instantiate the users list from the database. We only call this function on the first render
     useEffect(() => {
-        refreshUsers();
+        refreshItems();
+        refreshCategories();
+        refreshTasks();
+        refreshRewards();
     }, []);
 
-    // make a database callto insert a user and then call refreshUsers to update the state
-    const addNewUser = (userName) => {
-        return database.insertUser(userName, refreshUsers);
+    // make a database call to insert an item and then call refreshItems to update the state
+    const addNewItem = (userItem) => {
+        return database.insertItem(userItem, refreshItems);
     };
 
     // make a database call to get the users
-    const refreshUsers = () => {
-        return database.getUsers(setUsers);
+    // In refreshItems we are sending the setItems function, which will allow the query to set our local state.
+    const refreshItems = () => {
+        return database.getItems(setItems);
     };
+
+    //*************************************************************************
+    // START CATEGORIES
+    // make a database call to insert an item and then call refreshItems to update the state
+    const addNewCategory = (userCategory) => {
+        return database.insertCategory(userCategory, refreshCategories);
+    };
+
+    // make a database call to retrieve all categories
+    // In refreshItems we are sending the setItems function, which will allow the query to set our local state.
+    const refreshCategories = () => {
+        return database.getCategories(setCategories);
+    };
+
+    // END CATEGORIES
+    //*************************************************************************
+
+    //*************************************************************************
+    // START TASKS
+    // make a database call to insert a TASK and then call refreshItems to update the state
+    const addNewTask = (userTask) => {
+        return database.insertTask(userTask, refreshTasks);
+    };
+
+    // make a database call to retrieve all tasks
+    // In refreshItems we are sending the setItems function, which will allow the query to set our local state.
+    const refreshTasks = () => {
+        return database.getTasks(setTasks);
+    };
+
+    // END TASKS
+    //*************************************************************************
+
+    //*************************************************************************
+    // START REWARDS
+    // make a database call to insert a TASK and then call refreshItems to update the state
+    const addNewReward = (userReward) => {
+        return database.insertTask(userReward, refreshRewards);
+    };
+
+    // make a database call to retrieve all tasks
+    // In refreshItems we are sending the setItems function, which will allow the query to set our local state.
+    const refreshRewards = () => {
+        return database.getRewards(setRewards);
+    };
+
+    // END REWARDS
+    //*************************************************************************
 
     // Make the context object:
     const usersContext = {
-        users,
-        addNewUser,
+        items,
+        addNewItem,
+        // CATEGORIES
+        categories,
+        addNewCategory,
+        // TASKS
+        addNewTask,
+        tasks,
+        // Rewards
+        addNewReward,
+        rewards,
     };
 
     // pass the value in provider and return
