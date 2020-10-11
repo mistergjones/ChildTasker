@@ -21,64 +21,51 @@ import ViewDatabaseUsers from "../parent/viewDatabaseUsers/ViewDatabaseUsers";
 const Stack = createStackNavigator();
 
 function ParentStackNavigator(props) {
-    return (
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
-            <Stack.Screen name={screens.LoginParent} component={LoginScreen} />
-            <Stack.Screen
-                name={screens.ParentDashBoard}
-                component={ParentDashBoardScreen}
-            />
-            <Stack.Screen
-                name={screens.CreateTaskListForChild}
-                component={CreateTaskListForChildScreen}
-            />
-            <Stack.Screen
-                name={screens.AddCategory}
-                component={AddCategoryScreen}
-            />
-            <Stack.Screen
-                name={screens.ManageRewards}
-                component={ManageRewardsScreen}
-            />
-            <Stack.Screen
-                name={screens.TrackPocketMoney}
-                component={TrackPocketMoneyScreen}
-            />
-            <Stack.Screen
-                name={screens.ViewAccomplishments}
-                component={LoginScreen}
-            />
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen
+        name={screens.ParentDashBoard}
+        component={ParentDashBoardScreen}
+      />
+      <Stack.Screen
+        name={screens.CreateTaskListForChild}
+        component={CreateTaskListForChildScreen}
+      />
+      <Stack.Screen name={screens.AddCategory} component={AddCategoryScreen} />
+      <Stack.Screen
+        name={screens.ManageRewards}
+        component={ManageRewardsScreen}
+      />
+      <Stack.Screen
+        name={screens.TrackPocketMoney}
+        component={TrackPocketMoneyScreen}
+      />
+      <Stack.Screen
+        name={screens.ViewAccomplishments}
+        component={LoginScreen}
+      />
 
-            <Stack.Screen
-                name={screens.ParentChildDashBoard}
-                component={ParentChildDashBoardScreen}
-            />
-            <Stack.Screen name={screens.AddReward} component={AddReward} />
-            <Stack.Screen name={screens.EditReward} component={EditReward} />
-            <Stack.Screen
-                name={screens.AddChild}
-                component={AddNewChildScreen}
-            />
-            <Stack.Screen
-                name={screens.EditChild}
-                component={EditChildScreen}
-            />
-            <Stack.Screen
-                name={screens.RemoveChild}
-                component={RemoveChildScreen}
-            />
-            <Stack.Screen name={screens.ViewReward} component={ViewReward} />
-            <Stack.Screen name={screens.TrackReward} component={TrackReward} />
-            <Stack.Screen
-                name={screens.ViewDatabaseUsers}
-                component={ViewDatabaseUsers}
-            />
-        </Stack.Navigator>
-    );
+      <Stack.Screen
+        name={screens.ParentChildDashBoard}
+        component={ParentChildDashBoardScreen}
+      />
+      <Stack.Screen name={screens.AddReward} component={AddReward} />
+      <Stack.Screen name={screens.EditReward} component={EditReward} />
+      <Stack.Screen name={screens.AddChild} component={AddNewChildScreen} />
+      <Stack.Screen name={screens.EditChild} component={EditChildScreen} />
+      <Stack.Screen name={screens.RemoveChild} component={RemoveChildScreen} />
+      <Stack.Screen name={screens.ViewReward} component={ViewReward} />
+      <Stack.Screen name={screens.TrackReward} component={TrackReward} />
+      <Stack.Screen
+        name={screens.ViewDatabaseUsers}
+        component={ViewDatabaseUsers}
+      />
+    </Stack.Navigator>
+  );
 }
 
 const styles = StyleSheet.create({
-    container: {},
+  container: {},
 });
 
 export default ParentStackNavigator;

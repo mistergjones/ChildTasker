@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import * as ImagePicker from "expo-image-picker";
 import {
   View,
@@ -15,10 +15,13 @@ import screens from "../../config/screens";
 import AppTextInput from "../../components/AppTextInput";
 import colours from "../../config/colours";
 import placeholder from "../../assets/placeholder.png";
+import AuthContext from "../../components/auth/context";
 
 function EditProfileScreen({ navigation }) {
+  const { user } = useContext(AuthContext);
+
   const [image, setImage] = useState(Image.resolveAssetSource(placeholder).uri);
-  const [nickName, setNickName] = useState("Johhny");
+  const [nickName, setNickName] = useState(user.username);
 
   useEffect(() => {
     (async () => {

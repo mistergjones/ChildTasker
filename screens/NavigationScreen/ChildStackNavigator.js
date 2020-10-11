@@ -13,7 +13,6 @@ const Stack = createStackNavigator();
 function ChildStackNavigator(props) {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name={screens.LoginChild} component={LoginScreen} />
       <Stack.Screen
         name={screens.ChildDashBoard}
         component={ChildDashBoardScreen}
