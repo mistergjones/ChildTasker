@@ -9,6 +9,8 @@ import AppMaterialIcon from "../../../components/appMaterialCommunityIcon";
 
 import AppPicker from "../../../components/appPicker";
 
+import screens from "../../../config/screens";
+
 function EditChildScreen({ navigation }) {
     // the below will change once we have data from teh server/text file
     const dummyTestChildren = [
