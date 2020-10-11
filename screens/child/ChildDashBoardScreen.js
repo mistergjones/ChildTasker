@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { View, Text, StyleSheet, SafeAreaView, ScrollView } from "react-native";
 import AppButton from "../../components/appButton";
 import screens from "../../config/screens";
@@ -6,6 +6,7 @@ import AppHeading from "../../components/appHeading";
 import AppChoresCard from "../../components/appChoresCard";
 import TaskIcon from "../../components/TaskIcon";
 import colours from "../../config/colours";
+import AuthContext from "../../components/auth/context";
 
 const tasks = [
   { title: "Task 1", icon: "dice-5", points: 10 },
@@ -30,6 +31,7 @@ const tasks = [
   { title: "Task 20", icon: "tennis", points: 19 },
 ];
 function ChildDashBoardScreen({ navigation }) {
+  const { setUser } = useContext(AuthContext);
   const [availablePoints, setAvailblePoints] = useState(0);
 
   useEffect(() => {
@@ -102,6 +104,7 @@ function ChildDashBoardScreen({ navigation }) {
           title="Edit Profile"
           onPress={() => navigation.navigate(screens.EditProfile)}
         />
+        <AppButton title="Logout" onPress={() => setUser(null)} />
       </ScrollView>
     </SafeAreaView>
   );
