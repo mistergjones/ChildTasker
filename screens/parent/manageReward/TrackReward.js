@@ -19,20 +19,90 @@ import screens from "../../../config/screens";
 import AppMaterialIcon from "../../../components/appMaterialCommunityIcon";
 import { LineChart, Path, Grid, XAxis, YAxis } from "react-native-svg-charts";
 
-// import {
-//     SlideAreaChart,
-//     SlideBarChart,
-//     SlideBarChartProps,
-//     SlideAreaChartProps,
-//     YAxisProps,
-//     XAxisProps,
-//     XAxisLabelAlignment,
-//     YAxisLabelAlignment,
-//     CursorProps,
-//     ToolTipProps,
-//     ToolTipTextRenderersInput,
-//     GradientProps,
-// } from "react-native-slide-charts";
+import {
+  Form,
+  FormField,
+  FormPicker as Picker,
+  SubmitButton,
+} from "../../../components/forms";
+
+import CategoryPickerItem from "../../../components/appCategoryPickerItem";
+// avatars
+const avatars = [
+  {
+    value: 1,
+    label: "Takeaway",
+    points: 10,
+    image: require("../../../assets/avatar/1.png"),
+  },
+  {
+    value: 2,
+    label: "Games",
+    points: 15,
+    image: require("../../../assets/avatar/2.png"),
+  },
+  {
+    value: 3,
+    label: "Internet",
+    points: 15,
+    image: require("../../../assets/avatar/3.png"),
+  },
+  {
+    value: 4,
+    label: "Whatever",
+    points: 10,
+    image: require("../../../assets/avatar/4.png"),
+  },
+  {
+    value: 5,
+    label: "Whatever",
+    points: 10,
+    image: require("../../../assets/avatar/5.png"),
+  },
+  {
+    value: 6,
+    label: "Whatever",
+    points: 10,
+    image: require("../../../assets/avatar/6.png"),
+  },
+  {
+    value: 7,
+    label: "Whatever",
+    points: 10,
+    image: require("../../../assets/avatar/7.png"),
+  },
+  {
+    value: 8,
+    label: "Whatever",
+    points: 10,
+    image: require("../../../assets/avatar/8.png"),
+  },
+  {
+    value: 9,
+    label: "Whatever",
+    points: 10,
+    image: require("../../../assets/avatar/9.png"),
+  },
+  {
+    value: 10,
+    label: "Whatever",
+    points: 10,
+    image: require("../../../assets/avatar/10.png"),
+  },
+  {
+    value: 11,
+    label: "Whatever",
+    points: 10,
+    image: require("../../../assets/avatar/11.png"),
+  },
+  {
+    value: 12,
+    label: "Whatever",
+    points: 10,
+    image: require("../../../assets/avatar/12.png"),
+  },
+];
+
 function TrackReward({ navigation }) {
   const data1 = [
     50,
@@ -87,7 +157,14 @@ function TrackReward({ navigation }) {
     <Screen>
       <AppHeading title="Track Pocket Money Heading" />
       <AppLabel labelText="For Child...X" />
-      <View style={styles.lineGraphContainer}>
+      <View
+        style={{
+          height: 200,
+          padding: 10,
+          width: "100%",
+          flexDirection: "row",
+        }}
+      >
         <YAxis
           data={data2}
           style={{ marginBottom: xAxisHeight }}
@@ -97,51 +174,31 @@ function TrackReward({ navigation }) {
         />
         <View style={{ flex: 1 }}>
           <LineChart
-            style={{ height: 200, width: "100%" }}
-            // xAccessor={({ item }) => item}
+            style={{ flex: 1 }}
             data={data}
             contentInset={{ top: 20, bottom: 20 }}
+            // xAccessor={({ item }) => item}
             svg={{ stroke: "rgb(134, 65, 244)" }}
-            contentInset={contentInset}
+            // contentInset={contentInset}
           >
             <Grid />
           </LineChart>
-
           <XAxis
             style={{
-              marginHorizontal: -10,
-              marginVertical: -10,
               height: xAxisHeight,
               width: "100%",
             }}
             data={data2}
-            formatLabel={(index, value) => index}
-            contentInset={{ left: 10, right: 10 }}
-            svg={axesSvg}
+            formatLabel={(value, index) => index}
+            contentInset={{ left: 5, right: 5 }}
+            svg={{
+              fontSize: 10,
+              fill: "black",
+              flexWrap: "wrap",
+            }}
           />
         </View>
       </View>
-      {/* <View style={styles.lineGraphContainer}>
-        <SlideAreaChart
-          chartLineColor="black"
-          data={
-            ([
-              { x: 1, y: 0 },
-              { x: 3, y: 8 },
-              { x: 4, y: 2 },
-              { x: 5, y: 12 },
-              { x: 4, y: 4 },
-            ],
-            [
-              { x: 1, y: 10 },
-              { x: 3, y: 2 },
-              { x: 4, y: 2 },
-              { x: 5, y: 7 },
-              { x: 4, y: 7 },
-            ])
-          }
-        />
-      </View> */}
       <View style={styles.tabLinks}>
         <View style={styles.tab}>
           <AppMaterialIcon iconName="dice-5" iconSize={42} iconColor="blue" />
@@ -158,6 +215,29 @@ function TrackReward({ navigation }) {
           onPress={() => navigation.navigate(screens.ManageRewards)}
         />
       </View>
+      <View>
+        <Form
+          initialValues={{
+            avatar: "",
+          }}
+          onSubmit={(values) => {
+            console.log(values);
+            navigation.navigate("ViewReward");
+          }}
+          // validationSchema={validationSchema}
+        >
+          <Picker
+            items={avatars}
+            name="avatar"
+            numberOfColumns={3}
+            PickerItemComponent={CategoryPickerItem}
+            placeholder="Avatar"
+            width="50%"
+          />
+
+          <SubmitButton title="Submit" />
+        </Form>
+      </View>
     </Screen>
   );
 }
@@ -166,12 +246,7 @@ const styles = StyleSheet.create({
   lineGraphContainer: {
     flexDirection: "row",
     height: 200,
-    // flex: 1,
     padding: 10,
-    // justifyContent: "center",
-    // alignItems: "center",
-    // borderWidth: 5,
-    // borderColor: "#FF1744",
     width: "100%",
   },
   tabLinks: {

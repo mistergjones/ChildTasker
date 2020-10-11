@@ -1,22 +1,33 @@
 import React from "react";
-import { View, StyleSheet, TouchableOpacity } from "react-native";
+import { View, StyleSheet, TouchableOpacity, Image } from "react-native";
 
 import Icon from "./Icon";
 import Text from "./appText";
 
 function appCategoryPickerItem({ item, onPress }) {
-  return (
-    <View style={styles.container}>
-      <TouchableOpacity onPress={onPress}>
-        <Icon
-          backgroundColor={item.backgroundColor}
-          name={item.icon}
-          size={80}
-        />
-      </TouchableOpacity>
-      <Text style={styles.label}>{item.label}</Text>
-    </View>
-  );
+  if ("icon" in item) {
+    return (
+      <View style={styles.container}>
+        <TouchableOpacity>
+          <Icon
+            backgroundColor={item.backgroundColor}
+            name={item.icon}
+            size={80}
+          />
+        </TouchableOpacity>
+        <Text style={styles.label}>{item.label}</Text>
+      </View>
+    );
+  } else if ("image" in item) {
+    return (
+      <View style={styles.container}>
+        <TouchableOpacity>
+          <Image source={item.image} style={styles.image} />
+        </TouchableOpacity>
+        <Text style={styles.label}>{item.label}</Text>
+      </View>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
@@ -29,6 +40,10 @@ const styles = StyleSheet.create({
   label: {
     marginTop: 5,
     textAlign: "center",
+  },
+  image: {
+    width: 60,
+    height: 60,
   },
 });
 

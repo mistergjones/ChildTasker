@@ -143,8 +143,6 @@ function ViewReward({ navigation }) {
               </View>
             </View>
             <View>
-              {/* <AppButton title="Add Reward" />
-              <AppButton title="Return" /> */}
               <AppButton
                 title="Return"
                 onPress={() => navigation.navigate(screens.ManageRewards)}
