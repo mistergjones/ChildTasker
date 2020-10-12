@@ -36,12 +36,14 @@ export const UsersContextProvider = (props) => {
 
     // make a database call to insert an item and then call refreshItems to update the state
     const addNewItem = (userItem) => {
+        console.log("UsersContext -> addNewItem()");
         return database.insertItem(userItem, refreshItems);
     };
 
     // make a database call to get the users
     // In refreshItems we are sending the setItems function, which will allow the query to set our local state.
     const refreshItems = () => {
+        console.log("UsersContext -> refreshItems()");
         return database.getItems(setItems);
     };
 

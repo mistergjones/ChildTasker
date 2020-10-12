@@ -106,6 +106,7 @@ const setupDatabaseAsync = async () => {
 // get all items
 // We will pass in a function that can take the users from the query and set the state.
 const getItems = (setUserFunc) => {
+    console.log("AM I BEING CALLED HERE");
     db.transaction(
         (tx) => {
             tx.executeSql(
@@ -218,11 +219,11 @@ const getRewards = (setUserFunc) => {
 
 // inserst a ITEM into the table
 // we pass in a successFunc that will be called after the insert has happened. In our case, we are passing in the function to refresh the items from the database. This way we know that our state will reflect what is in the database.
-const insertItem = (userName, successFunc) => {
+const insertItem = (userItem, successFunc) => {
     db.transaction(
         (tx) => {
             tx.executeSql("insert into items (done,value) values (0,?)", [
-                userName,
+                userItem,
             ]);
         },
         (t, error) => {

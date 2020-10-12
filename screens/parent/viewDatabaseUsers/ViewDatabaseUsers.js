@@ -163,7 +163,7 @@ export default function UserListScreen({ navigation }) {
                     value={name}
                     placeholder="enter new item name..."
                 />
-                <SubmitButton title="insert item name" onPress={insertItem} />
+                <AppButton title="insert item name" onPress={insertItem} />
 
                 <AppButton
                     title="Return"
@@ -192,7 +192,7 @@ export default function UserListScreen({ navigation }) {
                     value={category}
                     placeholder="enter new category name..."
                 />
-                <SubmitButton
+                <AppButton
                     title="insert category name"
                     onPress={insertCategory}
                 />

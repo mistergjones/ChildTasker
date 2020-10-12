@@ -17,29 +17,31 @@ import useDatabase from "./hooks/useDatabase";
 import { UsersContextProvider } from "./context/UsersContext";
 
 const App = () => {
-  const [user, setUser] = useState(null);
-  const [count, setCount] = useState(0);
-  // GJ adding the below to show the splash screen until DB loaded
-  SplashScreen.preventAutoHideAsync(); //don't let the splash screen hide
+    const [user, setUser] = useState(null);
+    const [count, setCount] = useState(0);
+    // GJ adding the below to show the splash screen until DB loaded
+    SplashScreen.preventAutoHideAsync(); //don't let the splash screen hide
 
-  // const isLoadingComplete = useCachedResources();
-  const isDBLoadingComplete = useDatabase();
+    // const isLoadingComplete = useCachedResources();
+    const isDBLoadingComplete = useDatabase();
 
-  if (isDBLoadingComplete) {
-    SplashScreen.hideAsync();
+    if (isDBLoadingComplete) {
+        SplashScreen.hideAsync();
 
-    return (
-      <UsersContextProvider>
-        <AuthContext.Provider value={{ user, setUser, count, setCount }}>
-          <NavigationContainer>
-            {user ? <BottomTabNavigator /> : <AuthNavigation />}
-          </NavigationContainer>
-        </AuthContext.Provider>
-      </UsersContextProvider>
-    );
-  } else {
-    return null;
-  }
+        return (
+            <UsersContextProvider>
+                <AuthContext.Provider
+                    value={{ user, setUser, count, setCount }}
+                >
+                    <NavigationContainer>
+                        {user ? <BottomTabNavigator /> : <AuthNavigation />}
+                    </NavigationContainer>
+                </AuthContext.Provider>
+            </UsersContextProvider>
+        );
+    } else {
+        return null;
+    }
 };
 
 export default App;
