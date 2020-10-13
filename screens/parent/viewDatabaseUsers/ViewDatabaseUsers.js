@@ -2,6 +2,11 @@
 // import { StyleSheet, Text } from "react-native";
 // import { ScrollView } from "react-native-gesture-handler";
 
+import * as SQLite from "expo-sqlite";
+
+// open the database
+const db = SQLite.openDatabase("db.db");
+
 import {
     ScrollView,
     StyleSheet,
@@ -16,7 +21,7 @@ import { UsersContext } from "../../../context/UsersContext.js";
 
 // this module will test to see if we can obtain data from the SQL lite database
 
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 //import { View, StyleSheet } from "react-native";
 import AppButton from "../../../components/appButton.js";
 import AppHeading from "../../../components/appHeading.js";
@@ -41,7 +46,7 @@ import AppPicker from "../../../components/appPicker";
 
 import Constants from "expo-constants";
 
-import db from "../../../components/database.js";
+import { database } from "../../../components/database.js";
 
 export default function UserListScreen({ navigation }) {
     const usersContext = useContext(UsersContext);
@@ -115,10 +120,22 @@ export default function UserListScreen({ navigation }) {
     // console.log("LIST OF CATEGORY NAMES");
     // console.log(categoryList);
 
-    const numberList = [
-        { label: "1", value: 1, backgroundColor: "red", icon: "scale" },
-        { label: "2", value: 2, backgroundColor: "red", icon: "book" },
-    ];
+    const sayHello = () => {
+        console.log("ASDAFDS");
+        console.log(categories);
+        db.transaction((tx) => {
+            tx.executeSql(
+                "SELECT * FROM categories where category_id = ?",
+                [2],
+                (tx, results) => {
+                    var temp = [];
+                    for (let i = 0; i < results.rows.length; ++i)
+                        temp.push(results.rows.item(i));
+                    //console.log(temp);
+                }
+            );
+        });
+    };
 
     return (
         <Screen style={styles.container}>
@@ -134,14 +151,12 @@ export default function UserListScreen({ navigation }) {
                 }}
                 onSubmit={(values) => console.log(values)}
             >
-                {/* <AppPicker
-                    items={numberList}
+                <AppPicker
+                    items={itemList}
                     icon="apps"
                     placeholder="Select Child"
-                    onSelectItem={() => {
-                        console.log("ADSFA");
-                    }}
-                /> */}
+                    onSelectItem={sayHello}
+                />
                 <Picker
                     items={itemList}
                     name="chore"
@@ -165,10 +180,6 @@ export default function UserListScreen({ navigation }) {
                 />
                 <AppButton title="insert item name" onPress={insertItem} />
 
-                <AppButton
-                    title="Return"
-                    onPress={() => navigation.navigate(screens.ParentDashBoard)}
-                />
                 <Picker
                     items={categoryList}
                     name="categories"
@@ -196,6 +207,11 @@ export default function UserListScreen({ navigation }) {
                     title="insert category name"
                     onPress={insertCategory}
                 />
+                <AppButton
+                    title="Return"
+                    onPress={() => navigation.navigate(screens.ParentDashBoard)}
+                />
+                <AppButton title="GET TASKS" onPress={() => sayHello()} />
             </Form>
         </Screen>
     );
