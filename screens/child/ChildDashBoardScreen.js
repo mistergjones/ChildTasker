@@ -7,6 +7,7 @@ import AppChoresCard from "../../components/appChoresCard";
 import TaskIcon from "../../components/TaskIcon";
 import colours from "../../config/colours";
 import AuthContext from "../../components/auth/context";
+import { UsersContext } from "../../context/UsersContext";
 
 const tasks = [
   { title: "Task 1", icon: "dice-5", points: 10 },
@@ -32,6 +33,7 @@ const tasks = [
 ];
 function ChildDashBoardScreen({ navigation }) {
   const { setUser } = useContext(AuthContext);
+  const { users } = useContext(UsersContext);
   const [availablePoints, setAvailblePoints] = useState(0);
 
   useEffect(() => {

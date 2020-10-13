@@ -1,15 +1,18 @@
 // This modules caters for a typicl React Native Heading in our app
 // We can pass the title and colour props into the buton
-import React from "react";
+import React, { useContext } from "react";
 import { View, Text, StyleSheet } from "react-native";
 
 // import our standard library of colours
 import colors from "../config/colours.js";
+import AuthContext from "./auth/context.js";
 
 const AppButton = ({ title, color = "defaultHeadingColour" }) => {
+  const { user } = useContext(AuthContext);
   return (
     <View style={[styles.button, { backgroundColor: colors[color] }]}>
       <Text style={styles.text}>{title}</Text>
+      <Text>{user.username}</Text>
     </View>
   );
 };

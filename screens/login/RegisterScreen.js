@@ -9,15 +9,18 @@ import AuthContext from "../../components/auth/context";
 import { database } from "../../components/database";
 
 import { UsersContext } from "../../context/UsersContext";
+import { NavigationContainer } from "@react-navigation/native";
 
 const loginSchema = Yup.object().shape({
   username: Yup.string().required().label("Username"),
   password: Yup.string().required().min(4).label("Password"),
+  confirmPassword: Yup.string().required().min(4).label("Confirm Password"),
 });
-
-function LoginScreen({ navigation, route }) {
+function RegisterScreen({ navigation }) {
   const { user, setUser, setCount, count } = useContext(AuthContext);
-  const { addNewUser, users, setUsers, getUsers } = useContext(UsersContext);
+  const { addNewUser, users, setUsers, checkIfNewUser } = useContext(
+    UsersContext
+  );
 
   const handleRegister = () => {
     console.log("To do register");
@@ -26,38 +29,32 @@ function LoginScreen({ navigation, route }) {
   return (
     <SafeAreaView>
       <Formik
-        initialValues={{ username: "", password: "" }}
+        initialValues={{ username: "", password: "", confirmPassword: "" }}
         onSubmit={async (fields, { setFieldError }) => {
-          setCount(count + 1);
-
-          //console.log("users = " + users);
-          for (let i = 0; i < users.length; i++) {
-            console.log(users[i]);
-            if (users[i].user_name === fields.username) {
-              const currentUser = {
-                username: fields.username,
-                isParent: users[i].is_parent === 1 ? true : false,
-              };
-
-              setUser(currentUser);
-
-              return;
-            }
+          // Check if passwords match
+          if (fields.password !== fields.confirmPassword) {
+            setFieldError("password", "passwords do not match");
+            setFieldError("confirmPassword", "passwords do not match");
           }
+          console.log(1);
+          // Check if username already exists
+          const isNewUser = await checkIfNewUser(fields.username);
+          console.log(2);
+          // add user to db
 
-          setFieldError("username", "username/password incorrect");
-          setFieldError("password", "username/password incorrect");
+          if (isNewUser) {
+            try {
+              await addNewUser({ username: fields.username, isParent: true });
+              // set user context
+              //setUser({ username: fields.username, isParent: true });
 
-          // await addNewUser(fields.username);
-          //database.insertUser(fields.username, () => console.log("Hi"));
-          //await database.getUsers(setUsers);
-
-          //await database.getItems(setUser);
-
-          //TODO: Database validate user
-          //console.log("User" + fields.username);
-          //Assumption User is valid
-          //This is done to simulate changing from a child to a parent and vice versa
+              navigation.navigate(screens.Login);
+            } catch (error) {
+              console.log("error = ", error);
+            }
+          } else {
+            setFieldError("username", "username already exists");
+          }
         }}
         validationSchema={loginSchema}
       >
@@ -80,11 +77,20 @@ function LoginScreen({ navigation, route }) {
               errorStyle={{ color: "red" }}
               error={errors ? errors.password : ""}
             />
-            <AppButton title="login" onPress={handleSubmit} />
-            <AppButton
-              title="Register"
-              onPress={() => navigation.navigate(screens.Register)}
+            <AppTextInput
+              placeholder="Confirm Password "
+              labelText="Confirm Password"
+              icon="lock"
+              secureTextEntry
+              onChangeText={handleChange("confirmPassword")}
+              errorStyle={{ color: "red" }}
+              error={errors ? errors.confirmPassword : ""}
             />
+            <AppButton
+              title="login"
+              onPress={() => navigation.navigate(screens.Login)}
+            />
+            <AppButton title="Register" onPress={handleSubmit} />
           </>
         )}
       </Formik>
@@ -96,4 +102,4 @@ const styles = StyleSheet.create({
   container: {},
 });
 
-export default LoginScreen;
+export default RegisterScreen;

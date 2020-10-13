@@ -8,6 +8,8 @@ import colours from "../../config/colours";
 import AuthContext from "../../components/auth/context";
 import LoginScreen from "../login/LoginScreen";
 import SwitchUser from "../login/SwitchUser";
+import screens from "../../config/screens";
+import { useRoute } from "@react-navigation/native";
 
 const Tab = createBottomTabNavigator();
 
@@ -58,6 +60,7 @@ function BottomTabNavigator(props) {
         name="Switch User"
         component={SwitchUser}
         options={{
+          currentTabIndex: 0,
           tabBarIcon: ({ size, color }) => (
             <MaterialCommunityIcons name="settings" size={size} color={color} />
           ),
