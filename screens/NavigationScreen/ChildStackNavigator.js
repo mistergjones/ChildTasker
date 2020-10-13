@@ -12,7 +12,10 @@ const Stack = createStackNavigator();
 
 function ChildStackNavigator(props) {
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Navigator
+      initialRouteName={screens.ChildDashBoard}
+      screenOptions={{ headerShown: false }}
+    >
       <Stack.Screen
         name={screens.ChildDashBoard}
         component={ChildDashBoardScreen}

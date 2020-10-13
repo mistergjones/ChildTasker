@@ -3,13 +3,23 @@ import { View, StyleSheet } from "react-native";
 import AppButton from "../../components/appButton";
 
 import AuthContext from "../../components/auth/context";
+import screens from "../../config/screens";
 
-function SwitchUser(props) {
+function SwitchUser({ navigation }) {
   const { setUser } = useContext(AuthContext);
 
   return (
     <View style={styles.container}>
-      <AppButton title="Logout" onPress={() => setUser(null)} />
+      <AppButton
+        title="Logout"
+        onPress={() => {
+          console.log(navigation);
+          console.log(navigation.isFocused());
+          navigation.jumpTo("Parent");
+          console.log(navigation.isFocused());
+          setUser(null);
+        }}
+      />
     </View>
   );
 }

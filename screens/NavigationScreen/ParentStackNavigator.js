@@ -22,7 +22,10 @@ const Stack = createStackNavigator();
 
 function ParentStackNavigator(props) {
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Navigator
+      initialRouteName={screens.ParentDashBoard}
+      screenOptions={{ headerShown: false }}
+    >
       <Stack.Screen
         name={screens.ParentDashBoard}
         component={ParentDashBoardScreen}

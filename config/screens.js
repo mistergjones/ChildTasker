@@ -1,5 +1,6 @@
 export default {
   Login: "Login",
+  Register: "Register",
   ParentDashBoard: "ParentDashBoard",
   CreateTaskListForChild: "CreateTaskListForChild",
   AddCategory: "AddCategory",
