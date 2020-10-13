@@ -1,5 +1,6 @@
 // force the state to clear with fast refresh in Expo
 // @refresh reset
+// GJ
 
 import React, { useEffect, createContext, useState } from "react";
 import { database } from "../components/database.js";
