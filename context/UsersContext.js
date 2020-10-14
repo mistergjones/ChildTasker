@@ -148,7 +148,8 @@ export const UsersContextProvider = (props) => {
     const usersContext = {
         items,
         addNewItem,
-
+        // categories
+        categories,
         // TASKS
         addNewTask,
         tasks,
