@@ -73,50 +73,37 @@ const dropDatabaseTablesAsync = async () => {
 
 // create the user table if it does not exist
 const setupDatabaseAsync = async () => {
-    return new Promise(
-        (resolve, reject) => {
-            db.transaction(
-                (tx) => {
-                    tx.executeSql(
-                        "create table if not exists items (id integer primary key not null, done int, value text)"
-                    );
-                    tx.executeSql(
-                        "create table if not exists categories (category_id integer primary key not null, category_name TEXT not null, category_colour TEXT)"
-                    );
-                    tx.executeSql(
-                        "create table if not exists tasks (task_id integer primary key not null, task_name TEXT not null, task_colour TEXT not null, task_icon TEXT not null, category_id INTEGER, FOREIGN KEY (category_id) REFERENCES categories (category_id))"
-                    );
-                    tx.executeSql(
-                        "create table if not exists rewards (reward_id integer primary key not null, reward_name TEXT not null, reward_points INTEGER)"
-                    );
-                    tx.executeSql(
-                        "create table if not exists users (user_id integer primary key not null, user_name TEXT not null, is_parent integer)"
-                    );
-                },
-                // the error and success functions are called when the transaction is complete. We use the promise resolve and reject functions here.
-                (_, error) => {
-                    console.log("db error creating tables");
-                    console.log(error);
-                    reject(error);
-                },
-                (_, success) => {
-                    resolve(success);
-                }
-            );
-            tx.executeSql(
-                "create table if not exists users (user_id integer primary key not null, user_name TEXT not null, password TEXT not null, is_parent integer)"
-            );
-        },
-        // the error and success functions are called when the transaction is complete. We use the promise resolve and reject functions here.
-        (_, error) => {
-            console.log("db error creating tables");
-            console.log(error);
-            reject(error);
-        },
-        (_, success) => {
-            resolve(success);
-        }
-    );
+    return new Promise((resolve, reject) => {
+        db.transaction(
+            (tx) => {
+                tx.executeSql(
+                    "create table if not exists items (id integer primary key not null, done int, value text)"
+                );
+                tx.executeSql(
+                    "create table if not exists categories (category_id integer primary key not null, category_name TEXT not null, category_colour TEXT)"
+                );
+                tx.executeSql(
+                    "create table if not exists tasks (task_id integer primary key not null, task_name TEXT not null, task_colour TEXT not null, task_icon TEXT not null, category_id INTEGER, FOREIGN KEY (category_id) REFERENCES categories (category_id))"
+                );
+                tx.executeSql(
+                    "create table if not exists rewards (reward_id integer primary key not null, reward_name TEXT not null, reward_points INTEGER)"
+                );
+                tx.executeSql(
+                    "create table if not exists users (user_id integer primary key not null, user_name TEXT not null, password TEXT not null, is_parent integer)"
+                );
+            },
+            // the error and success functions are called when the transaction is complete. We use the promise resolve and reject functions here.
+            (_, error) => {
+                console.log("db error creating tables");
+                console.log(error);
+                reject(error);
+            },
+            (_, success) => {
+                console.log("db success creating tables");
+                resolve(success);
+            }
+        );
+    });
 };
 
 // get all items
