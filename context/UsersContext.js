@@ -118,6 +118,17 @@ export const UsersContextProvider = (props) => {
   const getkids = async () => {
     return await database.getKids(setKids);
   };
+
+  const removeKid = async (userId) => {
+    await database.removeKid(userId);
+    await getkids();
+    return;
+  };
+
+  const updateKid = async (kid) => {
+    await database.updateKid(kid);
+    await getkids();
+  };
   // Make the context object:
   const usersContext = {
     items,
@@ -136,6 +147,8 @@ export const UsersContextProvider = (props) => {
     setUsers,
     checkIfNewUser,
     kids,
+    removeKid,
+    updateKid,
   };
 
   // pass the value in provider and return

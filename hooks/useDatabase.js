@@ -16,7 +16,7 @@ export default function useDatabase() {
     async function loadDataAsync() {
       try {
         // move through each database call sequentially
-        // await database.dropDatabaseTablesAsync();
+        //await database.dropDatabaseTablesAsync();
         await database.setupDatabaseAsync();
         await database.setupUsersAsync();
         // if the above is all good, update the STATE

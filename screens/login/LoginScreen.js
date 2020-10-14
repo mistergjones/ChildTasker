@@ -16,7 +16,7 @@ const loginSchema = Yup.object().shape({
 });
 
 function LoginScreen({ navigation, route }) {
-  const { user, setUser, setCount, count } = useContext(AuthContext);
+  const { user, setUser, switchUser, setSwitchUser } = useContext(AuthContext);
   const { addNewUser, users, setUsers, getUsers } = useContext(UsersContext);
 
   const handleRegister = () => {
@@ -28,12 +28,13 @@ function LoginScreen({ navigation, route }) {
       <Formik
         initialValues={{ username: "", password: "" }}
         onSubmit={async (fields, { setFieldError }) => {
-          setCount(count + 1);
-
           //console.log("users = " + users);
           for (let i = 0; i < users.length; i++) {
             console.log(users[i]);
-            if (users[i].user_name === fields.username) {
+            if (
+              users[i].user_name === fields.username &&
+              users[i].password === fields.password
+            ) {
               const currentUser = {
                 username: fields.username,
                 isParent: users[i].is_parent === 1 ? true : false,

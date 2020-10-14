@@ -89,7 +89,7 @@ const setupDatabaseAsync = async () => {
           "create table if not exists rewards (reward_id integer primary key not null, reward_name TEXT not null, reward_points INTEGER)"
         );
         tx.executeSql(
-          "create table if not exists users (user_id integer primary key not null, user_name TEXT not null, is_parent integer)"
+          "create table if not exists users (user_id integer primary key not null, user_name TEXT not null, password TEXT not null, is_parent integer)"
         );
       },
       // the error and success functions are called when the transaction is complete. We use the promise resolve and reject functions here.
@@ -295,6 +295,56 @@ const getKids = async (setUserFunc) => {
   });
 };
 
+const removeKid = async (userId) => {
+  console.log("****userId = ", userId);
+  return new Promise(async (resolve, reject) => {
+    db.transaction(
+      (tx) => {
+        tx.executeSql(
+          "delete from users where user_id = ?",
+          [userId],
+          (_, { rows: { _array } }) => {
+            console.log("_array" + _array.length);
+            // setUserFunc(_array);
+          }
+        );
+      },
+      (t, error) => {
+        console.log("db error remove kids");
+        console.log(error);
+        reject(error);
+      },
+      (_t, _success) => {
+        console.log("removed kid" + _t);
+        resolve(_success);
+      }
+    );
+  });
+};
+
+const updateKid = async (kid) => {
+  console.log("Kid = ", kid.password, kid.userId, kid.userName);
+  return new Promise(async (resolve, reject) => {
+    db.transaction(
+      (tx) => {
+        tx.executeSql(
+          "update users set user_name = ? ,  password = ?  where user_id = ?",
+          [kid.userName, kid.password, kid.userId]
+        );
+      },
+      (t, error) => {
+        console.log("db error update kids");
+        console.log(error);
+        reject(error);
+      },
+      (_t, _success) => {
+        console.log("updated kid");
+        resolve(_success);
+      }
+    );
+  });
+};
+
 const newUser = async (userName) => {
   return new Promise(async (resolve, reject) => {
     let results = [];
@@ -328,8 +378,8 @@ const insertUser = async (user, successFunc) => {
       (tx) => {
         console.log("insertUser" + user.username);
         const a = tx.executeSql(
-          "insert into users (user_name, is_parent) values (?,?)",
-          [user.username, user.isParent ? 1 : 0]
+          "insert into users (user_name, is_parent, password) values (?,?,?)",
+          [user.username, user.isParent ? 1 : 0, user.password]
         );
         console.log(a);
       },
@@ -466,4 +516,6 @@ export const database = {
   getUsers,
   newUser,
   getKids,
+  removeKid,
+  updateKid,
 };

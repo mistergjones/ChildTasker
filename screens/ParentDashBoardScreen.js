@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { View, StyleSheet, ScrollView } from "react-native";
 
 import AppButton from "../components/appButton";
@@ -8,7 +8,8 @@ import AuthContext from "../components/auth/context";
 import screens from "../config/screens";
 
 function ParentDashBoardScreen({ navigation }) {
-  const { setUser } = useContext(AuthContext);
+  const { setUser, switchUser, setSwitchUser } = useContext(AuthContext);
+
   return (
     <ScrollView style={styles.container}>
       <AppHeading title="Parent Dashboard" />

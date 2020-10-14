@@ -5,7 +5,7 @@ import AppButton from "../../../components/appButton";
 import AppHeading from "../../../components/appHeading.js";
 import screens from "../../../config/screens";
 
-function ParentChildDashBoardScreen({ navigation }) {
+function ParentChildDashBoardScreen({ navigation, route }) {
   return (
     <View style={styles.container}>
       <AppHeading title="Manage Child Dashboard" />

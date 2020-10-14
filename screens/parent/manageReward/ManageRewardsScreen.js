@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useContext } from "react";
 import { View, StyleSheet } from "react-native";
 import screens from "../../../config/screens";
 import AppButton from "../../../components/appButton";
@@ -6,6 +6,7 @@ import AppHeading from "../../../components/appHeading.js";
 import AppLabel from "../../../components/appLabel";
 
 import AppMaterialIcon from "../../../components/appMaterialCommunityIcon";
+import AuthContext from "../../../components/auth/context";
 
 function ManageRewardsScreen({ navigation }) {
   return (

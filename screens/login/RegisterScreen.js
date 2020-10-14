@@ -36,15 +36,19 @@ function RegisterScreen({ navigation }) {
             setFieldError("password", "passwords do not match");
             setFieldError("confirmPassword", "passwords do not match");
           }
-          console.log(1);
+
           // Check if username already exists
           const isNewUser = await checkIfNewUser(fields.username);
-          console.log(2);
+
           // add user to db
 
           if (isNewUser) {
             try {
-              await addNewUser({ username: fields.username, isParent: true });
+              await addNewUser({
+                username: fields.username,
+                isParent: true,
+                password: fields.password,
+              });
               // set user context
               //setUser({ username: fields.username, isParent: true });
 
