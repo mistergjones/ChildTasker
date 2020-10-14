@@ -67,12 +67,13 @@ function AddCategoryScreen({ navigation }) {
             /> */}
 
                 <Picker
+                    style={styles.pickerContainer}
                     items={dummyCategories}
                     name="chore"
                     numberOfColumns={3}
                     PickerItemComponent={CategoryPickerItem}
-                    placeholder="Existing Chore Categories"
-                    justifyContent="center"
+                    placeholder="Assign task to Category"
+                    // justifyContent="center"
                     width="90%"
                 />
 
@@ -91,8 +92,8 @@ function AddCategoryScreen({ navigation }) {
 
 const styles = StyleSheet.create({
     container: {
-        justifyContent: "center",
-        alignItems: "center",
+        flex: 1,
+        backgroundColor: "white",
     },
 });
 

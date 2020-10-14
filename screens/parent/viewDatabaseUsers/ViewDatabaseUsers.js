@@ -2,6 +2,11 @@
 // import { StyleSheet, Text } from "react-native";
 // import { ScrollView } from "react-native-gesture-handler";
 
+import * as SQLite from "expo-sqlite";
+
+// open the database
+const db = SQLite.openDatabase("db.db");
+
 import {
     ScrollView,
     StyleSheet,
@@ -16,7 +21,7 @@ import { UsersContext } from "../../../context/UsersContext.js";
 
 // this module will test to see if we can obtain data from the SQL lite database
 
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 //import { View, StyleSheet } from "react-native";
 import AppButton from "../../../components/appButton.js";
 import AppHeading from "../../../components/appHeading.js";
@@ -34,15 +39,10 @@ import {
 } from "../../../components/forms";
 
 import AppMaterialIcon from "../../../components/appMaterialCommunityIcon";
-
 import CategoryPickerItem from "../../../components/appCategoryPickerItem";
-
 import AppPicker from "../../../components/appPicker";
-
 import Constants from "expo-constants";
-
-import db from "../../../components/database.js";
-
+import { database } from "../../../components/database.js";
 export default function UserListScreen({ navigation }) {
     const usersContext = useContext(UsersContext);
 
@@ -54,6 +54,8 @@ export default function UserListScreen({ navigation }) {
         addNewCategory,
         tasks,
         addNewTask,
+        getSpecificTasksGlen,
+        specifics,
     } = usersContext;
 
     // ITEM: used to set the item name and insert into table
@@ -64,6 +66,15 @@ export default function UserListScreen({ navigation }) {
 
     // TASKS: used to set the task name and insert into table
     const [task, setTask] = useState(null);
+
+    // now use the below to assist in defining an object used for the second drop down box.
+    const [pickableTasks, setPickableTasks] = useState(null);
+
+    // CATEGORY
+    const [selectedCategory, setSelectedCategory] = useState(null);
+
+    // TASK
+    const [selectedTask, setSelectedTask] = useState(null);
 
     // ITEM: used to insert an item
     const insertItem = () => {
@@ -115,10 +126,42 @@ export default function UserListScreen({ navigation }) {
     // console.log("LIST OF CATEGORY NAMES");
     // console.log(categoryList);
 
-    const numberList = [
-        { label: "1", value: 1, backgroundColor: "red", icon: "scale" },
-        { label: "2", value: 2, backgroundColor: "red", icon: "book" },
-    ];
+    // needed as SPECIFICS from teh set state was not geting updated immediately.
+    useEffect(() => {
+        console.log("USE EFFECT IS IN THE HOUSE");
+        console.log("USE EFFECT", specifics);
+        var pickableTasksForThatChosenCategory = {};
+
+        // on first render it is probabaly undefined
+        if (specifics != undefined) {
+            pickableTasksForThatChosenCategory = specifics.map((theResult) => {
+                let a = {};
+                a.label = theResult.task_name;
+                a.value = theResult.task_id;
+                a.backgroundColor = "red";
+                a.icon = "silverware-fork-knife";
+                return a;
+            });
+        } else {
+            console.log("WE ARE IN THE ELSE STATEMNT");
+        }
+
+        // console.log("TEMP OBJECT: ", pickableTasksForThatChosenCategory);
+        // update the state. i.e. ensure to only provide the tasks applicable to the category.
+        setPickableTasks(pickableTasksForThatChosenCategory);
+    }, [specifics]);
+
+    const handleSelectItem = async (item) => {
+        // pass in teh task id to ensure the query is parameterised
+        await getSpecificTasksGlen(item.value);
+        // update the state to capture the cateogories
+        setSelectedCategory(item);
+    };
+
+    // this function is to set the status of only the tasks mapped to the cateogory
+    const handleSelectTask = async (item) => {
+        setSelectedTask(item);
+    };
 
     return (
         <Screen style={styles.container}>
@@ -134,15 +177,25 @@ export default function UserListScreen({ navigation }) {
                 }}
                 onSubmit={(values) => console.log(values)}
             >
-                {/* <AppPicker
-                    items={numberList}
+                <AppPicker
+                    items={itemList}
                     icon="apps"
-                    placeholder="Select Child"
-                    onSelectItem={() => {
-                        console.log("ADSFA");
-                    }}
-                /> */}
-                <Picker
+                    placeholder="Select Item"
+                    PickerItemComponent={CategoryPickerItem}
+                    onSelectItem={handleSelectItem}
+                    selectedItem={selectedCategory}
+                />
+                {selectedCategory && (
+                    <AppPicker
+                        items={pickableTasks}
+                        icon="apps"
+                        placeholder="Select Task"
+                        PickerItemComponent={CategoryPickerItem}
+                        onSelectItem={handleSelectTask}
+                        selectedItem={selectedTask}
+                    />
+                )}
+                {/* <Picker
                     items={itemList}
                     name="chore"
                     numberOfColumns={3}
@@ -150,13 +203,13 @@ export default function UserListScreen({ navigation }) {
                     placeholder="Existing Chore Categories"
                     justifyContent="center"
                     width="90%"
-                />
-                <ScrollView>
+                /> */}
+                {/* <ScrollView>
                     <Text>Here is our list of users</Text>
                     {items.map((item) => (
                         <Text key={item.id}>{item.value}</Text>
                     ))}
-                </ScrollView>
+                </ScrollView> */}
                 <TextInput
                     style={styles.input}
                     onChangeText={(name) => setName(name)}
@@ -165,10 +218,6 @@ export default function UserListScreen({ navigation }) {
                 />
                 <AppButton title="insert item name" onPress={insertItem} />
 
-                <AppButton
-                    title="Return"
-                    onPress={() => navigation.navigate(screens.ParentDashBoard)}
-                />
                 <Picker
                     items={categoryList}
                     name="categories"
@@ -195,6 +244,14 @@ export default function UserListScreen({ navigation }) {
                 <AppButton
                     title="insert category name"
                     onPress={insertCategory}
+                />
+                <AppButton
+                    title="Return"
+                    onPress={() => navigation.navigate(screens.ParentDashBoard)}
+                />
+                <AppButton
+                    title="GET TASKS"
+                    onPress={() => handleSelectItem()}
                 />
             </Form>
         </Screen>
