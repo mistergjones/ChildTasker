@@ -30,6 +30,8 @@ export const UsersContextProvider = (props) => {
     const [users, setUsers] = useState();
 
     const [kids, setKids] = useState();
+
+    const [specifics, setSpecificTasks] = useState();
     // We have a useEffect call to instantiate the users list from the database. We only call this function on the first render
     useEffect(() => {
         refreshItems();
@@ -38,6 +40,7 @@ export const UsersContextProvider = (props) => {
         refreshRewards();
         refreshUsers();
         getkids();
+        //getSpecificTasksGlen();
     }, []);
 
     // make a database call to insert an item and then call refreshItems to update the state
@@ -85,18 +88,29 @@ export const UsersContextProvider = (props) => {
 
     //*************************************************************************
     // START REWARDS
-    // make a database call to insert a TASK and then call refreshItems to update the state
+    // make a database call to insert a reward and then call refreshRewardsto update the state
     const addNewReward = (userReward) => {
         return database.insertTask(userReward, refreshRewards);
     };
 
-    // make a database call to retrieve all tasks
-    // In refreshItems we are sending the setItems function, which will allow the query to set our local state.
+    // make a database call to retrieve all rewards
+    // In refreshAwards we are sending the setRewards function, which will allow the query to set our local state.
     const refreshRewards = () => {
         return database.getRewards(setRewards);
     };
 
     // END REWARDS
+    //*************************************************************************
+
+    //*************************************************************************
+    // START GET SPECIFIC TASK
+
+    const getSpecificTasksGlen = async (taskID) => {
+        console.log("getSpecificTasksGlen IS BEING RUN");
+        return await database.getSpecficTasks(taskID, setSpecificTasks);
+    };
+
+    // END SPECIFIC  TASKS
     //*************************************************************************
 
     const addNewUser = async (user) => {
@@ -150,6 +164,10 @@ export const UsersContextProvider = (props) => {
         updateKid,
         // refreshTasks to see it work again
         refreshTasks,
+        // specific task
+        getSpecificTasksGlen,
+        specifics,
+        //setSpecificTasks,
     };
 
     // pass the value in provider and return

@@ -17,7 +17,7 @@ import Screen from "./appScreen";
 function AppPicker({
     icon,
     items,
-    numberOfColumns = 2,
+    numberOfColumns = 3,
     onSelectItem,
     PickerItemComponent = PickerItem,
     placeholder,
