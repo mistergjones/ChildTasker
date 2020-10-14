@@ -13,8 +13,10 @@ import screens from "../../../config/screens";
 import { UsersContext } from "../../../context/UsersContext";
 
 function EditChildScreen({ navigation }) {
-  const { kids } = useContext(UsersContext);
+  const { kids, updateKid } = useContext(UsersContext);
   const [selectedItem, setSelectedItem] = useState();
+  const [newPin, setNewPin] = useState(null);
+
   // the below will change once we have data from teh server/text file
   console.log("kids", kids);
 
@@ -27,12 +29,19 @@ function EditChildScreen({ navigation }) {
   const handleSelectItem = (item) => {
     setSelectedItem(item);
   };
+
+  const handleUpdateKid = async () => {
+    const kid = {
+      userId: selectedItem.value,
+      userName: selectedItem.value,
+      password: newPin,
+    };
+    await updateKid(kid);
+    navigation.navigate(screens.ParentChildDashBoard);
+  };
   return (
     <ScrollView style={styles.container}>
       <AppHeading title="Change Pin" />
-      <View style={styles.rowAlignment}>
-        <AppLabel labelText="Select Child's Name:" />
-      </View>
 
       <AppPicker
         items={kidsData}
@@ -47,37 +56,24 @@ function EditChildScreen({ navigation }) {
         <AppLabel labelText="New Pin Number" />
       </View>
 
-      <TextInput
-        defaultValue={"Please enter Pin number"}
-        style={{
-          height: 40,
-          borderColor: "lightgrey",
-          borderWidth: 1,
-          width: "60%",
-          alignSelf: "center",
-          marginTop: 20,
-          marginBottom: 20,
-        }}
-      />
-      <TextInput
-        defaultValue={"Please Re-enter Pin number"}
-        style={{
-          height: 40,
-          borderColor: "lightgrey",
-          borderWidth: 1,
-          width: "60%",
-          alignSelf: "center",
-          marginTop: 20,
-          marginBottom: 20,
-        }}
-      />
-
-      <AppButton title="Submit" />
-
-      <AppButton
-        title="Return"
-        onPress={() => navigation.navigate(screens.ParentDashBoard)}
-      />
+      {newPin && <AppLabel labelText={newPin} />}
+      {selectedItem && (
+        <AppButton
+          title="Generate New Pin"
+          onPress={() => {
+            const pin = Math.floor(Math.random() * 8999) + 1000;
+            setNewPin(String(pin));
+          }}
+        />
+      )}
+      {newPin ? (
+        <AppButton title="Save and Exit" onPress={handleUpdateKid} />
+      ) : (
+        <AppButton
+          title="Return"
+          onPress={() => navigation.navigate(screens.ParentChildDashBoard)}
+        />
+      )}
     </ScrollView>
   );
 }

@@ -1,5 +1,12 @@
-import React, { useState } from "react";
-import { View, StyleSheet, TextInput, Picker, ScrollView } from "react-native";
+import React, { useState, useContext } from "react";
+import {
+  View,
+  StyleSheet,
+  TextInput,
+  Picker,
+  ScrollView,
+  Alert,
+} from "react-native";
 
 import AppButton from "../../../components/appButton";
 import AppHeading from "../../../components/appHeading.js";
@@ -9,63 +16,76 @@ import AppMaterialIcon from "../../../components/appMaterialCommunityIcon";
 import screens from "../../../config/screens";
 
 import AppPicker from "../../../components/appPicker";
+import { UsersContext } from "../../../context/UsersContext";
 
 function RemoveChildScreen({ navigation }) {
-    // the below will change once we have data from teh server/text file
-    const dummyTestChildren = [
-        { label: "Bob", value: 1 },
-        { label: "Alice", value: 2 },
-    ];
+  const { kids, removeKid } = useContext(UsersContext);
+  const [selectedItem, setSelectedItem] = useState();
 
-    const dummyDecision = [
-        { label: "Yes", value: 1 },
-        { label: "No", value: 2 },
-    ];
+  console.log("kids", kids);
 
-    return (
-        <ScrollView style={styles.container}>
-            <AppHeading title="Remove Child" />
-            <View style={styles.rowAlignment}>
-                <AppMaterialIcon iconName="account-child" iconSize={24} />
-                <AppLabel labelText="Select Child's Name:" />
-            </View>
+  const kidsData = kids.map((kid) => {
+    return { label: kid.user_name, value: kid.user_id };
+  });
 
-            <AppPicker
-                items={dummyTestChildren}
-                icon="account-child"
-                placeholder="Select Child"
-            />
+  console.log("kids data =" + kidsData);
 
-            <View style={styles.rowAlignment}>
-                <AppMaterialIcon iconName="account-child" iconSize={24} />
-                <AppLabel labelText="Confirmation" />
-            </View>
-
-            <AppPicker
-                items={dummyDecision}
-                icon="account-child"
-                placeholder="Yes or No"
-            />
-
-            <AppButton title="Save Changes" />
-
-            <AppButton
-                title="Return"
-                onPress={() =>
-                    navigation.navigate(screens.ParentChildDashBoard)
-                }
-            />
-        </ScrollView>
+  const removeKidAlert = () =>
+    Alert.alert(
+      "Remove Child",
+      "Click Ok to remove child",
+      [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel",
+        },
+        {
+          text: "OK",
+          onPress: async () => {
+            console.log(selectedItem.value);
+            await removeKid(selectedItem.value);
+            setSelectedItem(null);
+            navigation.navigate(screens.ParentChildDashBoard);
+          },
+        },
+      ],
+      { cancelable: false }
     );
+
+  const handleSelectItem = (item) => {
+    setSelectedItem(item);
+  };
+
+  return (
+    <ScrollView style={styles.container}>
+      <AppHeading title="Remove Child" />
+
+      <AppPicker
+        items={kidsData}
+        icon="account-child"
+        placeholder="Select Child"
+        selectedItem={selectedItem}
+        onSelectItem={handleSelectItem}
+      />
+
+      {selectedItem && <AppButton title="Remove" onPress={removeKidAlert} />}
+
+      <AppButton
+        title="Return"
+        onPress={() => navigation.navigate(screens.ParentChildDashBoard)}
+      />
+    </ScrollView>
+  );
 }
 
 const styles = StyleSheet.create({
-    container: {},
-    rowAlignment: {
-        flexDirection: "row",
-        justifyContent: "center",
-        alignItems: "center",
-    },
+  container: {},
+  rowAlignment: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+  },
 });
 
 export default RemoveChildScreen;

@@ -18,7 +18,7 @@ import screens from "../../../config/screens";
 import AppHeading from "../../../components/appHeading.js";
 import AuthContext from "../../../components/auth/context";
 import { database } from "../../../components/database";
-
+import AppLabel from "../../../components/appLabel";
 import { UsersContext } from "../../../context/UsersContext";
 import ParentDashBoardScreen from "../../ParentDashBoardScreen";
 
@@ -29,6 +29,8 @@ function AddNewChildScreen({ navigation }) {
   const { addNewUser, users, setUsers, checkIfNewUser } = useContext(
     UsersContext
   );
+
+  const [newPin, setNewPin] = useState(null);
   return (
     <SafeAreaView>
       <AppHeading title="Add Child" />
@@ -43,11 +45,13 @@ function AddNewChildScreen({ navigation }) {
           console.log("new user", isNewUser);
           if (isNewUser) {
             try {
-              await addNewUser({ username: fields.username, isParent: false });
-              // set user context
-              //setUser({ username: fields.username, isParent: true });
+              await addNewUser({
+                username: fields.username,
+                isParent: false,
+                password: newPin,
+              });
 
-              navigation.navigate(screens.ParentDashBoard);
+              navigation.navigate(screens.ParentChildDashBoard);
             } catch (error) {
               console.log("error = ", error);
             }
@@ -67,8 +71,22 @@ function AddNewChildScreen({ navigation }) {
               errorStyle={{ color: "red" }}
               error={errors ? errors.username : ""}
             />
+            {newPin && <AppLabel labelText={newPin} />}
+            {
+              <AppButton
+                title="Generate New Pin"
+                onPress={() => {
+                  const pin = Math.floor(Math.random() * 8999) + 1000;
+                  setNewPin(String(pin));
+                }}
+              />
+            }
+            {newPin && <AppButton title="Add" onPress={handleSubmit} />}
 
-            <AppButton title="Add" onPress={handleSubmit} />
+            <AppButton
+              title="Return"
+              onPress={() => navigation.navigate(screens.ParentChildDashBoard)}
+            />
           </>
         )}
       </Formik>

@@ -5,19 +5,18 @@ import AppButton from "../../components/appButton";
 import AuthContext from "../../components/auth/context";
 import screens from "../../config/screens";
 
-function SwitchUser({ navigation }) {
-  const { setUser } = useContext(AuthContext);
+function SwitchUser({ navigation, route }) {
+  const { user, setUser, setSwitchUser } = useContext(AuthContext);
 
   return (
     <View style={styles.container}>
       <AppButton
         title="Logout"
         onPress={() => {
-          console.log(navigation);
-          console.log(navigation.isFocused());
-          navigation.jumpTo("Parent");
-          console.log(navigation.isFocused());
-          setUser(null);
+          user.isParent
+            ? navigation.jumpTo("Parent")
+            : navigation.jumpTo("Child");
+          setSwitchUser(true);
         }}
       />
     </View>

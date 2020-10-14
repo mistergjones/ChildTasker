@@ -18,6 +18,7 @@ import { UsersContextProvider } from "./context/UsersContext";
 
 const App = () => {
   const [user, setUser] = useState(null);
+  const [switchUser, setSwitchUser] = useState(false);
   const [count, setCount] = useState(0);
   // GJ adding the below to show the splash screen until DB loaded
   //SplashScreen.preventAutoHideAsync(); //don't let the splash screen hide
@@ -30,7 +31,9 @@ const App = () => {
 
     return (
       <UsersContextProvider>
-        <AuthContext.Provider value={{ user, setUser, count, setCount }}>
+        <AuthContext.Provider
+          value={{ user, setUser, switchUser, setSwitchUser }}
+        >
           <NavigationContainer>
             {user ? <BottomTabNavigator /> : <AuthNavigation />}
           </NavigationContainer>
