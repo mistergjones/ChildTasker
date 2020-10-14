@@ -1,10 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
 import { View, StyleSheet } from "react-native";
 import * as Yup from "yup";
 
 import AppButton from "../../../components/appButton";
 import AppHeading from "../../../components/appHeading.js";
-import AppLabel from "../../../components/appLabel";
 import Screen from "../../../components/appScreen";
 import {
   Form,
@@ -13,8 +12,8 @@ import {
   SubmitButton,
 } from "../../../components/forms";
 import CategoryPickerItem from "../../../components/appCategoryPickerItem";
-import AppMaterialIcon from "../../../components/appMaterialCommunityIcon";
 import screens from "../../../config/screens";
+import { UsersContext } from "../../../context/UsersContext.js";
 
 const validationSchema = Yup.object().shape({
   label: Yup.string().required().min(1).label("label"),
@@ -23,69 +22,26 @@ const validationSchema = Yup.object().shape({
   category: Yup.object().required().nullable().label("Category"),
 });
 
-const categories = [
-  {
-    backgroundColor: "#fc5c65",
-    icon: "floor-lamp",
-    label: "Furniture",
-    value: 1,
-  },
-  {
-    backgroundColor: "#fd9644",
-    icon: "car",
-    label: "Cars",
-    value: 2,
-  },
-  {
-    backgroundColor: "#fed330",
-    icon: "camera",
-    label: "Cameras",
-    value: 3,
-  },
-  {
-    backgroundColor: "#26de81",
-    icon: "cards",
-    label: "Games",
-    value: 4,
-  },
-  {
-    backgroundColor: "#2bcbba",
-    icon: "shoe-heel",
-    label: "Clothing",
-    value: 5,
-  },
-  {
-    backgroundColor: "#45aaf2",
-    icon: "basketball",
-    label: "Sports",
-    value: 6,
-  },
-  {
-    backgroundColor: "#4b7bec",
-    icon: "headphones",
-    label: "Movies & Music",
-    value: 7,
-  },
-  {
-    backgroundColor: "#a55eea",
-    icon: "book-open-variant",
-    label: "Books",
-    value: 8,
-  },
-  {
-    backgroundColor: "#778ca3",
-    icon: "application",
-    label: "Other",
-    value: 9,
-  },
-];
-
-let reward = {
-  label: "Takeaway",
-  point: 10,
-  icon: "floorlamp",
-};
 function EditReward({ navigation }) {
+  const usersContext = useContext(UsersContext);
+  const { icons } = usersContext;
+
+  let categories = [];
+  icons.map((i) => {
+    let tempObj = {};
+    tempObj.backgroundColor = i.background_color;
+    tempObj.icon = i.icon_name;
+    tempObj.label = i.label;
+    tempObj.value = i.icon_id;
+    categories.push(tempObj);
+  });
+
+  let reward = {
+    label: "Takeaway",
+    point: 10,
+    icon: "floorlamp",
+  };
+
   return (
     <Screen style={styles.container}>
       <AppHeading title="Edit Reward Form" />
@@ -115,11 +71,10 @@ function EditReward({ navigation }) {
           name="icon"
           numberOfColumns={3}
           PickerItemComponent={CategoryPickerItem}
-          placeholder={reward.icon.toString()}
+          placeholder={reward.label.toString()}
           width="50%"
           icon={reward.icon.toString()}
         />
-
         <SubmitButton title="Submit" />
         <View>
           <AppButton

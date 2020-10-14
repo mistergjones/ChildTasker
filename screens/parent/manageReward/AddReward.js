@@ -88,9 +88,9 @@ function AddReward({ navigation }) {
   let categories = [];
   icons.map((i) => {
     let tempObj = {};
-    tempObj.backgroundColor = "#778ca3";
+    tempObj.backgroundColor = i.background_color;
     tempObj.icon = i.icon_name;
-    tempObj.label = i.icon_name;
+    tempObj.label = i.label;
     tempObj.value = i.icon_id;
     categories.push(tempObj);
   });

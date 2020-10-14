@@ -23,9 +23,14 @@ export const UsersContextProvider = (props) => {
   const [kids, setKids] = useState();
   const [specifics, setSpecificTasks] = useState();
 
-  // ICONS
+  const [users, setUsers] = useState();
+
+  const [kids, setKids] = useState();
+
+  //Icon
   const [icons, setIcons] = useState();
 
+  const [specifics, setSpecificTasks] = useState();
   // We have a useEffect call to instantiate the users list from the database. We only call this function on the first render
   useEffect(() => {
     refreshItems();
@@ -85,49 +90,57 @@ export const UsersContextProvider = (props) => {
   };
   // END REWARDS
   //*************************************************************************
+
   //*************************************************************************
   // START GET SPECIFIC TASK
+
   const getSpecificTasksGlen = async (taskID) => {
     console.log("getSpecificTasksGlen IS BEING RUN");
     return await database.getSpecficTasks(taskID, setSpecificTasks);
   };
+
   // END SPECIFIC  TASKS
   //*************************************************************************
+  //added by Shailesh
+  //*************************************************************************
+  // In refreshIcons we are sending the setIcons function, which will allow the query to set our local state.
+  const refreshIcons = () => {
+    return database.getIcons(setIcons);
+  };
+  // END ICON
+  //*************************************************************************
+
   const addNewUser = async (user) => {
     await database.insertUser(user, refreshUsers);
     await getkids();
     return;
   };
+
   const refreshUsers = async () => {
     return await database.getUsers(setUsers);
   };
+
   const checkIfNewUser = async (userName) => {
     console.log("Check if new user");
     const result = await database.newUser(userName);
     console.log("result = ", result);
     return result;
   };
+
   const getkids = async () => {
     return await database.getKids(setKids);
   };
+
   const removeKid = async (userId) => {
     await database.removeKid(userId);
     await getkids();
     return;
   };
+
   const updateKid = async (kid) => {
     await database.updateKid(kid);
     await getkids();
   };
-
-  //added by Shailesh
-  //*************************************************************************
-  // START REWARDS
-  // In refreshIcons we are sending the setIcons function, which will allow the query to set our local state.
-  const refreshIcons = () => {
-    return database.getIcons(setIcons);
-  };
-
   // Make the context object:
   const usersContext = {
     items,
