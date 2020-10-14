@@ -113,12 +113,12 @@ const setupDatabaseAsync = async () => {
         reject(error);
       },
       (_, success) => {
+        console.log("db success creating tables");
         resolve(success);
       }
     );
   });
 };
-
 // get all items
 // We will pass in a function that can take the users from the query and set the state.
 const getItems = (setUserFunc) => {
@@ -423,14 +423,13 @@ const insertUser = async (user, successFunc) => {
         console.log(a);
       },
       (t, error) => {
-        console.log("db error insertUser");
+        console.log("db error load users");
         console.log(error);
         reject(error);
       },
-      (t, success) => {
-        console.log("t =" + t);
-        successFunc(user);
-        resolve(success);
+      (_t, _success) => {
+        console.log("loaded users" + _t);
+        resolve(_success);
       }
     );
   });
@@ -469,175 +468,336 @@ const setupUsersAsync = async () => {
           "General",
         ]);
       },
+
+      db.transaction(
+        (tx) => {
+          tx.executeSql("insert into categories (category_name) values (?)", [
+            "Kitchen",
+          ]);
+          tx.executeSql("insert into categories (category_name) values (?)", [
+            "School",
+          ]);
+          tx.executeSql("insert into categories (category_name) values (?)", [
+            "Bedroom",
+          ]);
+          tx.executeSql("insert into categories (category_name) values (?)", [
+            "Home",
+          ]);
+          tx.executeSql("insert into categories (category_name) values (?)", [
+            "Bathroom",
+          ]);
+          tx.executeSql("insert into categories (category_name) values (?)", [
+            "Homework",
+          ]);
+          tx.executeSql("insert into categories (category_name) values (?)", [
+            "Pets",
+          ]);
+          tx.executeSql("insert into categories (category_name) values (?)", [
+            "Good Behaviour",
+          ]);
+          tx.executeSql("insert into categories (category_name) values (?)", [
+            "General",
+          ]);
+        },
+        (t, error) => {
+          console.log("db error insert categories");
+          console.log(error);
+          reject(error);
+        },
+        (_t, _success) => {
+          resolve(_success);
+        }
+      )
+    );
+  });
+};
+
+const updateKid = async (kid) => {
+  console.log("Kid = ", kid.password, kid.userId, kid.userName);
+  return new Promise(async (resolve, reject) => {
+    db.transaction(
+      (tx) => {
+        tx.executeSql(
+          "update users set user_name = ? ,  password = ?  where user_id = ?",
+          [kid.userName, kid.password, kid.userId]
+        );
+      },
+      (t, error) => {
+        console.log("db error update kids");
+        console.log(error);
+        reject(error);
+      },
+      (_t, _success) => {
+        console.log("updated kid");
+        resolve(_success);
+      }
+    );
+  });
+};
+
+const newUser = async (userName) => {
+  return new Promise(async (resolve, reject) => {
+    let results = [];
+    db.transaction(
+      (tx) => {
+        tx.executeSql(
+          "select * from users where user_name = ?",
+          [userName],
+          (_, { rows: { _array } }) => {
+            console.log("Hello") + _array.length;
+            results = _array;
+          }
+        );
+      },
+      (t, error) => {
+        console.log("db error reading users");
+        console.log(error);
+        reject(results);
+      },
+      (_t, _success) => {
+        console.log("loaded users" + _t);
+        resolve(results.length > 0 ? false : true);
+      }
+    );
+  });
+};
+
+const insertUser = async (user, successFunc) => {
+  return new Promise(async (resolve, reject) => {
+    db.transaction(
+      (tx) => {
+        console.log("insertUser" + user.username);
+        const a = tx.executeSql(
+          "insert into users (user_name, is_parent, password) values (?,?,?)",
+          [user.username, user.isParent ? 1 : 0, user.password]
+        );
+        console.log(a);
+      },
       (t, error) => {
         console.log("db error insertUser");
         console.log(error);
-        resolve();
+        reject(error);
       },
       (t, success) => {
-        resolve(success);
-      }
-    );
-
-    db.transaction(
-      (tx) => {
-        tx.executeSql("insert into categories (category_name) values (?)", [
-          "Kitchen",
-        ]);
-        tx.executeSql("insert into categories (category_name) values (?)", [
-          "School",
-        ]);
-        tx.executeSql("insert into categories (category_name) values (?)", [
-          "Bedroom",
-        ]);
-        tx.executeSql("insert into categories (category_name) values (?)", [
-          "Home",
-        ]);
-        tx.executeSql("insert into categories (category_name) values (?)", [
-          "Bathroom",
-        ]);
-        tx.executeSql("insert into categories (category_name) values (?)", [
-          "Homework",
-        ]);
-        tx.executeSql("insert into categories (category_name) values (?)", [
-          "Pets",
-        ]);
-        tx.executeSql("insert into categories (category_name) values (?)", [
-          "Good Behaviour",
-        ]);
-        tx.executeSql("insert into categories (category_name) values (?)", [
-          "General",
-        ]);
-      },
-      (t, error) => {
-        console.log("db error on INSERT CATEGORIES");
-        console.log(error);
-        resolve();
-      },
-      (t, success) => {
-        resolve(success);
-      }
-    );
-    db.transaction(
-      (tx) => {
-        tx.executeSql(
-          "insert into tasks (task_name, task_colour, task_icon, category_id) values (?,?,?,?)",
-          ["Wash Dishes", "Red", "scale", 1]
-        );
-        tx.executeSql(
-          "insert into tasks (task_name, task_colour, task_icon, category_id) values (?,?,?,?)",
-          ["Dry Dishes", "Red", "scale", 1]
-        );
-        tx.executeSql(
-          "insert into tasks (task_name, task_colour, task_icon, category_id) values (?,?,?,?)",
-          ["Not late for School", "Green", "school", 2]
-        );
-        tx.executeSql(
-          "insert into tasks (task_name, task_colour, task_icon, category_id) values (?,?,?,?)",
-          ["Arrive home on time", "Green", "school", 2]
-        );
-
-        tx.executeSql(
-          "insert into tasks (task_name, task_colour, task_icon, category_id) values (?,?,?,?)",
-          ["Make Bed", "Blue", "bed-empty", 3]
-        );
-        tx.executeSql(
-          "insert into tasks (task_name, task_colour, task_icon, category_id) values (?,?,?,?)",
-          ["Tidy Room", "Blue", "bed-empty", 3]
-        );
-        tx.executeSql(
-          "insert into tasks (task_name, task_colour, task_icon, category_id) values (?,?,?,?)",
-          ["Floor tidy", "Blue", "bed-empty", 3]
-        );
-
-        tx.executeSql(
-          "insert into tasks (task_name, task_colour, task_icon, category_id) values (?,?,?,?)",
-          ["Put rubbish out", "Orange", "home", 4]
-        );
-        tx.executeSql(
-          "insert into tasks (task_name, task_colour, task_icon, category_id) values (?,?,?,?)",
-          ["Wash car", "Orange", "home", 4]
-        );
-        tx.executeSql(
-          "insert into tasks (task_name, task_colour, task_icon, category_id) values (?,?,?,?)",
-          ["Vacuum Floors", "Orange", "home", 4]
-        );
-
-        tx.executeSql(
-          "insert into tasks (task_name, task_colour, task_icon, category_id) values (?,?,?,?)",
-          ["Clean teeth", "Purple", "shower", 5]
-        );
-        tx.executeSql(
-          "insert into tasks (task_name, task_colour, task_icon, category_id) values (?,?,?,?)",
-          ["Wash hair", "Purple", "shower", 5]
-        );
-
-        tx.executeSql(
-          "insert into tasks (task_name, task_colour, task_icon, category_id) values (?,?,?,?)",
-          ["Do Homework", "Teal", "book-open-page-variant", 6]
-        );
-        tx.executeSql(
-          "insert into tasks (task_name, task_colour, task_icon, category_id) values (?,?,?,?)",
-          ["Read Book", "Teal", "book-open-page-variant", 6]
-        );
-
-        tx.executeSql(
-          "insert into tasks (task_name, task_colour, task_icon, category_id) values (?,?,?,?)",
-          ["Walk Dog", "Black", "dog", 7]
-        );
-        tx.executeSql(
-          "insert into tasks (task_name, task_colour, task_icon, category_id) values (?,?,?,?)",
-          ["Dry Dog", "Black", "dog", 7]
-        );
-      },
-      (t, error) => {
-        console.log("db error on INSERT TASKS");
-        console.log(error);
-        resolve();
-      },
-      (t, success) => {
-        resolve(success);
-      }
-    );
-    db.transaction(
-      (tx) => {
-        tx.executeSql(
-          "insert into rewards (reward_name, reward_points) values (?,?)",
-          ["Play Console", 20]
-        );
-        tx.executeSql(
-          "insert into rewards (reward_name, reward_points) values (?,?)",
-          ["Go Karting", 220]
-        );
-      },
-      (t, error) => {
-        console.log("db error on INSERT REWARDFS");
-        console.log(error);
-        resolve();
-      },
-      (t, success) => {
-        resolve(success);
-      }
-    );
-
-    //added by shailesh
-    db.transaction(
-      (tx) => {
-        tx.executeSql("insert into icons (icon_name) values (?)", ["car"]);
-        tx.executeSql("insert into icons (icon_name) values (?)", [
-          "floor-lamp",
-        ]);
-      },
-      (t, error) => {
-        console.log("db error on INSERT icon");
-        console.log(error);
-        resolve();
-      },
-      (t, success) => {
+        console.log("t =" + t);
+        successFunc(user);
         resolve(success);
       }
     );
   });
+};
+
+// insert an ITEM AND CATEGORIES to populate at least with one item
+const setupUsersAsync = async () => {
+  return new Promise(
+    (resolve, _reject) => {
+      db.transaction(
+        (tx) => {
+          tx.executeSql("insert into items (done, value) values (0, ?)", [
+            "Kitchen",
+          ]);
+          tx.executeSql("insert into items (done, value) values (0, ?)", [
+            "School",
+          ]);
+          tx.executeSql("insert into items (done, value) values (0, ?)", [
+            "Bedroom",
+          ]);
+          tx.executeSql("insert into items (done, value) values (0, ?)", [
+            "Home",
+          ]);
+          tx.executeSql("insert into items (done, value) values (0, ?)", [
+            "Bathroom",
+          ]);
+          tx.executeSql("insert into items (done, value) values (0, ?)", [
+            "Homework",
+          ]);
+          tx.executeSql("insert into items (done, value) values (0, ?)", [
+            "Pets",
+          ]);
+          tx.executeSql("insert into items (done, value) values (0, ?)", [
+            "Good Behaviour",
+          ]);
+          tx.executeSql("insert into items (done, value) values (0, ?)", [
+            "General",
+          ]);
+        },
+        (t, error) => {
+          console.log("db error insertUser");
+          console.log(error);
+          resolve();
+        },
+        (t, success) => {
+          resolve(success);
+        }
+      );
+
+      db.transaction(
+        (tx) => {
+          tx.executeSql("insert into categories (category_name) values (?)", [
+            "Kitchen",
+          ]);
+          tx.executeSql("insert into categories (category_name) values (?)", [
+            "School",
+          ]);
+          tx.executeSql("insert into categories (category_name) values (?)", [
+            "Bedroom",
+          ]);
+          tx.executeSql("insert into categories (category_name) values (?)", [
+            "Home",
+          ]);
+          tx.executeSql("insert into categories (category_name) values (?)", [
+            "Bathroom",
+          ]);
+          tx.executeSql("insert into categories (category_name) values (?)", [
+            "Homework",
+          ]);
+          tx.executeSql("insert into categories (category_name) values (?)", [
+            "Pets",
+          ]);
+          tx.executeSql("insert into categories (category_name) values (?)", [
+            "Good Behaviour",
+          ]);
+          tx.executeSql("insert into categories (category_name) values (?)", [
+            "General",
+          ]);
+        },
+        (t, error) => {
+          console.log("db error on INSERT CATEGORIES");
+          console.log(error);
+          resolve();
+        },
+        (t, success) => {
+          resolve(success);
+        }
+      );
+      db.transaction(
+        (tx) => {
+          tx.executeSql(
+            "insert into tasks (task_name, task_colour, task_icon, category_id) values (?,?,?,?)",
+            ["Wash Dishes", "Red", "scale", 1]
+          );
+          tx.executeSql(
+            "insert into tasks (task_name, task_colour, task_icon, category_id) values (?,?,?,?)",
+            ["Dry Dishes", "Red", "scale", 1]
+          );
+          tx.executeSql(
+            "insert into tasks (task_name, task_colour, task_icon, category_id) values (?,?,?,?)",
+            ["Not late for School", "Green", "school", 2]
+          );
+          tx.executeSql(
+            "insert into tasks (task_name, task_colour, task_icon, category_id) values (?,?,?,?)",
+            ["Arrive home on time", "Green", "school", 2]
+          );
+
+          tx.executeSql(
+            "insert into tasks (task_name, task_colour, task_icon, category_id) values (?,?,?,?)",
+            ["Make Bed", "Blue", "bed-empty", 3]
+          );
+          tx.executeSql(
+            "insert into tasks (task_name, task_colour, task_icon, category_id) values (?,?,?,?)",
+            ["Tidy Room", "Blue", "bed-empty", 3]
+          );
+          tx.executeSql(
+            "insert into tasks (task_name, task_colour, task_icon, category_id) values (?,?,?,?)",
+            ["Floor tidy", "Blue", "bed-empty", 3]
+          );
+
+          tx.executeSql(
+            "insert into tasks (task_name, task_colour, task_icon, category_id) values (?,?,?,?)",
+            ["Put rubbish out", "Orange", "home", 4]
+          );
+          tx.executeSql(
+            "insert into tasks (task_name, task_colour, task_icon, category_id) values (?,?,?,?)",
+            ["Wash car", "Orange", "home", 4]
+          );
+          tx.executeSql(
+            "insert into tasks (task_name, task_colour, task_icon, category_id) values (?,?,?,?)",
+            ["Vacuum Floors", "Orange", "home", 4]
+          );
+
+          tx.executeSql(
+            "insert into tasks (task_name, task_colour, task_icon, category_id) values (?,?,?,?)",
+            ["Clean teeth", "Purple", "shower", 5]
+          );
+          tx.executeSql(
+            "insert into tasks (task_name, task_colour, task_icon, category_id) values (?,?,?,?)",
+            ["Wash hair", "Purple", "shower", 5]
+          );
+
+          tx.executeSql(
+            "insert into tasks (task_name, task_colour, task_icon, category_id) values (?,?,?,?)",
+            ["Do Homework", "Teal", "book-open-page-variant", 6]
+          );
+          tx.executeSql(
+            "insert into tasks (task_name, task_colour, task_icon, category_id) values (?,?,?,?)",
+            ["Read Book", "Teal", "book-open-page-variant", 6]
+          );
+
+          tx.executeSql(
+            "insert into tasks (task_name, task_colour, task_icon, category_id) values (?,?,?,?)",
+            ["Walk Dog", "Black", "dog", 7]
+          );
+          tx.executeSql(
+            "insert into tasks (task_name, task_colour, task_icon, category_id) values (?,?,?,?)",
+            ["Dry Dog", "Black", "dog", 7]
+          );
+        },
+        (t, error) => {
+          console.log("db error on INSERT TASKS");
+          console.log(error);
+          resolve();
+        },
+        (t, success) => {
+          resolve(success);
+        }
+      );
+      db.transaction(
+        (tx) => {
+          tx.executeSql(
+            "insert into rewards (reward_name, reward_points) values (?,?)",
+            ["Play Console", 20]
+          );
+          tx.executeSql(
+            "insert into rewards (reward_name, reward_points) values (?,?)",
+            ["Go Karting", 220]
+          );
+        },
+        (t, error) => {
+          console.log("db error on INSERT REWARDFS");
+          console.log(error);
+          resolve();
+        },
+        (t, success) => {
+          resolve(success);
+        }
+      );
+      //added by shailesh
+      db.transaction(
+        (tx) => {
+          tx.executeSql("insert into icons (icon_name) values (?)", ["car"]);
+          tx.executeSql("insert into icons (icon_name) values (?)", [
+            "floor-lamp",
+          ]);
+        },
+        (t, error) => {
+          console.log("db error on INSERT icon");
+          console.log(error);
+          resolve();
+        },
+        (t, success) => {
+          resolve(success);
+        }
+      );
+    },
+    (t, error) => {
+      console.log("db error on INSERT REWARDFS");
+      console.log(error);
+      resolve();
+    },
+    (t, success) => {
+      resolve(success);
+    }
+  );
 };
 
 export const database = {
@@ -655,7 +815,6 @@ export const database = {
   getSpecficTasks,
 
   getRewards,
-
   insertUser,
   getUsers,
   newUser,
