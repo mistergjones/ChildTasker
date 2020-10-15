@@ -424,12 +424,13 @@ const insertUser = async (user, successFunc) => {
         console.log(a);
       },
       (t, error) => {
-        console.log("db error load users");
+        console.log("db error insert users");
         console.log(error);
         reject(error);
       },
       (_t, _success) => {
-        console.log("loaded users" + _t);
+        console.log("insert users success" + _t);
+        successFunc(user); //test
         resolve(_success);
       }
     );
@@ -437,156 +438,156 @@ const insertUser = async (user, successFunc) => {
 };
 
 // insert an ITEM AND CATEGORIES to populate at least with one item
-const setupUsersAsync = async () => {
-  return new Promise((resolve, _reject) => {
-    db.transaction(
-      (tx) => {
-        tx.executeSql("insert into items (done, value) values (0, ?)", [
-          "Kitchen",
-        ]);
-        tx.executeSql("insert into items (done, value) values (0, ?)", [
-          "School",
-        ]);
-        tx.executeSql("insert into items (done, value) values (0, ?)", [
-          "Bedroom",
-        ]);
-        tx.executeSql("insert into items (done, value) values (0, ?)", [
-          "Home",
-        ]);
-        tx.executeSql("insert into items (done, value) values (0, ?)", [
-          "Bathroom",
-        ]);
-        tx.executeSql("insert into items (done, value) values (0, ?)", [
-          "Homework",
-        ]);
-        tx.executeSql("insert into items (done, value) values (0, ?)", [
-          "Pets",
-        ]);
-        tx.executeSql("insert into items (done, value) values (0, ?)", [
-          "Good Behaviour",
-        ]);
-        tx.executeSql("insert into items (done, value) values (0, ?)", [
-          "General",
-        ]);
-      },
+// const setupUsersAsync = async () => {
+//   return new Promise((resolve, _reject) => {
+//     db.transaction(
+//       (tx) => {
+//         tx.executeSql("insert into items (done, value) values (0, ?)", [
+//           "Kitchen",
+//         ]);
+//         tx.executeSql("insert into items (done, value) values (0, ?)", [
+//           "School",
+//         ]);
+//         tx.executeSql("insert into items (done, value) values (0, ?)", [
+//           "Bedroom",
+//         ]);
+//         tx.executeSql("insert into items (done, value) values (0, ?)", [
+//           "Home",
+//         ]);
+//         tx.executeSql("insert into items (done, value) values (0, ?)", [
+//           "Bathroom",
+//         ]);
+//         tx.executeSql("insert into items (done, value) values (0, ?)", [
+//           "Homework",
+//         ]);
+//         tx.executeSql("insert into items (done, value) values (0, ?)", [
+//           "Pets",
+//         ]);
+//         tx.executeSql("insert into items (done, value) values (0, ?)", [
+//           "Good Behaviour",
+//         ]);
+//         tx.executeSql("insert into items (done, value) values (0, ?)", [
+//           "General",
+//         ]);
+//       },
 
-      db.transaction(
-        (tx) => {
-          tx.executeSql("insert into categories (category_name) values (?)", [
-            "Kitchen",
-          ]);
-          tx.executeSql("insert into categories (category_name) values (?)", [
-            "School",
-          ]);
-          tx.executeSql("insert into categories (category_name) values (?)", [
-            "Bedroom",
-          ]);
-          tx.executeSql("insert into categories (category_name) values (?)", [
-            "Home",
-          ]);
-          tx.executeSql("insert into categories (category_name) values (?)", [
-            "Bathroom",
-          ]);
-          tx.executeSql("insert into categories (category_name) values (?)", [
-            "Homework",
-          ]);
-          tx.executeSql("insert into categories (category_name) values (?)", [
-            "Pets",
-          ]);
-          tx.executeSql("insert into categories (category_name) values (?)", [
-            "Good Behaviour",
-          ]);
-          tx.executeSql("insert into categories (category_name) values (?)", [
-            "General",
-          ]);
-        },
-        (t, error) => {
-          console.log("db error insert categories");
-          console.log(error);
-          reject(error);
-        },
-        (_t, _success) => {
-          resolve(_success);
-        }
-      )
-    );
-  });
-};
+//       db.transaction(
+//         (tx) => {
+//           tx.executeSql("insert into categories (category_name) values (?)", [
+//             "Kitchen",
+//           ]);
+//           tx.executeSql("insert into categories (category_name) values (?)", [
+//             "School",
+//           ]);
+//           tx.executeSql("insert into categories (category_name) values (?)", [
+//             "Bedroom",
+//           ]);
+//           tx.executeSql("insert into categories (category_name) values (?)", [
+//             "Home",
+//           ]);
+//           tx.executeSql("insert into categories (category_name) values (?)", [
+//             "Bathroom",
+//           ]);
+//           tx.executeSql("insert into categories (category_name) values (?)", [
+//             "Homework",
+//           ]);
+//           tx.executeSql("insert into categories (category_name) values (?)", [
+//             "Pets",
+//           ]);
+//           tx.executeSql("insert into categories (category_name) values (?)", [
+//             "Good Behaviour",
+//           ]);
+//           tx.executeSql("insert into categories (category_name) values (?)", [
+//             "General",
+//           ]);
+//         },
+//         (t, error) => {
+//           console.log("db error insert categories");
+//           console.log(error);
+//           reject(error);
+//         },
+//         (_t, _success) => {
+//           resolve(_success);
+//         }
+//       )
+//     );
+//   });
+// };
 
-const updateKid = async (kid) => {
-  console.log("Kid = ", kid.password, kid.userId, kid.userName);
-  return new Promise(async (resolve, reject) => {
-    db.transaction(
-      (tx) => {
-        tx.executeSql(
-          "update users set user_name = ? ,  password = ?  where user_id = ?",
-          [kid.userName, kid.password, kid.userId]
-        );
-      },
-      (t, error) => {
-        console.log("db error update kids");
-        console.log(error);
-        reject(error);
-      },
-      (_t, _success) => {
-        console.log("updated kid");
-        resolve(_success);
-      }
-    );
-  });
-};
+// const updateKid = async (kid) => {
+//   console.log("Kid = ", kid.password, kid.userId, kid.userName);
+//   return new Promise(async (resolve, reject) => {
+//     db.transaction(
+//       (tx) => {
+//         tx.executeSql(
+//           "update users set user_name = ? ,  password = ?  where user_id = ?",
+//           [kid.userName, kid.password, kid.userId]
+//         );
+//       },
+//       (t, error) => {
+//         console.log("db error update kids");
+//         console.log(error);
+//         reject(error);
+//       },
+//       (_t, _success) => {
+//         console.log("updated kid");
+//         resolve(_success);
+//       }
+//     );
+//   });
+// };
 
-const newUser = async (userName) => {
-  return new Promise(async (resolve, reject) => {
-    let results = [];
-    db.transaction(
-      (tx) => {
-        tx.executeSql(
-          "select * from users where user_name = ?",
-          [userName],
-          (_, { rows: { _array } }) => {
-            console.log("Hello") + _array.length;
-            results = _array;
-          }
-        );
-      },
-      (t, error) => {
-        console.log("db error reading users");
-        console.log(error);
-        reject(results);
-      },
-      (_t, _success) => {
-        console.log("loaded users" + _t);
-        resolve(results.length > 0 ? false : true);
-      }
-    );
-  });
-};
+// const newUser = async (userName) => {
+//   return new Promise(async (resolve, reject) => {
+//     let results = [];
+//     db.transaction(
+//       (tx) => {
+//         tx.executeSql(
+//           "select * from users where user_name = ?",
+//           [userName],
+//           (_, { rows: { _array } }) => {
+//             console.log("Hello") + _array.length;
+//             results = _array;
+//           }
+//         );
+//       },
+//       (t, error) => {
+//         console.log("db error reading users");
+//         console.log(error);
+//         reject(results);
+//       },
+//       (_t, _success) => {
+//         console.log("loaded users" + _t);
+//         resolve(results.length > 0 ? false : true);
+//       }
+//     );
+//   });
+// };
 
-const insertUser = async (user, successFunc) => {
-  return new Promise(async (resolve, reject) => {
-    db.transaction(
-      (tx) => {
-        console.log("insertUser" + user.username);
-        const a = tx.executeSql(
-          "insert into users (user_name, is_parent, password) values (?,?,?)",
-          [user.username, user.isParent ? 1 : 0, user.password]
-        );
-        console.log(a);
-      },
-      (t, error) => {
-        console.log("db error insertUser");
-        console.log(error);
-        reject(error);
-      },
-      (t, success) => {
-        console.log("t =" + t);
-        successFunc(user);
-        resolve(success);
-      }
-    );
-  });
-};
+// const insertUser = async (user, successFunc) => {
+//   return new Promise(async (resolve, reject) => {
+//     db.transaction(
+//       (tx) => {
+//         console.log("insertUser" + user.username);
+//         const a = tx.executeSql(
+//           "insert into users (user_name, is_parent, password) values (?,?,?)",
+//           [user.username, user.isParent ? 1 : 0, user.password]
+//         );
+//         console.log(a);
+//       },
+//       (t, error) => {
+//         console.log("db error insertUser");
+//         console.log(error);
+//         reject(error);
+//       },
+//       (t, success) => {
+//         console.log("t =" + t);
+//         successFunc(user);
+//         resolve(success);
+//       }
+//     );
+//   });
+// };
 
 // insert an ITEM AND CATEGORIES to populate at least with one item
 const setupUsersAsync = async () => {

@@ -23,14 +23,9 @@ export const UsersContextProvider = (props) => {
   const [kids, setKids] = useState();
   const [specifics, setSpecificTasks] = useState();
 
-  const [users, setUsers] = useState();
-
-  const [kids, setKids] = useState();
-
   //Icon
   const [icons, setIcons] = useState();
 
-  const [specifics, setSpecificTasks] = useState();
   // We have a useEffect call to instantiate the users list from the database. We only call this function on the first render
   useEffect(() => {
     refreshItems();
