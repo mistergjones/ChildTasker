@@ -32,6 +32,8 @@ function RegisterScreen({ navigation }) {
         initialValues={{ username: "", password: "", confirmPassword: "" }}
         onSubmit={async (fields, { setFieldError }) => {
           // Check if passwords match
+          console.log("pass", fields.password);
+          console.log("cpass", fields.confirmPassword);
           if (fields.password !== fields.confirmPassword) {
             setFieldError("password", "passwords do not match");
             setFieldError("confirmPassword", "passwords do not match");
