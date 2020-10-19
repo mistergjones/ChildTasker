@@ -12,16 +12,27 @@ import AppPicker from "../../../components/appPicker";
 import screens from "../../../config/screens";
 import { UsersContext } from "../../../context/UsersContext";
 
+import Screen from "../../../components/appScreen"
+import AppTextInput from "../../../components/AppTextInput";
+
+import { Formik } from "formik";
+import * as Yup from "yup";
+
+const updateChildSchema = Yup.object().shape({
+    childname: Yup.string().required().label("Child name"),
+
+});
 function EditChildScreen({ navigation }) {
     const { kids, updateKid } = useContext(UsersContext);
     const [selectedItem, setSelectedItem] = useState();
+    const [childName, setChildName] = useState()
     const [newPin, setNewPin] = useState(null);
 
     // the below will change once we have data from teh server/text file
     console.log("kids", kids);
 
     const kidsData = kids.map((kid) => {
-        return { label: kid.user_name, value: kid.user_id };
+        return { label: kid.user_name, value: kid.user_id, pin: kid.password };
     });
 
     console.log("kids data =" + kidsData);
@@ -33,51 +44,81 @@ function EditChildScreen({ navigation }) {
     const handleUpdateKid = async () => {
         const kid = {
             userId: selectedItem.value,
-            userName: selectedItem.label,
-            password: newPin,
+            userName: childName ? childName : selectedItem.label,
+            password: newPin ? newPin : selectedItem.pin,
         };
         await updateKid(kid);
         navigation.navigate(screens.ParentChildDashBoard);
     };
     return (
-        <ScrollView style={styles.container}>
-            <AppHeading title="Change Pin" />
+        <Screen>
+            <ScrollView style={styles.container}>
+                <AppHeading title="Edit Child" />
 
-            <AppPicker
-                items={kidsData}
-                icon="account-child"
-                placeholder="Select Child"
-                onSelectItem={handleSelectItem}
-                selectedItem={selectedItem}
-            />
-
-            <View style={styles.rowAlignment}>
-                <AppMaterialIcon iconName="security" iconSize={20} />
-                <AppLabel labelText="New Pin Number" />
-            </View>
-
-            {newPin && <AppLabel labelText={newPin} />}
-            {selectedItem && (
-                <AppButton
-                    title="Generate New Pin"
-                    onPress={() => {
-                        const pin = Math.floor(Math.random() * 8999) + 1000;
-                        setNewPin(String(pin));
-                    }}
+                <AppPicker
+                    items={kidsData}
+                    icon="account-child"
+                    placeholder="Select Child"
+                    onSelectItem={handleSelectItem}
+                    selectedItem={selectedItem}
                 />
-            )}
-            {newPin ? (
-                <AppButton title="Save and Exit" onPress={handleUpdateKid} />
-            ) : (
-                <AppButton
-                    title="Return"
-                    onPress={() =>
-                        navigation.navigate(screens.ParentChildDashBoard)
-                    }
-                />
-            )}
-        </ScrollView>
+                {selectedItem && (
+                    <>
+                        <Formik
+                            initialValues={{ childname: selectedItem.label }}
+                            onSubmit={async (fields, { setFieldError }) => {
+                                const kid = {
+                                    userId: selectedItem.value,
+                                    userName: fields.childname,
+                                    password: newPin ? newPin : selectedItem.pin,
+                                };
+                                await updateKid(kid);
+                                navigation.navigate(screens.ParentChildDashBoard);
+                            }}
+                            validationSchema={updateChildSchema}
+                        >
+                            {({ handleChange, handleSubmit, errors }) => (
+                                <>
+
+
+
+                                    <AppTextInput labelText="Child name"
+                                        icon="account" onChangeText={handleChange("childname")}
+                                        errorStyle={{ color: "red" }}
+                                        error={errors ? errors.childname : ""}
+                                        defaultValue={selectedItem.label}
+                                    />
+
+                                    {newPin && <AppLabel labelText={newPin} icon={"account"} />}
+                                    {selectedItem && (
+                                        <AppButton
+                                            title="Generate New Pin"
+                                            onPress={() => {
+                                                const pin = Math.floor(Math.random() * 8999) + 1000;
+                                                setNewPin(String(pin));
+                                            }}
+                                        />
+                                    )}
+                                    {selectedItem && <AppButton title="Save and Exit" onPress={handleSubmit} />}
+
+                                    <AppButton
+                                        title="Return"
+                                        onPress={() =>
+                                            navigation.navigate(screens.ParentChildDashBoard)
+                                        }
+                                    />
+
+                                </>
+
+                            )}
+
+                        </Formik>
+                    </>
+                )}
+            </ScrollView>
+        </Screen>
     );
+
 }
 
 const styles = StyleSheet.create({

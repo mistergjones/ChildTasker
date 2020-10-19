@@ -6,11 +6,15 @@ import AppHeading from "../components/appHeading.js";
 import AuthContext from "../components/auth/context";
 
 import screens from "../config/screens";
+import Screen from "../components/appScreen"
 
 function ParentDashBoardScreen({ navigation }) {
     const { setUser, switchUser, setSwitchUser } = useContext(AuthContext);
 
     return (
+        <Screen>
+
+        
         <ScrollView style={styles.container}>
             <AppHeading title="Parent Dashboard" />
 
@@ -31,7 +35,7 @@ function ParentDashBoardScreen({ navigation }) {
                 onPress={() => navigation.navigate(screens.ManageRewards)}
             />
 
-            <AppButton
+            {/* <AppButton
                 title="Track Pocket Money"
                 onPress={() => navigation.navigate(screens.TrackPocketMoney)}
             />
@@ -39,7 +43,7 @@ function ParentDashBoardScreen({ navigation }) {
             <AppButton
                 title="View Accomplishments"
                 onPress={() => navigation.navigate(screens.ViewAccomplishments)}
-            />
+            /> */}
 
             <AppButton
                 title="Manage Child Details"
@@ -48,13 +52,14 @@ function ParentDashBoardScreen({ navigation }) {
                 }
             />
 
-            <AppButton
+            {/* <AppButton
                 title="View Database users"
                 onPress={() => navigation.navigate(screens.ViewDatabaseUsers)}
-            />
+            /> */}
 
             <AppButton title="Logout" onPress={() => setUser(null)} />
         </ScrollView>
+        </Screen>
     );
 }
 

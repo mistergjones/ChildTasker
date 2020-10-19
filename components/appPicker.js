@@ -13,11 +13,13 @@ import Text from "./appText";
 import defaultStyles from "../config/styles";
 import PickerItem from "./appPickerItem";
 import Screen from "./appScreen";
+import colours from "../config/colours";
+import AppButton from './appButton';
 
 function AppPicker({
     icon,
     items,
-    numberOfColumns = 3,
+    numberOfColumns = 1 ,
     onSelectItem,
     PickerItemComponent = PickerItem,
     placeholder,
@@ -27,7 +29,7 @@ function AppPicker({
     const [modalVisible, setModalVisible] = useState(false);
 
     return (
-        <>
+        <Screen>
             <TouchableWithoutFeedback onPress={() => setModalVisible(true)}>
                 <View style={[styles.container, { width }]}>
                     {icon && (
@@ -35,7 +37,7 @@ function AppPicker({
                             name={icon}
                             size={20}
                             color={defaultStyles.colors.medium}
-                            style={styles.icon}
+                             style={styles.icon}
                         />
                     )}
                     {selectedItem ? (
@@ -53,9 +55,10 @@ function AppPicker({
             </TouchableWithoutFeedback>
             <Modal visible={modalVisible} animationType="slide">
                 <Screen>
-                    <Button
+                    <AppButton
                         title="Close"
                         onPress={() => setModalVisible(false)}
+                        style={{color:colours.defaultButtonColour}}
                     />
                     <FlatList
                         data={items}
@@ -74,7 +77,7 @@ function AppPicker({
                     />
                 </Screen>
             </Modal>
-        </>
+        </Screen>
     );
 }
 

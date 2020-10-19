@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, SafeAreaView } from "react-native";
 
 import AppButton from "../../../components/appButton";
 import AppHeading from "../../../components/appHeading.js";
@@ -7,6 +7,7 @@ import screens from "../../../config/screens";
 
 function ParentChildDashBoardScreen({ navigation, route }) {
   return (
+    <SafeAreaView>
     <View style={styles.container}>
       <AppHeading title="Manage Child Dashboard" />
 
@@ -30,6 +31,7 @@ function ParentChildDashBoardScreen({ navigation, route }) {
         onPress={() => navigation.navigate(screens.ParentDashBoard)}
       />
     </View>
+    </SafeAreaView>
   );
 }
 

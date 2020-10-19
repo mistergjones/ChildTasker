@@ -25,7 +25,7 @@ export default function useDatabase() {
                 // await database.setupUsersAsync();
 
                 // the below is to test the better way in working with a database
-                await database.dropDatabaseTablesAsync();
+              //  await database.dropDatabaseTablesAsync();
                 await database.createTablesDatabaseAsync();
                 await database.loadDataIntoTablesAsync();
 

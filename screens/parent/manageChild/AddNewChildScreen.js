@@ -23,7 +23,7 @@ import { UsersContext } from "../../../context/UsersContext";
 import ParentDashBoardScreen from "../../ParentDashBoardScreen";
 
 const loginSchema = Yup.object().shape({
-  username: Yup.string().required().label("Username"),
+  childname: Yup.string().required().label("Child name"),
 });
 function AddNewChildScreen({ navigation }) {
   const { addNewUser, users, setUsers, checkIfNewUser } = useContext(
@@ -35,7 +35,7 @@ function AddNewChildScreen({ navigation }) {
     <SafeAreaView>
       <AppHeading title="Add Child" />
       <Formik
-        initialValues={{ username: "" }}
+        initialValues={{ childname: "" }}
         onSubmit={async (fields, { setFieldError }) => {
           // Check if username already exists
           console.log(1);
@@ -46,7 +46,7 @@ function AddNewChildScreen({ navigation }) {
           if (isNewUser) {
             try {
               await addNewUser({
-                username: fields.username,
+                username: fields.childname,
                 isParent: false,
                 password: newPin,
               });
@@ -64,12 +64,12 @@ function AddNewChildScreen({ navigation }) {
         {({ handleChange, handleSubmit, errors }) => (
           <>
             <AppTextInput
-              placeholder="Username"
-              labelText="Username"
+              placeholder="Child name"
+              labelText="Child name"
               icon="account"
-              onChangeText={handleChange("username")}
+              onChangeText={handleChange("childname")}
               errorStyle={{ color: "red" }}
-              error={errors ? errors.username : ""}
+              error={errors ? errors.childname : ""}
             />
             {newPin && <AppLabel labelText={newPin} />}
             {

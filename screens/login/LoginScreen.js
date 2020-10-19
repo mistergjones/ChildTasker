@@ -7,8 +7,10 @@ import AppButton from "../../components/appButton";
 import screens from "../../config/screens";
 import AuthContext from "../../components/auth/context";
 import { database } from "../../components/database";
-
+import AppHeading from "../../components/appHeading"
 import { UsersContext } from "../../context/UsersContext";
+import Screen from '../../components/appScreen';
+
 
 const loginSchema = Yup.object().shape({
   username: Yup.string().required().label("Username"),
@@ -16,7 +18,7 @@ const loginSchema = Yup.object().shape({
 });
 
 function LoginScreen({ navigation, route }) {
-  const { user, setUser, switchUser, setSwitchUser } = useContext(AuthContext);
+  const { user, setUser, switchUser, setSwitchUser, switchUserName, setSwitchUserName } = useContext(AuthContext);
   const { addNewUser, users, setUsers, getUsers } = useContext(UsersContext);
 
   const handleRegister = () => {
@@ -24,9 +26,10 @@ function LoginScreen({ navigation, route }) {
   };
 
   return (
-    <SafeAreaView>
+    <Screen>
+      <AppHeading title="Login" />
       <Formik
-        initialValues={{ username: "", password: "" }}
+        initialValues={{ username: switchUserName ? switchUserName : "", password: "" }}
         onSubmit={async (fields, { setFieldError }) => {
           //console.log("users = " + users);
           for (let i = 0; i < users.length; i++) {
@@ -41,7 +44,8 @@ function LoginScreen({ navigation, route }) {
               };
 
               setUser(currentUser);
-
+              setSwitchUser(false);
+              setSwitchUserName(null)
               return;
             }
           }
@@ -71,6 +75,7 @@ function LoginScreen({ navigation, route }) {
               onChangeText={handleChange("username")}
               errorStyle={{ color: "red" }}
               error={errors ? errors.username : ""}
+              defaultValue={switchUserName ? switchUserName : ""}
             />
             <AppTextInput
               placeholder="Password"
@@ -89,7 +94,7 @@ function LoginScreen({ navigation, route }) {
           </>
         )}
       </Formik>
-    </SafeAreaView>
+    </Screen>
   );
 }
 
