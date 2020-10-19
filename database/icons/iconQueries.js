@@ -8,26 +8,23 @@ import { array } from "yup";
 const db = SQLite.openDatabase("db.db");
 
 const getIcons = (setUserFunc) => {
-    db.transaction(
-        (tx) => {
-            tx.executeSql(
-                "select * from icons",
-                [],
-                (_, { rows: { _array } }) => {
-                    setUserFunc(_array);
-                }
-            );
-        },
-        (t, error) => {
-            console.log("db error load tasks");
-            console.log(error);
-        },
-        (_t, _success) => {
-            console.log("Retrieved Icons");
-        }
-    );
+  console.log("reached getIcons");
+  db.transaction(
+    (tx) => {
+      tx.executeSql("select * from icons", [], (_, { rows: { _array } }) => {
+        setUserFunc(_array);
+      });
+    },
+    (t, error) => {
+      console.log("db error load Icons");
+      console.log(error);
+    },
+    (_t, _success) => {
+      console.log("Retrieved Icons");
+    }
+  );
 };
 
 export const databaseIcons = {
-    getIcons,
+  getIcons,
 };

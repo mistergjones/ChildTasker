@@ -155,8 +155,30 @@ function TrackReward({ navigation }) {
   const contentInset = { top: 20, bottom: 20 };
   return (
     <Screen>
-      <AppHeading title="Track Pocket Money Heading" />
-      <AppLabel labelText="For Child...X" />
+      <AppHeading title="Track Reward" />
+      {/* <AppLabel labelText="For Child...X" /> */}
+      <View>
+        <Form
+          initialValues={{
+            avatar: "",
+          }}
+          onSubmit={(values) => {
+            console.log(values);
+            navigation.navigate("ViewReward");
+          }}
+          // validationSchema={validationSchema}
+        >
+          <Picker
+            items={avatars}
+            name="avatar"
+            numberOfColumns={3}
+            PickerItemComponent={CategoryPickerItem}
+            placeholder="Select Child"
+            width="90%"
+            textAlign="center"
+          />
+        </Form>
+      </View>
       <View
         style={{
           height: 200,
@@ -199,7 +221,7 @@ function TrackReward({ navigation }) {
           />
         </View>
       </View>
-      <View style={styles.tabLinks}>
+      {/* <View style={styles.tabLinks}>
         <View style={styles.tab}>
           <AppMaterialIcon iconName="dice-5" iconSize={42} iconColor="blue" />
           <AppText>Tab 1</AppText>
@@ -208,7 +230,7 @@ function TrackReward({ navigation }) {
           <AppMaterialIcon iconName="table-large" iconSize={42} />
           <AppText>Tab 2</AppText>
         </View>
-      </View>
+      </View> */}
       <View>
         <AppButton
           title="Return"
@@ -226,16 +248,16 @@ function TrackReward({ navigation }) {
           }}
           // validationSchema={validationSchema}
         >
-          <Picker
+          {/* Avatar Selection to be used somewhere else */}
+          {/* <Picker
             items={avatars}
             name="avatar"
             numberOfColumns={3}
             PickerItemComponent={CategoryPickerItem}
             placeholder="Avatar"
             width="50%"
-          />
-
-          <SubmitButton title="Submit" />
+          /> */}
+          {/* <SubmitButton title="Submit" /> */}
         </Form>
       </View>
     </Screen>

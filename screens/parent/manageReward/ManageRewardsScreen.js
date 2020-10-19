@@ -4,13 +4,13 @@ import screens from "../../../config/screens";
 import AppButton from "../../../components/appButton";
 import AppHeading from "../../../components/appHeading.js";
 import AppLabel from "../../../components/appLabel";
-
+import Screen from "../../../components/appScreen";
 import AppMaterialIcon from "../../../components/appMaterialCommunityIcon";
 import AuthContext from "../../../components/auth/context";
 
 function ManageRewardsScreen({ navigation }) {
   return (
-    <View style={styles.container}>
+    <Screen style={styles.container}>
       <AppHeading title="Manage Reward Dashboard" />
 
       <View style={{ marginBottom: 30 }} />
@@ -39,7 +39,7 @@ function ManageRewardsScreen({ navigation }) {
         title="Return"
         onPress={() => navigation.navigate(screens.ParentDashBoard)}
       />
-    </View>
+    </Screen>
   );
 }
 
