@@ -73,6 +73,24 @@ const rewards = [
     points: 10,
     image: require("../../../assets/favicon.png"),
   },
+  {
+    id: 10,
+    title: "Whatever",
+    points: 10,
+    image: require("../../../assets/favicon.png"),
+  },
+  {
+    id: 11,
+    title: "Whatever",
+    points: 10,
+    image: require("../../../assets/favicon.png"),
+  },
+  {
+    id: 12,
+    title: "Whatever",
+    points: 10,
+    image: require("../../../assets/favicon.png"),
+  },
 ];
 //this is view reward file: changed from add reward to view reward
 function ViewReward({ navigation }) {
@@ -80,12 +98,23 @@ function ViewReward({ navigation }) {
 
   return (
     <Screen>
+      <AppHeading title="View Reward Category & Points" />
       <FlatList
         style={styles.rewardContainer}
         contentContainerStyle={styles.wrapper}
         numColumns={"3"}
         data={rewards}
         keyExtractor={(reward) => reward.id.toString()}
+        ItemSeparatorComponent={() => {
+          return (
+            <View
+              style={{
+                backgroundColor: "#af7b4b",
+                height: 15,
+              }}
+            />
+          );
+        }}
         renderItem={({ item }) => (
           <TouchableHighlight
             style={{ margin: 5 }}
@@ -97,25 +126,26 @@ function ViewReward({ navigation }) {
               title={item.title}
               subTitle={item.points}
               image={item.image}
+              style={{ borderBottom: "#af7b4b", borderWidth: 15 }}
             />
           </TouchableHighlight>
         )}
         ListHeaderComponent={
           <>
-            <AppLabel labelText="Add Reward Category & Points" />
+            {/* <AppHeading title="View Reward Category & Points" /> */}
             <Modal visible={modalVisible} animationType="slide">
               <Screen>
                 <Button title="Close" onPress={() => setModalVisible(false)} />
                 <View>
                   <AppButton
-                    title="Delete"
+                    title="Delete Reward"
                     onPress={() => {
                       setModalVisible(!modalVisible);
                       Alert.alert("Deleted");
                     }}
                   />
                   <AppButton
-                    title="Edit"
+                    title="Edit Reward"
                     onPress={() => {
                       setModalVisible(!modalVisible);
                       navigation.navigate("EditReward");
@@ -128,28 +158,34 @@ function ViewReward({ navigation }) {
         }
         ListFooterComponent={
           <>
-            <View style={styles.tabLinks}>
-              <View style={styles.tab}>
-                <AppMaterialIcon
-                  iconName="dice-5"
-                  iconSize={42}
-                  iconColor="blue"
-                />
-                <AppText>Tab 1</AppText>
-              </View>
-              <View style={styles.tab}>
-                <AppMaterialIcon iconName="table-large" iconSize={42} />
-                <AppText>Tab 2</AppText>
-              </View>
-            </View>
-            <View>
-              <AppButton
-                title="Return"
-                onPress={() => navigation.navigate(screens.ManageRewards)}
-              />
-            </View>
+            {/* <View style={styles.tabLinks}>
+<View style={styles.tab}>
+<AppMaterialIcon
+iconName="dice-5"
+iconSize={42}
+iconColor="blue"
+/>
+<AppText>Tab 1</AppText>
+</View>
+<View style={styles.tab}>
+<AppMaterialIcon iconName="table-large" iconSize={42} />
+<AppText>Tab 2</AppText>
+</View>
+</View> */}
+            {/* <View style={{ width: "100%" }}>
+<AppButton
+width="90%"
+title="Return"
+onPress={() => navigation.navigate(screens.ManageRewards)}
+/>
+</View> */}
           </>
         }
+      />
+      <AppButton
+        width="90%"
+        title="Return"
+        onPress={() => navigation.navigate(screens.ManageRewards)}
       />
     </Screen>
   );
@@ -157,7 +193,16 @@ function ViewReward({ navigation }) {
 
 const styles = StyleSheet.create({
   rewardContainer: {
+    paddingBottom: 5,
     margin: 15,
+    backgroundColor: "#f1d8b0",
+    borderColor: "#af7b4b",
+    borderWidth: 15,
+    elevation: 4,
+    shadowOffset: { width: 5, height: 5 },
+    shadowColor: "grey",
+    shadowOpacity: 0.5,
+    shadowRadius: 10,
   },
   tabLinks: {
     textAlign: "center",

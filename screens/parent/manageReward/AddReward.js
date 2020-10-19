@@ -40,7 +40,7 @@ function AddReward({ navigation }) {
   console.log(categories);
   return (
     <Screen style={styles.container}>
-      <AppLabel labelText="Add Reward Form" />
+      <AppHeading title="Add Reward Form" />
       <Form
         initialValues={{
           label: "",
@@ -53,13 +53,19 @@ function AddReward({ navigation }) {
         }}
         validationSchema={validationSchema}
       >
-        <FormField maxLength={255} name="label" placeholder="label" />
+        <FormField
+          icon="pen"
+          maxLength={255}
+          name="label"
+          placeholder="Label"
+        />
         <FormField
           keyboardType="numeric"
           maxLength={8}
           name="point"
           placeholder="Point"
           width={120}
+          icon="lock"
         />
         <Picker
           items={categories}
@@ -67,10 +73,11 @@ function AddReward({ navigation }) {
           numberOfColumns={3}
           PickerItemComponent={CategoryPickerItem}
           placeholder="Icon"
-          width="50%"
+          width="90%"
+          icon="lock"
         />
 
-        <SubmitButton title="Submit" />
+        <SubmitButton title="ADD REWARD" />
       </Form>
       <View>
         <AppButton
