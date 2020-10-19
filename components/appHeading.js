@@ -12,7 +12,7 @@ const AppButton = ({ title, color = "defaultHeadingColour" }) => {
   return (
     <View style={[styles.button, { backgroundColor: colors[color] }]}>
       <Text style={styles.text}>{title}</Text>
-      <Text>{user.username}</Text>
+      {user && <Text>{user.username}</Text>}
     </View>
   );
 };

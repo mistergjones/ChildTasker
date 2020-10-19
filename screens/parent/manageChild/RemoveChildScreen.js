@@ -18,6 +18,8 @@ import screens from "../../../config/screens";
 import AppPicker from "../../../components/appPicker";
 import { UsersContext } from "../../../context/UsersContext";
 
+import Screen from "../../../components/appScreen"
+
 function RemoveChildScreen({ navigation }) {
   const { kids, removeKid } = useContext(UsersContext);
   const [selectedItem, setSelectedItem] = useState();
@@ -58,6 +60,7 @@ function RemoveChildScreen({ navigation }) {
   };
 
   return (
+    <Screen>
     <ScrollView style={styles.container}>
       <AppHeading title="Remove Child" />
 
@@ -76,6 +79,7 @@ function RemoveChildScreen({ navigation }) {
         onPress={() => navigation.navigate(screens.ParentChildDashBoard)}
       />
     </ScrollView>
+    </Screen>
   );
 }
 
