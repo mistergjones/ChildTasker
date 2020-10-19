@@ -8,31 +8,36 @@ import colors from "../config/colours.js";
 import AuthContext from "./auth/context.js";
 
 const AppButton = ({ title, color = "defaultHeadingColour" }) => {
-  const { user } = useContext(AuthContext);
-  return (
-    <View style={[styles.button, { backgroundColor: colors[color] }]}>
-      <Text style={styles.text}>{title}</Text>
-      {user && <Text>{user.username}</Text>}
-    </View>
-  );
+    const { user } = useContext(AuthContext);
+    return (
+        <View style={[styles.button, { backgroundColor: colors[color] }]}>
+            <Text style={styles.text}>{title}</Text>
+            {user && <Text>{user.username}</Text>}
+        </View>
+    );
 };
 
 const styles = StyleSheet.create({
-  button: {
-    // horizontally and vertically centre the text
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 15,
-    // make button stretch to fill 90% its container
-    width: "90%",
-    margin: 20,
-  },
-  text: {
-    color: colors.white,
-    fontSize: 24,
-    textTransform: "uppercase",
-    fontWeight: "bold",
-    textAlign: "center",
-  },
+    button: {
+        // horizontally and vertically centre the text
+        justifyContent: "center",
+        alignItems: "center",
+        padding: 15,
+        // make button stretch to fill 90% its container
+        width: "90%",
+        margin: 20,
+        // make the top app heading borders nice and curved
+        borderBottomLeftRadius: 20,
+        borderBottomRightRadius: 20,
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20,
+    },
+    text: {
+        color: colors.white,
+        fontSize: 24,
+        textTransform: "uppercase",
+        fontWeight: "bold",
+        textAlign: "center",
+    },
 });
 export default AppButton;

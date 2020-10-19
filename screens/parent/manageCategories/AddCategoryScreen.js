@@ -47,7 +47,7 @@ const dummyCategories = [
 function AddCategoryScreen({ navigation }) {
     return (
         <Screen style={styles.container}>
-            <AppHeading title="Add a Category" />
+            <AppHeading title="Manage Categories and Tasks" />
             <Form
                 initialValues={{
                     title: "",
@@ -65,8 +65,7 @@ function AddCategoryScreen({ navigation }) {
                 justifyContent="center"
                 width="90%"
             /> */}
-
-                <Picker
+                {/* <Picker
                     style={styles.pickerContainer}
                     items={dummyCategories}
                     name="chore"
@@ -75,12 +74,35 @@ function AddCategoryScreen({ navigation }) {
                     placeholder="Assign task to Category"
                     // justifyContent="center"
                     width="90%"
+                /> */}
+                <AppButton
+                    title="Add New Category"
+                    onPress={() => navigation.navigate(screens.AddNewCategory)}
                 />
-
-                <AppButton title="Add New Category" />
-
-                <AppButton title="Edit Category" />
-
+                <AppButton
+                    title="Edit Category"
+                    onPress={() =>
+                        navigation.navigate(screens.EditExistingCategory)
+                    }
+                />
+                <AppButton
+                    title="Remove Category"
+                    onPress={() => navigation.navigate(screens.RemoveCategory)}
+                />
+                <AppButton
+                    title="Add New Task"
+                    onPress={() => navigation.navigate(screens.AddNewTask)}
+                />
+                <AppButton
+                    title="Edit Task"
+                    onPress={() =>
+                        navigation.navigate(screens.EditExistingTask)
+                    }
+                />
+                <AppButton
+                    title="Remove Task"
+                    onPress={() => navigation.navigate(screens.RemoveTask)}
+                />
                 <AppButton
                     title="Return"
                     onPress={() => navigation.navigate(screens.ParentDashBoard)}

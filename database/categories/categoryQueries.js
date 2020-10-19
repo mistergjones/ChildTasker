@@ -48,6 +48,7 @@ const insertCategory = (
             console.log(error);
         },
         (t, success) => {
+            console.log("CATEGORY insertion was successful");
             successFunc();
         }
     );

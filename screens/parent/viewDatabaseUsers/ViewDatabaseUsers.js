@@ -188,7 +188,7 @@ export default function UserListScreen({ navigation }) {
                 {selectedCategory && (
                     <AppPicker
                         items={pickableTasks}
-                        icon="apps"
+                        icon="star-box-outline"
                         placeholder="Select Task"
                         PickerItemComponent={CategoryPickerItem}
                         onSelectItem={handleSelectTask}
