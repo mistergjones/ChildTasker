@@ -1,5 +1,5 @@
-import React from "react";
-import { View, StyleSheet, TextInput } from "react-native";
+import React, { useState, useContext } from "react";
+import { View, StyleSheet, TextInput, Alert } from "react-native";
 import screens from "../../../config/screens";
 import AppButton from "../../../components/appButton";
 import AppHeading from "../../../components/appHeading.js";
@@ -15,81 +15,86 @@ import {
 // import AppPicker from "../../../components/appPicker";
 
 import CategoryPickerItem from "../../../components/appCategoryPickerItem";
+import AppPicker from "../../../components/appPicker";
+
+import { UsersContext } from "../../../context/UsersContext";
 
 export default function RemoveTaskScreen({ navigation }) {
-    const dummyCategories = [
-        { label: "Kitchen", value: 1, backgroundColor: "red", icon: "scale" },
-        { label: "School", value: 2, backgroundColor: "green", icon: "school" },
-        {
-            label: "Bedroom",
-            value: 3,
-            backgroundColor: "blue",
-            icon: "bed-empty",
-        },
-        { label: "Home", value: 4, backgroundColor: "orange", icon: "home" },
-        {
-            label: "Bathroom",
-            value: 5,
-            backgroundColor: "purple",
-            icon: "shower",
-        },
-        {
-            label: "Homework",
-            value: 6,
-            backgroundColor: "teal",
-            icon: "book-open-page-variant",
-        },
-        { label: "Pets", value: 7, backgroundColor: "black", icon: "dog" },
-        {
-            label: "Good Behaviour",
-            value: 8,
-            backgroundColor: "grey",
-            icon: "hand-okay",
-        },
-        {
-            label: "Whatever",
-            value: 9,
-            backgroundColor: "brown",
-            icon: "comment-question",
-        },
-    ];
+    // need to utilise usersContext to make use of SQL
+    const usersContext = useContext(UsersContext);
+
+    const { tasks, removeTask } = usersContext;
+
+    // TASK
+    const [selectedItem, setSelectedItem] = useState(null);
+
+    //************************************ */
+    // Task - make the selectable task list
+    //************************************ */
+    var taskList = [];
+
+    // now loop through each item to obatin id and value and assign to an object. Push this object into the array
+    for (var loopIterator = 0; loopIterator < tasks.length; loopIterator++) {
+        var tempObject = {};
+        tempObject.label = tasks[loopIterator].task_name;
+        tempObject.value = tasks[loopIterator].task_id;
+        tempObject.backgroundColor = "blue";
+        tempObject.icon = "school";
+        taskList.push(tempObject);
+    }
+
+    const removeTaskAlert = () =>
+        Alert.alert(
+            "Remove Task",
+            "Click Ok to remove Task",
+            [
+                {
+                    text: "Cancel",
+                    onPress: () => console.log("Cancel Pressed"),
+                    style: "cancel",
+                },
+                {
+                    text: "OK",
+                    onPress: async () => {
+                        console.log(selectedItem.value);
+                        await removeTask(selectedItem.value);
+                        setSelectedItem(null);
+                        navigation.navigate(screens.ParentDashBoard);
+                    },
+                },
+            ],
+            { cancelable: false }
+        );
+
+    const handleSelectItem = (item) => {
+        setSelectedItem(item);
+    };
 
     return (
         <Screen style={styles.container}>
-            <Form
-                initialValues={{
-                    title: "",
-                    point: "",
-                    description: "",
-                    category: null,
-                }}
-                onSubmit={(values) => console.log(values)}
-            >
-                <AppHeading title="Remove a task" />
+            <AppHeading title="Remove a task" />
 
-                <Picker
-                    items={dummyCategories}
-                    icon="face"
-                    name="chore"
-                    numberOfColumns={3}
-                    PickerItemComponent={CategoryPickerItem}
-                    placeholder="Select Task to Remove"
-                    justifyContent="center"
-                    width="90%"
-                />
+            <AppPicker
+                items={taskList}
+                icon="face"
+                name="chore"
+                numberOfColumns={3}
+                PickerItemComponent={CategoryPickerItem}
+                selectedItem={selectedItem}
+                onSelectItem={handleSelectItem}
+                placeholder="Select Task to Remove"
+                justifyContent="center"
+                width="90%"
+            />
 
-                <AppButton
-                    title="Save Changes"
-                    onPress={() =>
-                        navigation.navigate(screens.EditExistingCategory)
-                    }
-                />
+            {selectedItem && (
+                <AppButton title="Remove Task" onPress={removeTaskAlert} />
+            )}
 
-                <AppButton
-                    title="Return"
-                    onPress={() => navigation.navigate(screens.AddCategory)}
-                />
-            </Form>
+            <AppButton
+                title="Return"
+                onPress={() => navigation.navigate(screens.AddCategory)}
+            />
         </Screen>
     );
 }

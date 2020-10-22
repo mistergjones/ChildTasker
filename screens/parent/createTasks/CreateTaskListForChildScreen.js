@@ -29,12 +29,7 @@ import * as SQLite from "expo-sqlite";
 // open the database
 const db = SQLite.openDatabase("db.db");
 
-import { ScrollView, Text, TouchableOpacity, Button } from "react-native";
-
 import { UsersContext } from "../../../context/UsersContext";
-
-import Constants from "expo-constants";
-import { database } from "../../../components/database.js";
 
 /*************************************************************************************************/
 
@@ -43,6 +38,8 @@ function CreateTaskListForChildScreen({ navigation }) {
 
     // DESTRUCTURE: stores the name and addNewItem function
     const {
+        kids,
+        rewards,
         items,
         addNewItem,
         categories,
@@ -51,6 +48,7 @@ function CreateTaskListForChildScreen({ navigation }) {
         addNewTask,
         getSpecificTasksGlen,
         specifics,
+        addChoresToKid,
     } = usersContext;
 
     // ITEM: used to set the item name and insert into table
@@ -71,37 +69,15 @@ function CreateTaskListForChildScreen({ navigation }) {
     // TASK
     const [selectedTask, setSelectedTask] = useState(null);
 
-    // ITEM: used to insert an item
-    const insertItem = () => {
-        addNewItem(name);
-    };
+    // KiDS
+    const [selectedKid, setSelectedKid] = useState(null);
 
-    // CATEGORY: used to insert a cateogory
-    const insertCategory = () => {
-        addNewCategory(category);
-    };
-
-    // TASK: used to insert a category
-    const insertTask = () => {
-        addNewTask(task);
-    };
-
-    var itemList = [];
-    // now loop through each item to obatin id and value and assign to an object. Push this object into the array
-    for (var loopIterator = 0; loopIterator < items.length; loopIterator++) {
-        var tempObject = {};
-        tempObject.label = items[loopIterator].value;
-        tempObject.value = items[loopIterator].id;
-        tempObject.backgroundColor = "red";
-        tempObject.icon = "silverware-fork-knife";
-        itemList.push(tempObject);
-    }
-
-    // console.log("LIST OF ITEM NAMES");
-    // console.log(itemList);
+    // REWARDS
+    const [selectedReward, setSelectedReward] = useState(null);
 
     //************************************ */
-    // Categories
+    // Categories - make the selectable category list
+    //************************************ */
     var categoryList = [];
 
     // now loop through each item to obatin id and value and assign to an object. Push this object into the array
@@ -118,13 +94,52 @@ function CreateTaskListForChildScreen({ navigation }) {
         categoryList.push(tempObject);
     }
 
-    // console.log("LIST OF CATEGORY NAMES");
-    // console.log(categoryList);
+    //************************************ */
+    // Tasks - make the selectable task list
+    //************************************ */
+    var taskList = [];
+
+    // now loop through each item to obatin id and value and assign to an object. Push this object into the array
+    for (var loopIterator = 0; loopIterator < tasks.length; loopIterator++) {
+        var tempObject = {};
+        tempObject.label = tasks[loopIterator].task_name;
+        tempObject.value = tasks[loopIterator].task_id;
+        tempObject.points = tasks[loopIterator].task_points;
+        tempObject.backgroundColor = "red";
+        tempObject.icon = "silverware-fork-knife";
+        taskList.push(tempObject);
+    }
+
+    //************************************ */
+    // Kids - make the selectabel kid list
+    //************************************ */
+    var kidList = [];
+    // now loop through each item to obatin id and value and assign to an object. Push this object into the array
+
+    for (var loopIterator = 0; loopIterator < kids.length; loopIterator++) {
+        var tempObject = {};
+        tempObject.label = kids[loopIterator].user_name;
+        tempObject.value = kids[loopIterator].user_id;
+
+        kidList.push(tempObject);
+    }
+
+    //************************************ */
+    // Reward - make the selectable reward list
+    //************************************ */
+    var rewardList = [];
+
+    // now loop through each item to obatin id and value and assign to an object. Push this object into the array
+    for (var loopIterator = 0; loopIterator < rewards.length; loopIterator++) {
+        var tempObject = {};
+        tempObject.label = rewards[loopIterator].reward_name;
+        tempObject.value = rewards[loopIterator].reward_id;
+        tempObject.points = rewards[loopIterator].reward_points;
+        rewardList.push(tempObject);
+    }
 
     // needed as SPECIFICS from teh set state was not geting updated immediately.
     useEffect(() => {
-        console.log("USE EFFECT IS IN THE HOUSE");
-        console.log("USE EFFECT", specifics);
         var pickableTasksForThatChosenCategory = {};
 
         // on first render it is probabaly undefined
@@ -133,6 +148,7 @@ function CreateTaskListForChildScreen({ navigation }) {
                 let a = {};
                 a.label = theResult.task_name;
                 a.value = theResult.task_id;
+                a.points = theResult.task_points;
                 a.backgroundColor = "red";
                 a.icon = "silverware-fork-knife";
                 return a;
@@ -146,6 +162,11 @@ function CreateTaskListForChildScreen({ navigation }) {
         setPickableTasks(pickableTasksForThatChosenCategory);
     }, [specifics]);
 
+    // this function is to set the status of only the kids mapped to kids
+    const handleSelectReward = async (item) => {
+        setSelectedReward(item);
+    };
+
     const handleSelectItem = async (item) => {
         // pass in teh task id to ensure the query is parameterised
         await getSpecificTasksGlen(item.value);
@@ -158,162 +179,92 @@ function CreateTaskListForChildScreen({ navigation }) {
         setSelectedTask(item);
     };
 
+    // this function is to set the status of only the kids mapped to kids
+    const handleSelectKid = async (item) => {
+        setSelectedKid(item);
+    };
+
     // this function is to obtain teh values from teh UI and insert hte data into the tables.
     const handleAssignTasksToKid = async () => {
         const items = {
-            categoryID: selectedCategory.value,
-            taskID: selectedTask.value,
+            category_id: selectedCategory.value,
+            category_name: selectedCategory.label,
+            task_id: selectedTask.value,
+            task_name: selectedTask.label,
+            task_points: selectedTask.points,
+            kid_id: selectedKid.value,
+            kid_name: selectedKid.label,
+            reward_id: selectedReward.value,
+            reward_name: selectedReward.label,
+            reward_points: selectedReward.points,
         };
-        await console.log(items);
+        try {
+            await addChoresToKid(items);
+
+            await console.log(items);
+        } catch (error) {
+            console.log("The error inserting kids to chorse is", error);
+        }
     };
-
-    // the below will change once we have data from teh server/text file
-    const dummyTestChildren = [
-        { label: "Bob", value: 1 },
-        { label: "Alice", value: 2 },
-    ];
-
-    const dummyCategories = [
-        { label: "Kitchen", value: 1, backgroundColor: "red", icon: "scale" },
-        { label: "School", value: 2, backgroundColor: "green", icon: "school" },
-        {
-            label: "Bedroom",
-            value: 3,
-            backgroundColor: "blue",
-            icon: "bed-empty",
-        },
-        { label: "Home", value: 4, backgroundColor: "orange", icon: "home" },
-        {
-            label: "Bathroom",
-            value: 5,
-            backgroundColor: "purple",
-            icon: "shower",
-        },
-        {
-            label: "Homework",
-            value: 6,
-            backgroundColor: "teal",
-            icon: "book-open-page-variant",
-        },
-        { label: "Pets", value: 7, backgroundColor: "black", icon: "dog" },
-        {
-            label: "Good Behaviour",
-            value: 8,
-            backgroundColor: "grey",
-            icon: "hand-okay",
-        },
-        {
-            label: "Whatever",
-            value: 9,
-            backgroundColor: "brown",
-            icon: "comment-question",
-        },
-    ];
-
-    const dummyTasks = [
-        {
-            label: "Make the table",
-            value: 1,
-            backgroundColor: "red",
-            icon: "silverware-fork-knife",
-        },
-        {
-            label: "Wash dishes",
-            value: 2,
-            backgroundColor: "green",
-            icon: "shower-head",
-        },
-        {
-            label: "Dry dishes",
-            value: 3,
-            backgroundColor: "blue",
-            icon: "tumble-dryer",
-        },
-        {
-            label: "Eat all fruit/vegetables",
-            value: 4,
-            backgroundColor: "orange",
-            icon: "food-apple",
-        },
-        {
-            label: "Put dishes away",
-            value: 5,
-            backgroundColor: "purple",
-            icon: "alpha-x-circle-outline",
-        },
-        {
-            label: "Empty Kitchen Bin",
-            value: 6,
-            backgroundColor: "teal",
-            icon: "delete-empty",
-        },
-    ];
 
     return (
         <Screen style={styles.container}>
             <AppHeading title="Create Task For Child" />
             <Form
                 initialValues={{
-                    title: "",
-                    point: "",
-                    description: "",
-                    category: null,
+                    category_id: "",
+                    category_name: "",
+                    task_id: "",
+                    task_name: "",
+                    task_points: "",
+                    kid_id: "",
+                    kid_name: "",
+                    reward_id: "",
+                    reward_name: "",
+                    reward_Points: "",
                 }}
                 onSubmit={(values) => console.log(values)}
             >
                 <AppPicker
-                    items={dummyTestChildren}
+                    items={kidList}
                     icon="face"
                     placeholder="Select Child"
-                    numberOfColumns={2}
+                    onSelectItem={handleSelectKid}
+                    selectedItem={selectedKid}
                 />
 
-                {/* <AppLabel labelText="Select Cateogory:" /> */}
+                {selectedKid && (
+                    <AppPicker
+                        items={rewardList}
+                        icon="face"
+                        placeholder="Select Reward"
+                        onSelectItem={handleSelectReward}
+                        selectedItem={selectedReward}
+                    />
+                )}
 
-                {/* <Picker
-                    items={dummyCategories}
-                    icon="face"
-                    name="chore"
-                    numberOfColumns={3}
-                    PickerItemComponent={CategoryPickerItem}
-                    placeholder="Select Category"
-                    justifyContent="center"
-                    width="90%"
-                /> */}
-
-                <AppPicker
-                    items={itemList}
-                    icon="apps"
-                    placeholder="Select Item"
-                    PickerItemComponent={CategoryPickerItem}
-                    onSelectItem={handleSelectItem}
-                    selectedItem={selectedCategory}
-                    numberOfColumns={2}
-                />
+                {selectedReward && (
+                    <AppPicker
+                        items={categoryList}
+                        icon="apps"
+                        placeholder="Select Category"
+                        numberOfColumns={3}
+                        PickerItemComponent={CategoryPickerItem}
+                        onSelectItem={handleSelectItem}
+                        selectedItem={selectedCategory}
+                    />
+                )}
                 {selectedCategory && (
                     <AppPicker
                         items={pickableTasks}
                         icon="star-box-outline"
                         placeholder="Select Task"
+                        numberOfColumns={3}
                         PickerItemComponent={CategoryPickerItem}
                         onSelectItem={handleSelectTask}
                         selectedItem={selectedTask}
-
                     />
                 )}
-
-                {/* <AppLabel labelText="Select Task:" /> */}
-
-                {/* <Picker
-                    items={dummyTasks}
-                    icon="face"
-                    name="tasks"
-                    numberOfColumns={3}
-                    PickerItemComponent={CategoryPickerItem}
-                    placeholder="Select Tasks"
-                    justifyContent="center"
-                    width="90%"
-                /> */}
 
                 <AppButton
                     title="Finalise Changes"

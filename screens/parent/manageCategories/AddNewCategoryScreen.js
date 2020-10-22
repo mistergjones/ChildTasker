@@ -2,6 +2,7 @@ SafeAreaView;
 import React, { useState, useEffect, useContext } from "react";
 import { View, StyleSheet, SafeAreaView } from "react-native";
 import { Formik } from "formik";
+import * as Yup from "yup";
 
 import screens from "../../../config/screens";
 import AppButton from "../../../components/appButton";
@@ -22,87 +23,71 @@ import CategoryPickerItem from "../../../components/appCategoryPickerItem";
 
 import { UsersContext } from "../../../context/UsersContext";
 
-const dummyCategories = [
-    { label: "Kitchen", value: 1, backgroundColor: "red", icon: "scale" },
-    { label: "School", value: 2, backgroundColor: "green", icon: "scale" },
-    { label: "Bedroom", value: 3, backgroundColor: "blue", icon: "bed-empty" },
-    { label: "Home", value: 4, backgroundColor: "orange", icon: "home" },
-    { label: "Bathroom", value: 5, backgroundColor: "purple", icon: "shower" },
-    {
-        label: "Homework",
-        value: 6,
-        backgroundColor: "teal",
-        icon: "book-open-page-variant",
-    },
-    { label: "Pets", value: 7, backgroundColor: "black", icon: "dog" },
-    {
-        label: "Good Behaviour",
-        value: 8,
-        backgroundColor: "grey",
-        icon: "hand-okay",
-    },
-    {
-        label: "Whatever",
-        value: 9,
-        backgroundColor: "brown",
-        icon: "comment-question",
-    },
-];
-
 function AddNewCategoryScreen({ navigation }) {
     // need to utilise usersContext to make use of SQL
     const usersContext = useContext(UsersContext);
+
+    // just need the addNewCategory context
     const { categories, addNewCategory } = usersContext;
-    // const { categoryInputValue, setCategoryInputValue}
+    // set state to obtain value for the Text Input
 
-    const handleChange = () => {
-        const inputValue = "Glen";
-    };
-
-    const handleInsertCategory = async () => {
-        // store value as an object
-        const cat = {
-            category_name: "GLEN",
-        };
-
-        await addNewCategory(cat);
-
-        navigation.navigate(screens.AddCategory);
-    };
     console.log(categories);
 
+    const categorySchema = Yup.object().shape({
+        category_name: Yup.string().required().label("Category name"),
+    });
+
     return (
-        <Screen style={styles.container}>
+        <SafeAreaView>
             <AppHeading title="Add New Category" />
-            <Formik>
-                <Form
-                    initialValues={{
-                        title: "",
-                        point: "",
-                        description: "",
-                        category: null,
-                    }}
-                    onSubmit={(values) => console.log(values)}
-                >
-                    <AppTextInput
-                        placeholder="Type New Category"
-                        // labelText="Category"
-                        icon="account"
-                        // onChangeText={handleChange}
-                    />
 
-                    <AppButton
-                        title="Save Changes"
-                        onPress={handleInsertCategory}
-                    />
+            <Formik
+                initialValues={{
+                    category_name: "",
+                }}
+                onSubmit={async (fields, { setFieldError }) => {
+                    // add cateogry to db
+                    console.log("We are adding a category");
+                    try {
+                        await addNewCategory(fields.category_name);
 
-                    <AppButton
-                        title="Return"
-                        onPress={() => navigation.navigate(screens.AddCategory)}
-                    />
-                </Form>
+                        navigation.navigate(screens.ParentDashBoard);
+                    } catch (error) {
+                        console.log("error = ", error);
+                    }
+                }}
+                validationSchema={categorySchema}
+            >
+                {({ handleChange, handleSubmit, errors }) => (
+                    <>
+                        <AppTextInput
+                            placeholder="Type New Category"
+                            labelText="New Category Name"
+                            type="text"
+                            name="category"
+                            // labelText="Category"
+                            icon="account"
+                            onChangeText={handleChange("category_name")}
+                            // value={textInputValue}
+                            // errorStyle={{ color: "red" }}
+                            // error={errors ? errors.category_name : ""}
+                        />
+
+                        <AppButton
+                            title="Save Changes"
+                            onPress={handleSubmit}
+                        />
+
+                        <AppButton
+                            title="Return"
+                            onPress={() =>
+                                navigation.navigate(screens.AddCategory)
+                            }
+                        />
+                    </>
+                )}
             </Formik>
-        </Screen>
+        </SafeAreaView>
     );
 }
 

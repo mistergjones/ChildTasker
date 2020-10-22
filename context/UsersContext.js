@@ -14,6 +14,7 @@ import { databaseTasks } from "../database/tasks/taskQueries";
 import { databaseIcons } from "../database/icons/iconQueries";
 import { databaseRewards } from "../database/rewards/rewardQueries";
 import { databaseUsers } from "../database/users/userQueries";
+import { databaseAssignChoresToKid } from "../database/assignChoresToKid/assignChoresToKid";
 
 // Creates a Context object.
 export const UsersContext = createContext({});
@@ -37,6 +38,8 @@ export const UsersContextProvider = (props) => {
     const [kids, setKids] = useState();
     // SPECIFICS (TASKS)
     const [specifics, setSpecificTasks] = useState();
+    // Chores To Kid
+    const [chores, setChores] = useState();
 
     //Icon
     const [icons, setIcons] = useState();
@@ -54,6 +57,7 @@ export const UsersContextProvider = (props) => {
         getKids();
         // //getSpecificTasksGlen();
         refreshIcons();
+        //refreshChores();
     }, []);
     // make a database call to insert an item and then call refreshItems to update the state
     const addNewItem = async (userItem) => {
@@ -86,6 +90,18 @@ export const UsersContextProvider = (props) => {
         // return database.getCategories(setCategories);
         return databaseCategories.getCategories(setCategories);
     };
+
+    const removeCategory = async (category_id) => {
+        await databaseCategories.removeCategory(category_id);
+        await refreshCategories();
+        return;
+    };
+
+    const updateCategory = async (category) => {
+        await databaseCategories.updateCategory(category);
+        await refreshCategories();
+    };
+
     // END CATEGORIES
     //*************************************************************************
     //*************************************************************************
@@ -101,8 +117,39 @@ export const UsersContextProvider = (props) => {
         // return database.getTasks(setTasks);
         return databaseTasks.getTasks(setTasks);
     };
+
+    const removeTask = async (task_id) => {
+        await databaseTasks.removeTask(task_id);
+        await refreshTasks();
+        return;
+    };
+
+    const updateTask = async (task) => {
+        await databaseTasks.updateTask(task);
+        await refreshTasks();
+    };
+
     // END TASKS
     //*************************************************************************
+
+    // GJ - 20/10 - Added teh below.
+    //*************************************************************************
+    // START CHORES TO KID
+    // make a database call to insert a chore  and then call refreshChores to update the state
+    const addChoresToKid = (kidChores) => {
+        return databaseAssignChoresToKid.insertChoresToKid(
+            kidChores,
+            refreshChores
+        );
+    };
+    // make a database call to retrieve all Chores
+    // In refreshChores we are sending the setChores function, which will allow the query to set our local state.
+    const refreshChores = () => {
+        return databaseAssignChoresToKid.getChores(setChores);
+    };
+    // END CHORES TO KID
+    //*************************************************************************
+
     //*************************************************************************
     // START REWARDS
     // make a database call to insert a reward and then call refreshRewardsto update the state
@@ -191,9 +238,13 @@ export const UsersContextProvider = (props) => {
         // categories
         addNewCategory,
         categories,
+        removeCategory,
+        updateCategory,
         // TASKS
         addNewTask,
         tasks,
+        removeTask,
+        updateTask,
         // Rewards
         addNewReward,
         rewards,
@@ -211,6 +262,9 @@ export const UsersContextProvider = (props) => {
         specifics,
         //setSpecificTasks,
         icons,
+        //Chores for the kids
+        addChoresToKid,
+        chores,
     };
     // pass the value in provider and return
     return (
