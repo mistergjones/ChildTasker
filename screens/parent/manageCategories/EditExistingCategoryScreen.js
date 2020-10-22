@@ -80,6 +80,7 @@ export default function EditExistingCategoryScreen({ navigation }) {
         } catch (error) {
             console.log("The error inserting updated Category name", error);
         }
+        return;
     };
 
     return (
@@ -116,7 +117,13 @@ export default function EditExistingCategoryScreen({ navigation }) {
                     onChangeText={handleRenamedCategory}
                 />
 
-                <AppButton title="Save Changes" onPress={categoryUpdate} />
+                <AppButton
+                    title="Save Changes"
+                    onPress={async () => {
+                        await categoryUpdate();
+                        navigation.navigate(screens.AddCategory);
+                    }}
+                />
 
                 <AppButton
                     title="Return"
