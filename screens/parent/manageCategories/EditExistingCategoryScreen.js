@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useContext } from "react";
 import { View, StyleSheet } from "react-native";
 
 import screens from "../../../config/screens";
@@ -14,85 +14,109 @@ import {
     SubmitButton,
 } from "../../../components/forms";
 
-// import AppPicker from "../../../components/appPicker";
+import AppPicker from "../../../components/appPicker";
 
 import CategoryPickerItem from "../../../components/appCategoryPickerItem";
 import AppTextInput from "../../../components/AppTextInput";
 
+import { UsersContext } from "../../../context/UsersContext";
+import { Formik } from "formik";
+import * as Yup from "yup";
+
 export default function EditExistingCategoryScreen({ navigation }) {
-    const dummyCategories = [
-        { label: "Kitchen", value: 1, backgroundColor: "red", icon: "scale" },
-        { label: "School", value: 2, backgroundColor: "green", icon: "school" },
-        {
-            label: "Bedroom",
-            value: 3,
-            backgroundColor: "blue",
-            icon: "bed-empty",
-        },
-        { label: "Home", value: 4, backgroundColor: "orange", icon: "home" },
-        {
-            label: "Bathroom",
-            value: 5,
-            backgroundColor: "purple",
-            icon: "shower",
-        },
-        {
-            label: "Homework",
-            value: 6,
-            backgroundColor: "teal",
-            icon: "book-open-page-variant",
-        },
-        { label: "Pets", value: 7, backgroundColor: "black", icon: "dog" },
-        {
-            label: "Good Behaviour",
-            value: 8,
-            backgroundColor: "grey",
-            icon: "hand-okay",
-        },
-        {
-            label: "Whatever",
-            value: 9,
-            backgroundColor: "brown",
-            icon: "comment-question",
-        },
-    ];
+    // need to obtain all the categires furst,
+    // need to utilise usersContext to make use of SQL
+    const usersContext = useContext(UsersContext);
+    // obtain the updated Categories
+    const { categories, updateCategory } = usersContext;
+    // now set a state for selecting an existing category
+    const [selectedItem, setSelectedItem] = useState();
+    // now use a state to obtain the the text input
+    const [renamedCategory, setRenamedCategory] = useState();
+
+    // Categories
+    var categoryList = [];
+
+    // now loop through each item to obatin id and value and assign to an object. Push this object into the array
+    //************************************ */
+    // Categories - make the selectable task list
+    //************************************ */
+    for (
+        var loopIterator = 0;
+        loopIterator < categories.length;
+        loopIterator++
+    ) {
+        var tempObject = {};
+        tempObject.label = categories[loopIterator].category_name;
+        tempObject.value = categories[loopIterator].category_id;
+        tempObject.backgroundColor = "blue";
+        tempObject.icon = "school";
+        categoryList.push(tempObject);
+    }
+
+    // this function is to set the status of categories
+    const handleSelectItem = (item) => {
+        setSelectedItem(item);
+    };
+
+    const handleRenamedCategory = (item) => {
+        setRenamedCategory(item);
+    };
+
+    // the below is to capture the text input for the renamed category
+
+    // this function is to obtain teh values from teh UI and insert hte data into the tables.
+    const categoryUpdate = async () => {
+        const items = {
+            category_id: selectedItem.value,
+            category_name: renamedCategory,
+            category_colour: selectedItem.backgroundColor,
+            category_icon: selectedItem.icon,
+        };
+
+        try {
+            await updateCategory(items);
+            // await console.log(items);
+        } catch (error) {
+            console.log("The error inserting updated Category name", error);
+        }
+    };
 
     return (
         <Screen style={styles.container}>
             <AppHeading title="Edit Category" />
+
             <Form
                 initialValues={{
-                    title: "",
-                    point: "",
-                    description: "",
-                    category: null,
+                    category_name: "",
+                    category_colour: "",
+                    category_id: "",
+                    category_icon: "",
                 }}
-                onSubmit={(values) => console.log(values)}
             >
-                <Picker
-                    items={dummyCategories}
+                {/* GJ 21/10 - Note: AppPicker does not work for this category picker. But works for Tasks...Strange */}
+
+                <AppPicker
+                    items={categoryList}
                     icon="face"
-                    name="chore"
                     numberOfColumns={3}
                     PickerItemComponent={CategoryPickerItem}
                     placeholder="Select Category"
+                    selectedItem={selectedItem}
+                    onSelectItem={handleSelectItem}
                     justifyContent="center"
                     width="90%"
                 />
 
                 <AppTextInput
-                    placeholder="Type New Categorh name"
+                    placeholder="Rename Category"
+                    labelText="New Category Name"
                     // labelText="Category"
                     icon="account"
-                    // onChangeText={handleChange}
+                    onChangeText={handleRenamedCategory}
                 />
 
-                <AppButton
-                    title="Save Changes"
-                    onPress={() =>
-                        navigation.navigate(screens.EditExistingCategory)
-                    }
-                />
+                <AppButton title="Save Changes" onPress={categoryUpdate} />
 
                 <AppButton
                     title="Return"

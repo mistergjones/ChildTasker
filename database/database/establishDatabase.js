@@ -85,6 +85,17 @@ const dropDatabaseTablesAsync = async () => {
                     reject(error);
                 }
             );
+            tx.executeSql(
+                "drop table kidchores",
+                [],
+                (_, result) => {
+                    resolve(result);
+                },
+                (_, error) => {
+                    console.log("error dropping KIDCHORES table");
+                    reject(error);
+                }
+            );
         });
     });
 };
@@ -98,10 +109,10 @@ const createTablesDatabaseAsync = async () => {
                     "create table if not exists items (id integer primary key not null, done int, value text)"
                 );
                 tx.executeSql(
-                    "create table if not exists categories (category_id integer primary key not null, category_name TEXT not null, category_colour TEXT)"
+                    "create table if not exists categories (category_id integer primary key not null, category_name TEXT not null, category_icon TEXT not null, category_colour TEXT)"
                 );
                 tx.executeSql(
-                    "create table if not exists tasks (task_id integer primary key not null, task_name TEXT not null, task_colour TEXT not null, task_icon TEXT not null, category_id INTEGER, FOREIGN KEY (category_id) REFERENCES categories (category_id))"
+                    "create table if not exists tasks (task_id integer primary key not null, task_name TEXT not null, task_colour TEXT not null, task_icon TEXT not null, task_points INTEGER not null, category_id INTEGER, FOREIGN KEY (category_id) REFERENCES categories (category_id))"
                 );
                 tx.executeSql(
                     "create table if not exists rewards (reward_id integer primary key not null, reward_name TEXT not null, reward_points INTEGER)"
@@ -112,6 +123,9 @@ const createTablesDatabaseAsync = async () => {
                 //table for storing icons for categories; created by Shailesh
                 tx.executeSql(
                     "create table if not exists icons (icon_id integer primary key not null, icon_name TEXT not null,background_color TEXT not null,label TEXT not null)"
+                );
+                tx.executeSql(
+                    "create table if not exists kidchores (chore_id integer primary key not null, category_id integer NOT null, category_name TEXT not null, task_id integer not null, task_name TEXT not null, task_points INTEGER not null, kid_id integer NOT null, kid_name TEXT not null, reward_id integer NOT null, reward_name TEXT not null, reward_points integer not null)"
                 );
             },
             // the error and success functions are called when the transaction is complete. We use the promise resolve and reject functions here.
@@ -180,40 +194,40 @@ const loadCategories = async () => {
         db.transaction(
             (tx) => {
                 tx.executeSql(
-                    "insert into categories (category_name) values (?)",
-                    ["Kitchen"]
+                    "insert into categories (category_name, category_colour, category_icon) values (?,?,?)",
+                    ["Kitchen", "blue", "School"]
                 );
                 tx.executeSql(
-                    "insert into categories (category_name) values (?)",
-                    ["School"]
+                    "insert into categories (category_name, category_colour, category_icon) values (?,?,?)",
+                    ["School", "blue", "School"]
                 );
                 tx.executeSql(
-                    "insert into categories (category_name) values (?)",
-                    ["Bedroom"]
+                    "insert into categories (category_name, category_colour, category_icon) values (?,?,?)",
+                    ["Bedroom", "blue", "School"]
                 );
                 tx.executeSql(
-                    "insert into categories (category_name) values (?)",
-                    ["Home"]
+                    "insert into categories (category_name, category_colour, category_icon) values (?,?,?)",
+                    ["Home", "blue", "School"]
                 );
                 tx.executeSql(
-                    "insert into categories (category_name) values (?)",
-                    ["Bathroom"]
+                    "insert into categories (category_name, category_colour, category_icon) values (?,?,?)",
+                    ["Bathroom", "blue", "School"]
                 );
                 tx.executeSql(
-                    "insert into categories (category_name) values (?)",
-                    ["Homework"]
+                    "insert into categories (category_name, category_colour, category_icon) values (?,?,?)",
+                    ["Homework", "blue", "School"]
                 );
                 tx.executeSql(
-                    "insert into categories (category_name) values (?)",
-                    ["Pets"]
+                    "insert into categories (category_name, category_colour, category_icon) values (?,?,?)",
+                    ["Pets", "blue", "School"]
                 );
                 tx.executeSql(
-                    "insert into categories (category_name) values (?)",
-                    ["Good Behaviour"]
+                    "insert into categories (category_name, category_colour, category_icon) values (?,?,?)",
+                    ["Good Behaviour", "blue", "School"]
                 );
                 tx.executeSql(
-                    "insert into categories (category_name) values (?)",
-                    ["General"]
+                    "insert into categories (category_name, category_colour, category_icon) values (?,?,?)",
+                    ["General", "blue", "School"]
                 );
             },
             (t, error) => {
@@ -236,73 +250,73 @@ const loadTasks = async () => {
         db.transaction(
             (tx) => {
                 tx.executeSql(
-                    "insert into tasks (task_name, task_colour, task_icon, category_id) values (?,?,?,?)",
-                    ["Wash Dishes", "Red", "scale", 1]
+                    "insert into tasks (task_name, task_colour, task_icon, task_points, category_id) values (?,?,?,?,?)",
+                    ["Wash Dishes", "Red", "scale", 10, 1]
                 );
                 tx.executeSql(
-                    "insert into tasks (task_name, task_colour, task_icon, category_id) values (?,?,?,?)",
-                    ["Dry Dishes", "Red", "scale", 1]
+                    "insert into tasks (task_name, task_colour, task_icon, task_points, category_id) values (?,?,?,?,?)",
+                    ["Dry Dishes", "Red", "scale", 11, 1]
                 );
                 tx.executeSql(
-                    "insert into tasks (task_name, task_colour, task_icon, category_id) values (?,?,?,?)",
-                    ["Not late for School", "Green", "school", 2]
+                    "insert into tasks (task_name, task_colour, task_icon, task_points, category_id) values (?,?,?,?,?)",
+                    ["Not late for School", "Green", "school", 12, 2]
                 );
                 tx.executeSql(
-                    "insert into tasks (task_name, task_colour, task_icon, category_id) values (?,?,?,?)",
-                    ["Arrive home on time", "Green", "school", 2]
-                );
-
-                tx.executeSql(
-                    "insert into tasks (task_name, task_colour, task_icon, category_id) values (?,?,?,?)",
-                    ["Make Bed", "Blue", "bed-empty", 3]
-                );
-                tx.executeSql(
-                    "insert into tasks (task_name, task_colour, task_icon, category_id) values (?,?,?,?)",
-                    ["Tidy Room", "Blue", "bed-empty", 3]
-                );
-                tx.executeSql(
-                    "insert into tasks (task_name, task_colour, task_icon, category_id) values (?,?,?,?)",
-                    ["Floor tidy", "Blue", "bed-empty", 3]
+                    "insert into tasks (task_name, task_colour, task_icon, task_points, category_id) values (?,?,?,?,?)",
+                    ["Arrive home on time", "Green", "school", 13, 2]
                 );
 
                 tx.executeSql(
-                    "insert into tasks (task_name, task_colour, task_icon, category_id) values (?,?,?,?)",
-                    ["Put rubbish out", "Orange", "home", 4]
+                    "insert into tasks (task_name, task_colour, task_icon, task_points, category_id) values (?,?,?,?,?)",
+                    ["Make Bed", "Blue", "bed-empty", 14, 3]
                 );
                 tx.executeSql(
-                    "insert into tasks (task_name, task_colour, task_icon, category_id) values (?,?,?,?)",
-                    ["Wash car", "Orange", "home", 4]
+                    "insert into tasks (task_name, task_colour, task_icon, task_points, category_id) values (?,?,?,?,?)",
+                    ["Tidy Room", "Blue", "bed-empty", 15, 3]
                 );
                 tx.executeSql(
-                    "insert into tasks (task_name, task_colour, task_icon, category_id) values (?,?,?,?)",
-                    ["Vacuum Floors", "Orange", "home", 4]
-                );
-
-                tx.executeSql(
-                    "insert into tasks (task_name, task_colour, task_icon, category_id) values (?,?,?,?)",
-                    ["Clean teeth", "Purple", "shower", 5]
-                );
-                tx.executeSql(
-                    "insert into tasks (task_name, task_colour, task_icon, category_id) values (?,?,?,?)",
-                    ["Wash hair", "Purple", "shower", 5]
+                    "insert into tasks (task_name, task_colour, task_icon, task_points, category_id) values (?,?,?,?,?)",
+                    ["Floor tidy", "Blue", "bed-empty", 16, 3]
                 );
 
                 tx.executeSql(
-                    "insert into tasks (task_name, task_colour, task_icon, category_id) values (?,?,?,?)",
-                    ["Do Homework", "Teal", "book-open-page-variant", 6]
+                    "insert into tasks (task_name, task_colour, task_icon, task_points, category_id) values (?,?,?,?,?)",
+                    ["Put rubbish out", "Orange", "home", 17, 4]
                 );
                 tx.executeSql(
-                    "insert into tasks (task_name, task_colour, task_icon, category_id) values (?,?,?,?)",
-                    ["Read Book", "Teal", "book-open-page-variant", 6]
+                    "insert into tasks (task_name, task_colour, task_icon, task_points, category_id) values (?,?,?,?,?)",
+                    ["Wash car", "Orange", "home", 18, 4]
+                );
+                tx.executeSql(
+                    "insert into tasks (task_name, task_colour, task_icon, task_points, category_id) values (?,?,?,?,?)",
+                    ["Vacuum Floors", "Orange", "home", 19, 4]
                 );
 
                 tx.executeSql(
-                    "insert into tasks (task_name, task_colour, task_icon, category_id) values (?,?,?,?)",
-                    ["Walk Dog", "Black", "dog", 7]
+                    "insert into tasks (task_name, task_colour, task_icon, task_points, category_id) values (?,?,?,?,?)",
+                    ["Clean teeth", "Purple", "shower", 20, 5]
                 );
                 tx.executeSql(
-                    "insert into tasks (task_name, task_colour, task_icon, category_id) values (?,?,?,?)",
-                    ["Dry Dog", "Black", "dog", 7]
+                    "insert into tasks (task_name, task_colour, task_icon, task_points, category_id) values (?,?,?,?,?)",
+                    ["Wash hair", "Purple", "shower", 21, 5]
+                );
+
+                tx.executeSql(
+                    "insert into tasks (task_name, task_colour, task_icon, task_points, category_id) values (?,?,?,?,?)",
+                    ["Do Homework", "Teal", "book-open-page-variant", 22, 6]
+                );
+                tx.executeSql(
+                    "insert into tasks (task_name, task_colour, task_icon, task_points, category_id) values (?,?,?,?,?)",
+                    ["Read Book", "Teal", "book-open-page-variant", 23, 6]
+                );
+
+                tx.executeSql(
+                    "insert into tasks (task_name, task_colour, task_icon, task_points, category_id) values (?,?,?,?,?)",
+                    ["Walk Dog", "Black", "dog", 24, 7]
+                );
+                tx.executeSql(
+                    "insert into tasks (task_name, task_colour, task_icon, task_points, category_id) values (?,?,?,?,?)",
+                    ["Dry Dog", "Black", "dog", 25, 7]
                 );
             },
             (t, error) => {
