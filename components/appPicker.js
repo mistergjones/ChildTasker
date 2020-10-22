@@ -19,7 +19,7 @@ import AppButton from "./appButton";
 function AppPicker({
   icon,
   items,
-  numberOfColumns = 1,
+  numberOfColumns,
   onSelectItem,
   PickerItemComponent = PickerItem,
   placeholder,
@@ -46,8 +46,8 @@ function AppPicker({
           {selectedItem ? (
             <Text style={styles.text}>{selectedItem.label}</Text>
           ) : (
-            <Text style={styles.placeholder}>{placeholder}</Text>
-          )}
+              <Text style={styles.placeholder}>{placeholder}</Text>
+            )}
 
           <MaterialCommunityIcons
             name="chevron-down"
@@ -64,13 +64,16 @@ function AppPicker({
             style={{ color: colours.defaultButtonColour }}
           />
           <FlatList
+            contentContainerStyle={styles.pickerItem}
             data={items}
             keyExtractor={(item) => item.value.toString()}
             numColumns={numberOfColumns}
             renderItem={({ item }) => (
               <PickerItemComponent
+
                 item={item}
                 label={item.label}
+                numColumns={numberOfColumns}
                 onPress={() => {
                   setModalVisible(false);
                   onSelectItem(item);
@@ -102,6 +105,16 @@ const styles = StyleSheet.create({
   text: {
     flex: 1,
   },
+  pickerItem: {
+    // flexDirection: "row",
+    // width: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+
+
+
+
+  }
 });
 
 export default AppPicker;

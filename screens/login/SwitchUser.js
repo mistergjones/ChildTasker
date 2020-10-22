@@ -8,15 +8,25 @@ import Screen from "../../components/appScreen"
 import AppHeading from "../../components/appHeading"
 import { UsersContext } from '../../context/UsersContext';
 import User from "../../screens/login/User"
+import colours from "../../config/colours";
 function SwitchUser({ navigation, route }) {
-  const { user, setUser, setSwitchUser } = useContext(AuthContext);
+  const { user, setUser, setSwitchUser, setSwitchUserName } = useContext(AuthContext);
   const { users } = useContext(UsersContext)
 
+  const handlePress = () => {
+
+  }
   return (
     <Screen>
       <AppHeading title="Switch User" />
       <View style={styles.container}>
-        {users.map((u, index) => (user.username !== u.user_name && <User key={index} username={u.user_name} />))}
+        {users.map((u, index) => (user.username !== u.user_name && <User iconName="human-child" key={index} username={u.user_name} color={"gold"} onPress={() => {
+          user.isParent
+            ? navigation.jumpTo("Parent")
+            : navigation.jumpTo("Child");
+          setSwitchUser(true);
+          setSwitchUserName(u.user_name)
+        }} />))}
         <AppButton
           title="Logout"
           onPress={() => {

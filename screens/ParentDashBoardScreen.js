@@ -14,28 +14,28 @@ function ParentDashBoardScreen({ navigation }) {
     return (
         <Screen>
 
-        
-        <ScrollView style={styles.container}>
-            <AppHeading title="Parent Dashboard" />
 
-            <AppButton
-                title="Create Tasks for Child"
-                onPress={() =>
-                    navigation.navigate(screens.CreateTaskListForChild)
-                }
-            />
+            <ScrollView style={styles.container}>
+                <AppHeading title="Parent Dashboard" />
 
-            <AppButton
-                title="Manage Categories & Tasks"
-                onPress={() => navigation.navigate(screens.AddCategory)}
-            />
+                <AppButton
+                    title="Create Tasks for Child"
+                    onPress={() =>
+                        navigation.navigate(screens.CreateTaskListForChild)
+                    }
+                />
 
-            <AppButton
-                title="Manage Rewards"
-                onPress={() => navigation.navigate(screens.ManageRewards)}
-            />
+                <AppButton
+                    title="Manage Categories & Tasks"
+                    onPress={() => navigation.navigate(screens.AddCategory)}
+                />
 
-            {/* <AppButton
+                <AppButton
+                    title="Manage Rewards"
+                    onPress={() => navigation.navigate(screens.ManageRewards)}
+                />
+
+                {/* <AppButton
                 title="Track Pocket Money"
                 onPress={() => navigation.navigate(screens.TrackPocketMoney)}
             />
@@ -45,20 +45,24 @@ function ParentDashBoardScreen({ navigation }) {
                 onPress={() => navigation.navigate(screens.ViewAccomplishments)}
             /> */}
 
-            <AppButton
-                title="Manage Child Details"
-                onPress={() =>
-                    navigation.navigate(screens.ParentChildDashBoard)
-                }
-            />
+                <AppButton
+                    title="Manage Child Details"
+                    onPress={() =>
+                        navigation.navigate(screens.ParentChildDashBoard)
+                    }
+                />
 
-            {/* <AppButton
+                {/* <AppButton
                 title="View Database users"
                 onPress={() => navigation.navigate(screens.ViewDatabaseUsers)}
             /> */}
+                <AppButton
+                    title="Register Parent"
+                    onPress={() => navigation.navigate(screens.Register)}
+                />
 
-            <AppButton title="Logout" onPress={() => setUser(null)} />
-        </ScrollView>
+                <AppButton title="Logout" onPress={() => setUser(null)} />
+            </ScrollView>
         </Screen>
     );
 }

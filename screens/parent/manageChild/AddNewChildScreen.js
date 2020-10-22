@@ -39,7 +39,7 @@ function AddNewChildScreen({ navigation }) {
         onSubmit={async (fields, { setFieldError }) => {
           // Check if username already exists
           console.log(1);
-          const isNewUser = await checkIfNewUser(fields.username);
+          const isNewUser = await checkIfNewUser(fields.childname);
 
           // add user to db
           console.log("new user", isNewUser);
@@ -56,7 +56,7 @@ function AddNewChildScreen({ navigation }) {
               console.log("error = ", error);
             }
           } else {
-            setFieldError("username", "username already exists");
+            setFieldError("childname", "username already exists");
           }
         }}
         validationSchema={loginSchema}

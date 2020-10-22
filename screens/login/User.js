@@ -5,23 +5,19 @@ import { TouchableOpacity } from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import screens from '../../config/screens';
 import AuthContext from '../../components/auth/context';
+import colours from '../../config/colours';
+//import { color } from 'react-native-reanimated';
 
 
 
 
-function User({ username, iconName }) {
+function User({ username, color, iconName, onPress }) {
     const navigation = useNavigation()
     const { user, setSwitchUserName, setSwitchUser } = useContext(AuthContext)
     return (
-        <TouchableOpacity style={styles.container} onPress={() => {
-            user.isParent
-                ? navigation.jumpTo("Parent")
-                : navigation.jumpTo("Child");
-            setSwitchUser(true);
-            setSwitchUserName(username)
-        }}>
+        <TouchableOpacity style={styles.container} onPress={onPress}>
             <View style={styles.view}>
-                <MaterialCommunityIcons style={styles.icon} name="account" size={40} color={"grey"} />
+                <MaterialCommunityIcons style={styles.icon} name={iconName} size={40} color={color} />
                 <Text style={styles.text}>{username}</Text>
             </View>
         </TouchableOpacity>
@@ -29,22 +25,31 @@ function User({ username, iconName }) {
 }
 
 const styles = StyleSheet.create({
+
     container: {
-
+        width: "90%",
         alignItems: "center",
+        justifyContent: "center",
+        alignSelf: "center",
+        marginBottom: 15
 
-    },
-    icon: {
-        marginRight: 20
     },
     text: {
         alignItems: "center",
-        justifyContent: "center"
+        justifyContent: "center",
+        width: 125,
+        padding: 20,
+        color: "gold"
     },
     view: {
-        width: "90%",
         flexDirection: "row",
-        alignItems: "center"
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: colours.defaultHeadingColour,
+        width: "100%",
+        borderRadius: 20
+
+
     }
 
 })

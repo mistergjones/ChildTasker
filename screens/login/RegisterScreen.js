@@ -1,5 +1,5 @@
-import React, { useContext, useState } from "react";
-import { View, StyleSheet, SafeAreaView, Button, Text } from "react-native";
+import React, { useContext, useState, useEffect } from "react";
+import { View, StyleSheet, SafeAreaView, Button, Text, Alert } from "react-native";
 import AppTextInput from "../../components/AppTextInput";
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -7,9 +7,11 @@ import AppButton from "../../components/appButton";
 import screens from "../../config/screens";
 import AuthContext from "../../components/auth/context";
 import { database } from "../../components/database";
-
+import AppHeading from "../../components/appHeading"
 import { UsersContext } from "../../context/UsersContext";
 import { NavigationContainer } from "@react-navigation/native";
+import Screen from "../../components/appScreen"
+
 
 const loginSchema = Yup.object().shape({
   username: Yup.string().required().label("Username"),
@@ -17,17 +19,37 @@ const loginSchema = Yup.object().shape({
   confirmPassword: Yup.string().required().min(4).label("Confirm Password"),
 });
 function RegisterScreen({ navigation }) {
-  const { user, setUser, setCount, count } = useContext(AuthContext);
-  const { addNewUser, users, setUsers, checkIfNewUser } = useContext(
+  const { user, setUser, setCount, count, firstLoad, setFirstLoad } = useContext(AuthContext);
+  const { addNewUser, users, setUsers, checkIfNewUser, } = useContext(
     UsersContext
   );
+  const [alertLoaded, setAlertLoaded] = useState(firstLoad)
 
-  const handleRegister = () => {
-    console.log("To do register");
-  };
+  useEffect(() => {
+    {
+      if (firstLoad) {
+        Alert.alert(
+          "Welcome to Childtasker. Please ensure you remember the password you create.",
+          "Click OK to continue ",
+          [
+
+            {
+              text: "OK",
+              onPress: async () => {
+                setAlertLoaded(false)
+              },
+            },
+          ],
+          { cancelable: false }
+        )
+      }
+    }
+  }, [])
 
   return (
-    <SafeAreaView>
+    <Screen>
+      <AppHeading title="Register Parent" />
+
       <Formik
         initialValues={{ username: "", password: "", confirmPassword: "" }}
         onSubmit={async (fields, { setFieldError }) => {
@@ -54,7 +76,16 @@ function RegisterScreen({ navigation }) {
               // set user context
               //setUser({ username: fields.username, isParent: true });
 
-              navigation.navigate(screens.Login);
+
+
+              if (firstLoad) {
+                console.log("register firstload")
+                setFirstLoad(false);
+                setUser(null)
+                navigation.navigate(screens.Login);
+              } else {
+                navigation.navigate(screens.ParentDashBoard)
+              }
             } catch (error) {
               console.log("error = ", error);
             }
@@ -92,15 +123,13 @@ function RegisterScreen({ navigation }) {
               errorStyle={{ color: "red" }}
               error={errors ? errors.confirmPassword : ""}
             />
-            <AppButton
-              title="login"
-              onPress={() => navigation.navigate(screens.Login)}
-            />
+
             <AppButton title="Register" onPress={handleSubmit} />
+
           </>
         )}
       </Formik>
-    </SafeAreaView>
+    </Screen>
   );
 }
 
