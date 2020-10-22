@@ -47,6 +47,7 @@ function SelectATaskForChildScreen(props) {
                 items={dummyTaskPoints}
                 icon="account-child"
                 placeholder="Points are read only"
+
             />
 
             <View style={{ marginBottom: 30 }}></View>

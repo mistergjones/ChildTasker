@@ -19,6 +19,7 @@ import AppPicker from "../../../components/appPicker";
 import { UsersContext } from "../../../context/UsersContext";
 
 import Screen from "../../../components/appScreen"
+import UserPicker from '../../../components/userPicker';
 
 function RemoveChildScreen({ navigation }) {
   const { kids, removeKid } = useContext(UsersContext);
@@ -27,7 +28,7 @@ function RemoveChildScreen({ navigation }) {
   console.log("kids", kids);
 
   const kidsData = kids.map((kid) => {
-    return { label: kid.user_name, value: kid.user_id };
+    return { label: kid.user_name, value: kid.user_id, icon: "human-child" };
   });
 
   console.log("kids data =" + kidsData);
@@ -61,24 +62,25 @@ function RemoveChildScreen({ navigation }) {
 
   return (
     <Screen>
-    <ScrollView style={styles.container}>
-      <AppHeading title="Remove Child" />
+      <ScrollView style={styles.container}>
+        <AppHeading title="Remove Child" />
 
-      <AppPicker
-        items={kidsData}
-        icon="account-child"
-        placeholder="Select Child"
-        selectedItem={selectedItem}
-        onSelectItem={handleSelectItem}
-      />
+        <UserPicker
+          items={kidsData}
+          icon="account-child"
+          placeholder="Select Child"
+          selectedItem={selectedItem}
+          onSelectItem={handleSelectItem}
+        />
 
-      {selectedItem && <AppButton title="Remove" onPress={removeKidAlert} />}
 
-      <AppButton
-        title="Return"
-        onPress={() => navigation.navigate(screens.ParentChildDashBoard)}
-      />
-    </ScrollView>
+        {selectedItem && <AppButton title="Remove" onPress={removeKidAlert} />}
+
+        <AppButton
+          title="Return"
+          onPress={() => navigation.navigate(screens.ParentChildDashBoard)}
+        />
+      </ScrollView>
     </Screen>
   );
 }

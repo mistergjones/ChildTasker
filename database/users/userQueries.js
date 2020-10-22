@@ -26,7 +26,7 @@ const getUsers = async (setUserFunc) => {
                 reject(error);
             },
             (_t, _success) => {
-                console.log("loaded users" + _t);
+                console.log("Retrieved Users");
                 resolve(_success);
             }
         );
@@ -35,6 +35,7 @@ const getUsers = async (setUserFunc) => {
 
 const getKids = async (setUserFunc) => {
     return new Promise(async (resolve, reject) => {
+        console.log("getKids begining")
         db.transaction(
             (tx) => {
                 tx.executeSql(
@@ -52,7 +53,7 @@ const getKids = async (setUserFunc) => {
                 reject(error);
             },
             (_t, _success) => {
-                console.log("loaded kids" + _t);
+                console.log("Retrieved Kids");
                 resolve(_success);
             }
         );
@@ -79,7 +80,7 @@ const removeKid = async (userId) => {
                 reject(error);
             },
             (_t, _success) => {
-                console.log("removed kid" + _t);
+                console.log("Removed Kid");
                 resolve(_success);
             }
         );
@@ -102,7 +103,7 @@ const updateKid = async (kid) => {
                 reject(error);
             },
             (_t, _success) => {
-                console.log("updated kid");
+                console.log("Updated Kid");
                 resolve(_success);
             }
         );
@@ -110,6 +111,7 @@ const updateKid = async (kid) => {
 };
 
 const newUser = async (userName) => {
+    console.log("username in newUser" + userName)
     return new Promise(async (resolve, reject) => {
         let results = [];
         db.transaction(
@@ -129,7 +131,7 @@ const newUser = async (userName) => {
                 reject(results);
             },
             (_t, _success) => {
-                console.log("loaded users" + _t);
+                console.log("Retrieved New User");
                 resolve(results.length > 0 ? false : true);
             }
         );
@@ -137,27 +139,34 @@ const newUser = async (userName) => {
 };
 
 const insertUser = async (user, successFunc) => {
+    console.log("insert user username = " + user.username + "parent = " + user.isParent)
     return new Promise(async (resolve, reject) => {
-        db.transaction(
-            (tx) => {
-                console.log("insertUser" + user.username);
-                const a = tx.executeSql(
-                    "insert into users (user_name, is_parent, password) values (?,?,?)",
-                    [user.username, user.isParent ? 1 : 0, user.password]
-                );
-                console.log(a);
-            },
-            (t, error) => {
-                console.log("db error insert users");
-                console.log(error);
-                reject(error);
-            },
-            (_t, _success) => {
-                console.log("insert users success" + _t);
-                successFunc(user); //test
-                resolve(_success);
-            }
-        );
+        try {
+
+            db.transaction(
+                (tx) => {
+                    console.log("insertUser" + user.username);
+                    const a = tx.executeSql(
+                        `insert into users (user_name, password, is_parent) values ( ? , ? , ?)`,
+                        [user.username, user.password, user.isParent ? 1 : 0]
+                    );
+                    console.log(a);
+                },
+                (t, error) => {
+                    console.log("db error insert users");
+                    console.log(error);
+                    reject(error);
+                },
+                (_t, _success) => {
+                    console.log("Inserted New User");
+                    successFunc(user); //test
+                    resolve(_success);
+                }
+            );
+        } catch (error) {
+            console.log("db insert = " + error)
+        }
+
     });
 };
 

@@ -265,6 +265,7 @@ function CreateTaskListForChildScreen({ navigation }) {
                     items={dummyTestChildren}
                     icon="face"
                     placeholder="Select Child"
+                    numberOfColumns={2}
                 />
 
                 {/* <AppLabel labelText="Select Cateogory:" /> */}
@@ -287,6 +288,7 @@ function CreateTaskListForChildScreen({ navigation }) {
                     PickerItemComponent={CategoryPickerItem}
                     onSelectItem={handleSelectItem}
                     selectedItem={selectedCategory}
+                    numberOfColumns={2}
                 />
                 {selectedCategory && (
                     <AppPicker
@@ -296,6 +298,7 @@ function CreateTaskListForChildScreen({ navigation }) {
                         PickerItemComponent={CategoryPickerItem}
                         onSelectItem={handleSelectTask}
                         selectedItem={selectedTask}
+
                     />
                 )}
 

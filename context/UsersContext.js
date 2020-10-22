@@ -40,15 +40,18 @@ export const UsersContextProvider = (props) => {
 
     //Icon
     const [icons, setIcons] = useState();
+    const loadDataFromDB = async () => {
 
+    }
     // We have a useEffect call to instantiate the users list from the database. We only call this function on the first render
     useEffect(() => {
+        console.log("***** User Context ****")
         refreshItems();
         refreshCategories();
         refreshTasks();
         refreshRewards();
         refreshUsers();
-        getkids();
+        getKids();
         // //getSpecificTasksGlen();
         refreshIcons();
     }, []);
@@ -139,9 +142,14 @@ export const UsersContextProvider = (props) => {
 
     const addNewUser = async (user) => {
         //await database.insertUser(user, refreshUsers);
-        await databaseUsers.insertUser(user, refreshUsers);
-        await getkids();
-        return;
+        try {
+            await databaseUsers.insertUser(user, refreshUsers);
+            await getKids();
+            return;
+        } catch (error) {
+            console.log("error add new user = " + error)
+        }
+
     };
 
     const refreshUsers = async () => {
@@ -157,7 +165,7 @@ export const UsersContextProvider = (props) => {
         return result;
     };
 
-    const getkids = async () => {
+    const getKids = async () => {
         //return await database.getKids(setKids);
         return await databaseUsers.getKids(setKids);
     };
@@ -165,7 +173,7 @@ export const UsersContextProvider = (props) => {
     const removeKid = async (userId) => {
         // await database.removeKid(userId);
         await databaseUsers.removeKid(userId);
-        await getkids();
+        await getKids();
         await databaseUsers.getUsers(setUsers);
         return;
     };
@@ -173,7 +181,7 @@ export const UsersContextProvider = (props) => {
     const updateKid = async (kid) => {
         //await database.updateKid(kid);
         await databaseUsers.updateKid(kid);
-        await getkids();
+        await getKids();
         await databaseUsers.getUsers(setUsers);
     };
     // Make the context object:

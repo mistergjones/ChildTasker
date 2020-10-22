@@ -87,10 +87,7 @@ function LoginScreen({ navigation, route }) {
               error={errors ? errors.password : ""}
             />
             <AppButton title="login" onPress={handleSubmit} />
-            <AppButton
-              title="Register"
-              onPress={() => navigation.navigate(screens.Register)}
-            />
+
           </>
         )}
       </Formik>

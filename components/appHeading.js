@@ -2,17 +2,19 @@
 // We can pass the title and colour props into the buton
 import React, { useContext } from "react";
 import { View, Text, StyleSheet } from "react-native";
+import colours from "../config/colours.js";
 
 // import our standard library of colours
 import colors from "../config/colours.js";
 import AuthContext from "./auth/context.js";
+import User from '../screens/login/User';
 
 const AppButton = ({ title, color = "defaultHeadingColour" }) => {
     const { user } = useContext(AuthContext);
     return (
         <View style={[styles.button, { backgroundColor: colors[color] }]}>
             <Text style={styles.text}>{title}</Text>
-            {user && <Text>{user.username}</Text>}
+            {user && <User iconName={"human"} color={"gold"} username={user.username} />}
         </View>
     );
 };
@@ -39,5 +41,8 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         textAlign: "center",
     },
+    user: {
+        color: colours.white
+    }
 });
 export default AppButton;

@@ -26,6 +26,8 @@ import AddNewTaskScreen from "../parent/manageCategories/AddNewTaskScreen";
 import EditExistingTaskScreen from "../parent/manageCategories/EditExistingTaskScreen";
 import RemoveTaskScreen from "../parent/manageCategories/RemoveTaskScreen";
 
+import RegisterScreen from "../login/RegisterScreen";
+
 const Stack = createStackNavigator();
 
 function ParentStackNavigator(props) {
@@ -109,6 +111,7 @@ function ParentStackNavigator(props) {
                 name={screens.ViewDatabaseUsers}
                 component={ViewDatabaseUsers}
             />
+            <Stack.Screen name={screens.Register} component={RegisterScreen} />
         </Stack.Navigator>
     );
 }

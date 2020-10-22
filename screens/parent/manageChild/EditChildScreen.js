@@ -17,11 +17,15 @@ import AppTextInput from "../../../components/AppTextInput";
 
 import { Formik } from "formik";
 import * as Yup from "yup";
+import UserPicker from '../../../components/userPicker';
+
+
 
 const updateChildSchema = Yup.object().shape({
     childname: Yup.string().required().label("Child name"),
 
 });
+
 function EditChildScreen({ navigation }) {
     const { kids, updateKid } = useContext(UsersContext);
     const [selectedItem, setSelectedItem] = useState();
@@ -32,7 +36,7 @@ function EditChildScreen({ navigation }) {
     console.log("kids", kids);
 
     const kidsData = kids.map((kid) => {
-        return { label: kid.user_name, value: kid.user_id, pin: kid.password };
+        return { label: kid.user_name, value: kid.user_id, pin: kid.password, icon: "human-child" };
     });
 
     console.log("kids data =" + kidsData);
@@ -54,14 +58,15 @@ function EditChildScreen({ navigation }) {
         <Screen>
             <ScrollView style={styles.container}>
                 <AppHeading title="Edit Child" />
-
-                <AppPicker
-                    items={kidsData}
+                <UserPicker items={kidsData}
                     icon="account-child"
                     placeholder="Select Child"
                     onSelectItem={handleSelectItem}
                     selectedItem={selectedItem}
+                    numberOfColumns={1}
+
                 />
+
                 {selectedItem && (
                     <>
                         <Formik
@@ -101,20 +106,22 @@ function EditChildScreen({ navigation }) {
                                     )}
                                     {selectedItem && <AppButton title="Save and Exit" onPress={handleSubmit} />}
 
-                                    <AppButton
-                                        title="Return"
-                                        onPress={() =>
-                                            navigation.navigate(screens.ParentChildDashBoard)
-                                        }
-                                    />
+
 
                                 </>
 
                             )}
 
                         </Formik>
+
                     </>
                 )}
+                <AppButton
+                    title="Return"
+                    onPress={() =>
+                        navigation.navigate(screens.ParentChildDashBoard)
+                    }
+                />
             </ScrollView>
         </Screen>
     );
@@ -122,11 +129,14 @@ function EditChildScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-    container: {},
+    container: {
+
+    },
     rowAlignment: {
         flexDirection: "row",
         justifyContent: "center",
         alignItems: "center",
+
     },
     picker: {
         marginBottom: 150,
