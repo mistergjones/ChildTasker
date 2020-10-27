@@ -24,9 +24,11 @@ const getCategories = (setUserFunc) => {
             (t, error) => {
                 console.log("db error load CATEGORIES");
                 console.log(error);
+                reject(error);
             },
             (_t, _success) => {
                 console.log("Retrieved CATEGORIES");
+                resolve(_success);
             }
         );
     });

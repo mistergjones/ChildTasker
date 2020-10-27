@@ -27,8 +27,8 @@ function AppPicker({
     width = "100%",
     marginLeft = 12,
 }) {
-    console.log("Placeholder", placeholder);
-    console.log("selectedItem", selectedItem);
+    // console.log("Placeholder", placeholder);
+    // console.log("selectedItem", selectedItem);
     const [modalVisible, setModalVisible] = useState(false);
 
     return (

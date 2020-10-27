@@ -1,5 +1,11 @@
 import React, { useContext, useState } from "react";
-import { View, StyleSheet, TextInput, SafeAreaView } from "react-native";
+import {
+    View,
+    StyleSheet,
+    TextInput,
+    SafeAreaView,
+    ScrollView,
+} from "react-native";
 import screens from "../../../config/screens";
 import AppButton from "../../../components/appButton";
 import AppHeading from "../../../components/appHeading.js";
@@ -122,6 +128,7 @@ export default function AddNewTaskScreen({ navigation }) {
         };
         try {
             await addNewTask(infoToAdd);
+            navigation.navigate(screens.AddCategory);
         } catch (error) {
             console.log("There as an error inserting a NEW TASK");
         }
@@ -136,82 +143,89 @@ export default function AddNewTaskScreen({ navigation }) {
     ];
 
     return (
-        <Screen style={styles.container}>
-            <AppHeading title="Add New Task" />
+        <SafeAreaView style={styles.container}>
+            <ScrollView>
+                <AppHeading title="Add New Task" />
 
-            <Form
-                initialValues={{
-                    task_name: "",
-                    task_colour: "",
-                    task_icon: "",
-                    task_points: "",
-                    category_id: null,
-                }}
-                onSubmit={(values) => console.log(values)}
-            >
-                <AppTextInput
-                    placeholder="Type New Task"
-                    labelText="New task name:"
-                    // name="task-name"
-                    icon="account"
-                    onChangeText={handleNewTaskName}
-                />
+                <Form
+                    initialValues={{
+                        task_name: "",
+                        task_colour: "",
+                        task_icon: "",
+                        task_points: "",
+                        category_id: null,
+                    }}
+                    onSubmit={(values) => console.log(values)}
+                >
+                    <AppTextInput
+                        placeholder="Type New Task"
+                        labelText="New task name:"
+                        // name="task-name"
+                        icon="account"
+                        onChangeText={handleNewTaskName}
+                    />
 
-                <AppTextInput
-                    placeholder="Task Points"
-                    labelText="Task points:"
-                    name="task_points"
-                    type="number"
-                    // labelText="Points"
-                    icon="account"
-                    onChangeText={handleNewPoints}
-                />
+                    <AppTextInput
+                        placeholder="Task Points"
+                        labelText="Task points:"
+                        name="task_points"
+                        type="number"
+                        // labelText="Points"
+                        icon="account"
+                        onChangeText={handleNewPoints}
+                    />
 
-                <AppPicker
-                    items={iconList}
-                    icon="face"
-                    labelText="Icon Theme:"
-                    numberOfColumns={3}
-                    PickerItemComponent={CategoryPickerItem}
-                    selectedItem={selectedIconItem}
-                    onSelectItem={handleSelectIconItem}
-                    placeholder="Select an Icon"
-                    justifyContent="center"
-                    width="90%"
-                />
+                    <AppPicker
+                        items={iconList}
+                        icon="face"
+                        labelText="Icon Theme:"
+                        numberOfColumns={3}
+                        PickerItemComponent={CategoryPickerItem}
+                        selectedItem={selectedIconItem}
+                        onSelectItem={handleSelectIconItem}
+                        placeholder="Select an Icon"
+                        justifyContent="center"
+                        width="90%"
+                    />
 
-                <AppPicker
-                    items={dummyColours}
-                    icon="face"
-                    labelText="Icon Theme:"
-                    selectedItem={selectedColourItem}
-                    onSelectItem={handleSelectColourItem}
-                    placeholder="Select a background colour"
-                    justifyContent="center"
-                    width="90%"
-                />
+                    <AppPicker
+                        items={dummyColours}
+                        icon="face"
+                        labelText="Icon Theme:"
+                        selectedItem={selectedColourItem}
+                        onSelectItem={handleSelectColourItem}
+                        placeholder="Select a background colour"
+                        justifyContent="center"
+                        width="90%"
+                    />
 
-                <AppPicker
-                    items={categoryList}
-                    icon="face"
-                    labelText="Icon Theme:"
-                    numberOfColumns={3}
-                    PickerItemComponent={CategoryPickerItem}
-                    selectedItem={selectedCategoryItem}
-                    onSelectItem={handleSelectCategoryItem}
-                    placeholder="Assign task to category..."
-                    justifyContent="center"
-                    width="90%"
-                />
+                    <AppPicker
+                        items={categoryList}
+                        icon="face"
+                        labelText="Icon Theme:"
+                        numberOfColumns={3}
+                        PickerItemComponent={CategoryPickerItem}
+                        selectedItem={selectedCategoryItem}
+                        onSelectItem={handleSelectCategoryItem}
+                        placeholder="Assign task to category..."
+                        justifyContent="center"
+                        width="90%"
+                    />
 
-                <AppButton title="Save Changes" onPress={handleAddNewTask} />
+                    <AppButton
+                        title="Save Changes"
+                        onPress={handleAddNewTask}
+                    />
 
-                <AppButton
-                    title="Return"
-                    onPress={() => navigation.navigate(screens.ParentDashBoard)}
-                />
-            </Form>
-        </Screen>
+                    <AppButton
+                        title="Return"
+                        onPress={() =>
+                            navigation.navigate(screens.ParentDashBoard)
+                        }
+                    />
+                </Form>
+            </ScrollView>
+        </SafeAreaView>
     );
 }
 

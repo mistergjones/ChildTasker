@@ -6,7 +6,7 @@ import AppText from "./appText.js";
 import AppMaterialCommunityIcon from "./appMaterialCommunityIcon.js";
 
 function appChoresCategoryPicker({ item, onPress }) {
-    console.log(item);
+    console.log(`chorePickerItem.js: `, item);
     return (
         <View style={styles.container}>
             <AppMaterialCommunityIcon

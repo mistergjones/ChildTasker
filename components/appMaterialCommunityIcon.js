@@ -4,7 +4,7 @@ import { View, StyleSheet } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import colours from "../config/colours.js";
 
-function appMaterialCommunityIcon({ iconName, iconSize, iconColor = "blue" }) {
+function appMaterialCommunityIcon({ iconName, iconSize, iconColor = "green" }) {
     return (
         <View style={styles.container}>
             <MaterialCommunityIcons

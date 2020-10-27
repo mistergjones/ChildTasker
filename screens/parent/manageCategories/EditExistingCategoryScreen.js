@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, ScrollView, SafeAreaView } from "react-native";
 
 import screens from "../../../config/screens";
 import AppButton from "../../../components/appButton";
@@ -76,61 +76,135 @@ export default function EditExistingCategoryScreen({ navigation }) {
 
         try {
             await updateCategory(items);
-            // await console.log(items);
+            console.log("ZZZZZZZZZZZZZZZZZZZZ");
         } catch (error) {
             console.log("The error inserting updated Category name", error);
         }
-        return;
     };
 
+    // Validation Schema
+    const categorySchema = Yup.object().shape({
+        category_name: Yup.string().required().label("Category name"),
+        // category_colour: Yup.string().required().label("category Colour"),
+        // category_icon: Yup.string().required().label("category Icon"),
+    });
+
     return (
-        <Screen style={styles.container}>
-            <AppHeading title="Edit Category" />
+        <SafeAreaView style={styles.container}>
+            <ScrollView>
+                <AppHeading title="Edit Category" />
 
-            <Form
-                initialValues={{
-                    category_name: "",
-                    category_colour: "",
-                    category_id: "",
-                    category_icon: "",
-                }}
-            >
-                {/* GJ 21/10 - Note: AppPicker does not work for this category picker. But works for Tasks...Strange */}
-
-                <AppPicker
-                    items={categoryList}
-                    icon="face"
-                    numberOfColumns={3}
-                    PickerItemComponent={CategoryPickerItem}
-                    placeholder="Select Category"
-                    selectedItem={selectedItem}
-                    onSelectItem={handleSelectItem}
-                    justifyContent="center"
-                    width="90%"
-                />
-
-                <AppTextInput
-                    placeholder="Rename Category"
-                    labelText="New Category Name"
-                    // labelText="Category"
-                    icon="account"
-                    onChangeText={handleRenamedCategory}
-                />
-
-                <AppButton
-                    title="Save Changes"
-                    onPress={async () => {
-                        await categoryUpdate();
-                        navigation.navigate(screens.AddCategory);
+                <Formik
+                    initialValues={{
+                        category_name: "",
+                        category_colour: "",
+                        category_id: "",
+                        category_icon: "",
                     }}
-                />
+                    onSubmit={async (fields, { setFieldError }) => {
+                        try {
+                            await updateCategory({
+                                category_id: Number(selectedItem.value),
+                                category_name: fields.category_name,
+                                category_colour: selectedItem.backgroundColor,
+                                category_icon: selectedItem.icon,
+                            });
+                            console.log(
+                                "WE are inside the try await edit existing",
+                                fields
+                            );
+                            console.log("Finished updating task");
 
-                <AppButton
-                    title="Return"
-                    onPress={() => navigation.navigate(screens.AddCategory)}
-                />
-            </Form>
-        </Screen>
+                            navigation.navigate(screens.AddCategory);
+                        } catch (error) {
+                            console.log(
+                                "Edit Existing Catagory screen with update error = ",
+                                error
+                            );
+                        }
+                    }}
+                    validationSchema={categorySchema}
+                >
+                    {({ handleChange, handleSubmit, errors }) => (
+                        <>
+                            <AppPicker
+                                items={categoryList}
+                                icon="face"
+                                numberOfColumns={3}
+                                PickerItemComponent={CategoryPickerItem}
+                                placeholder="Select Category"
+                                onSelectItem={handleSelectItem}
+                                selectedItem={selectedItem}
+                                // justifyContent="center"
+                                // width="90%"
+                            />
+
+                            <AppTextInput
+                                placeholder="Rename Category"
+                                labelText="New Category Name"
+                                // labelText="Category"
+                                icon="account"
+                                onChangeText={handleChange("category_name")}
+                            />
+
+                            <AppButton
+                                title="Save Changes"
+                                onPress={handleSubmit}
+                            />
+
+                            <AppButton
+                                title="Return"
+                                onPress={() =>
+                                    navigation.navigate(screens.AddCategory)
+                                }
+                            />
+                        </>
+                    )}
+                </Formik>
+
+                {/* <Form
+                    initialValues={{
+                        category_name: "",
+                        category_colour: "",
+                        category_id: "",
+                        category_icon: "",
+                    }}
+                >
+                    <AppPicker
+                        items={categoryList}
+                        icon="face"
+                        numberOfColumns={3}
+                        PickerItemComponent={CategoryPickerItem}
+                        placeholder="Select Category"
+                        selectedItem={selectedItem}
+                        onSelectItem={handleSelectItem}
+                        // justifyContent="center"
+                        // width="90%"
+                    />
+
+                    <AppTextInput
+                        placeholder="Rename Category"
+                        labelText="New Category Name"
+                        // labelText="Category"
+                        icon="account"
+                        onChangeText={handleRenamedCategory}
+                    />
+
+                    <AppButton
+                        title="Save Changes"
+                        onPress={async () => {
+                            await categoryUpdate();
+                            navigation.navigate(screens.AddCategory);
+                        }}
+                    />
+
+                    <AppButton
+                        title="Return"
+                        onPress={() => navigation.navigate(screens.AddCategory)}
+                    />
+                </Form> */}
+            </ScrollView>
+        </SafeAreaView>
     );
 }
 
