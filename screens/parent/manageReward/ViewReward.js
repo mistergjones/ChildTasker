@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   View,
   StyleSheet,
@@ -17,83 +17,18 @@ import AppText from "../../../components/appText";
 import ListItem from "../../../components/appListItem";
 import screens from "../../../config/screens";
 import AppMaterialIcon from "../../../components/appMaterialCommunityIcon";
+import { UsersContext } from "../../../context/UsersContext.js";
 
-const rewards = [
-  {
-    id: 1,
-    title: "Takeaway",
-    points: 10,
-    image: require("../../../assets/favicon.png"),
-  },
-  {
-    id: 2,
-    title: "Games",
-    points: 15,
-    image: require("../../../assets/favicon.png"),
-  },
-  {
-    id: 3,
-    title: "Internet",
-    points: 15,
-    image: require("../../../assets/favicon.png"),
-  },
-  {
-    id: 4,
-    title: "Whatever",
-    points: 10,
-    image: require("../../../assets/favicon.png"),
-  },
-  {
-    id: 5,
-    title: "Whatever",
-    points: 10,
-    image: require("../../../assets/favicon.png"),
-  },
-  {
-    id: 6,
-    title: "Whatever",
-    points: 10,
-    image: require("../../../assets/favicon.png"),
-  },
-  {
-    id: 7,
-    title: "Whatever",
-    points: 10,
-    image: require("../../../assets/favicon.png"),
-  },
-  {
-    id: 8,
-    title: "Whatever",
-    points: 10,
-    image: require("../../../assets/favicon.png"),
-  },
-  {
-    id: 9,
-    title: "Whatever",
-    points: 10,
-    image: require("../../../assets/favicon.png"),
-  },
-  {
-    id: 10,
-    title: "Whatever",
-    points: 10,
-    image: require("../../../assets/favicon.png"),
-  },
-  {
-    id: 11,
-    title: "Whatever",
-    points: 10,
-    image: require("../../../assets/favicon.png"),
-  },
-  {
-    id: 12,
-    title: "Whatever",
-    points: 10,
-    image: require("../../../assets/favicon.png"),
-  },
-];
-//this is view reward file: changed from add reward to view reward
 function ViewReward({ navigation }) {
+  const {
+    rewards,
+    selectedReward,
+    setSelectedReward,
+    deleteReward,
+    // updateReward,
+    // getRewardByID,
+  } = useContext(UsersContext);
+  console.log("View Reward", rewards);
   const [modalVisible, setModalVisible] = useState(false);
 
   return (
@@ -104,7 +39,7 @@ function ViewReward({ navigation }) {
         contentContainerStyle={styles.wrapper}
         numColumns={"3"}
         data={rewards}
-        keyExtractor={(reward) => reward.id.toString()}
+        keyExtractor={(reward) => reward.reward_id}
         ItemSeparatorComponent={() => {
           return (
             <View
@@ -119,29 +54,39 @@ function ViewReward({ navigation }) {
           <TouchableHighlight
             style={{ margin: 5 }}
             onLongPress={() => {
+              setSelectedReward(item.reward_id);
               setModalVisible(!modalVisible);
             }}
           >
             <ListItem
-              title={item.title}
-              subTitle={item.points}
-              image={item.image}
+              title={item.reward_name}
+              subTitle={item.reward_points}
+              // image={item.image}
+              icon={item.icon_name}
               style={{ borderBottom: "#af7b4b", borderWidth: 15 }}
             />
           </TouchableHighlight>
         )}
         ListHeaderComponent={
           <>
-            {/* <AppHeading title="View Reward Category & Points" /> */}
             <Modal visible={modalVisible} animationType="slide">
               <Screen>
-                <Button title="Close" onPress={() => setModalVisible(false)} />
+                <Button
+                  title="Close"
+                  onPress={() => {
+                    setModalVisible(false);
+                  }}
+                />
                 <View>
                   <AppButton
                     title="Delete Reward"
                     onPress={() => {
                       setModalVisible(!modalVisible);
+                      deleteReward(selectedReward);
+                      console.log("Long pressed deleted", selectedReward);
                       Alert.alert("Deleted");
+                      // setSelectedReward(null);
+                      navigation.navigate(screens.ViewReward);
                     }}
                   />
                   <AppButton
