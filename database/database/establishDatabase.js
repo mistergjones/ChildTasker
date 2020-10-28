@@ -338,12 +338,12 @@ const loadRewards = async () => {
         db.transaction(
             (tx) => {
                 tx.executeSql(
-                    "insert into rewards (reward_name, reward_points) values (?,?)",
-                    ["Play Console", 20]
+                    "insert into rewards (reward_name, reward_points, icon_id) values (?,?,?)",
+                    ["Play Console", 20, 1]
                 );
                 tx.executeSql(
-                    "insert into rewards (reward_name, reward_points) values (?,?)",
-                    ["Go Karting", 220]
+                    "insert into rewards (reward_name, reward_points, icon_id) values (?,?,?)",
+                    ["Go Karting", 40, 2]
                 );
             },
             (t, error) => {
