@@ -39,6 +39,8 @@ import {
     establishKidListInObjectFormat,
 } from "../../../helpers/createObjectLists";
 
+const runningTasksToAssign = [];
+
 function CreateTaskListForChildScreen({ navigation }) {
     const usersContext = useContext(UsersContext);
 
@@ -94,7 +96,11 @@ function CreateTaskListForChildScreen({ navigation }) {
         setNumberOfSpecificTaskColumns,
     ] = useState(null);
 
-    const [submitButtonEnabled, setSubmitButtonEnabled] = useState(true);
+    // used to determine when to show the "Save all Changes" button
+    const [
+        saveAllChangesButtonEnabled,
+        setSaveAllChangesButtonEnabled,
+    ] = useState(null);
 
     //************************************ */
     // Categories - make the selectable category list
@@ -103,9 +109,9 @@ function CreateTaskListForChildScreen({ navigation }) {
 
     categoryList = establishCategoryTasksListInObjectFormat(categories);
 
-    //************************************ */
+    //*************************************/
     // Tasks - make the selectable task list
-    //************************************ */
+    //*************************************/
     var taskList = [];
 
     taskList = establishCategoryTasksListInObjectFormat(tasks);
@@ -196,24 +202,38 @@ function CreateTaskListForChildScreen({ navigation }) {
         }
     }, []);
 
-    // this function is to obtain teh values from teh UI and insert hte data into the tables.
-    const handleAssignTasksToKid = async () => {
-        const items = {
-            category_id: selectedCategory.value,
-            category_name: selectedCategory.label,
-            task_id: selectedTask.value,
-            task_name: selectedTask.label,
-            task_points: selectedTask.points,
-            kid_id: selectedKid.value,
-            kid_name: selectedKid.label,
-            reward_id: selectedReward.value,
-            reward_name: selectedReward.label,
-            reward_points: selectedReward.points,
-        };
+    // this function is submit the required fields to the database. TABLE: kidchores
+    const handleSubmitChangesToDatabase = async () => {
         try {
-            // if (totalTaskPoints >= selectedReward.points) {
-            if (totalTaskPoints > -1) {
-                await addChoresToKid(items);
+            if (totalTaskPoints >= selectedReward.points) {
+                // if (totalTaskPoints > -1) {
+                // need to iterate through each object to insert the item for the kidchore table.
+                for (
+                    var loopIterator = 0;
+                    loopIterator < runningTasksToAssign.length;
+                    loopIterator++
+                ) {
+                    // break each "record" into an object before database insertion
+                    const items = {
+                        category_id:
+                            runningTasksToAssign[loopIterator].category_id,
+                        category_name:
+                            runningTasksToAssign[loopIterator].category_name,
+                        task_id: runningTasksToAssign[loopIterator].task_id,
+                        task_name: runningTasksToAssign[loopIterator].task_name,
+                        task_points:
+                            runningTasksToAssign[loopIterator].task_points,
+                        kid_id: runningTasksToAssign[loopIterator].kid_id,
+                        kid_name: runningTasksToAssign[loopIterator].kid_name,
+                        reward_id: runningTasksToAssign[loopIterator].reward_id,
+                        reward_name:
+                            runningTasksToAssign[loopIterator].reward_name,
+                        reward_points:
+                            runningTasksToAssign[loopIterator].reward_points,
+                    };
+
+                    await addChoresToKid(items);
+                }
 
                 navigation.navigate(screens.ParentDashBoard);
 
@@ -241,13 +261,35 @@ function CreateTaskListForChildScreen({ navigation }) {
 
     const handleResetDropDownAndContinue = () => {
         console.log("we are in:  handleResetDropDownAndContinue()");
+        // now add the
+        const items = {
+            category_id: selectedCategory.value,
+            category_name: selectedCategory.label,
+            task_id: selectedTask.value,
+            task_name: selectedTask.label,
+            task_points: selectedTask.points,
+            kid_id: selectedKid.value,
+            kid_name: selectedKid.label,
+            reward_id: selectedReward.value,
+            reward_name: selectedReward.label,
+            reward_points: selectedReward.points,
+        };
 
+        runningTasksToAssign.push(items);
+        console.log(runningTasksToAssign);
+
+        // calculate the total task points added
         setTotalTaskPoints(totalTaskPoints + selectedTaskPoints);
 
         setSelectedCategory(null);
         setSelectedTask(null);
 
-        // the code below should catpure all details in an object each and once the task total >= to REWARD total, then we submit to the database.
+        // the below determines when to show the "Save All Changes" button. NOTE: it is still passive and waits for next butotn click to render correctly.
+        if (totalTaskPoints >= selectedReward.points) {
+            setSaveAllChangesButtonEnabled(true);
+        } else {
+            setSaveAllChangesButtonEnabled(false);
+        }
     };
 
     return (
@@ -278,7 +320,6 @@ function CreateTaskListForChildScreen({ navigation }) {
                         selectedItem={selectedKid}
                         width="90%"
                     />
-
                     {selectedKid && (
                         <AppPicker
                             items={rewardList}
@@ -291,7 +332,6 @@ function CreateTaskListForChildScreen({ navigation }) {
                             width="90%"
                         />
                     )}
-
                     {selectedReward && (
                         <AppPicker
                             items={categoryList}
@@ -317,7 +357,6 @@ function CreateTaskListForChildScreen({ navigation }) {
                             width="90%"
                         />
                     )}
-
                     {selectedKid && selectedReward && (
                         <View style={styles.score}>
                             <View style={styles.currentRewardTaskContainer}>
@@ -338,19 +377,18 @@ function CreateTaskListForChildScreen({ navigation }) {
                             </View>
                         </View>
                     )}
-
                     {selectedKid && selectedReward && (
                         <AppButton
                             title="Add Another task"
                             onPress={handleResetDropDownAndContinue}
                         />
                     )}
-
-                    <AppButton
-                        title="Submit Changes"
-                        onPress={handleAssignTasksToKid}
-                    />
-
+                    {saveAllChangesButtonEnabled && (
+                        <AppButton
+                            title="Save All Changes"
+                            onPress={handleSubmitChangesToDatabase}
+                        />
+                    )}
                     <AppButton
                         title="Return"
                         onPress={() =>

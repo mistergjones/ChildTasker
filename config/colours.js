@@ -9,7 +9,7 @@ export default {
     light: "#f8f4f4",
     dark: "#0c0c0c",
     danger: "#ff5252",
-    headingText: "green",
+    headingText: "white",
     buttonText: "white",
     buttonBorder: "#502274",
     buttonBackground: "#A42CD6",
@@ -18,6 +18,5 @@ export default {
     inputLabel: "orange",
     inputPlaceholder: "dodgerblue",
     inputIcon: "tomato",
-    text: "aqua"
-
+    text: "aqua",
 };
