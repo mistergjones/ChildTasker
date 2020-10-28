@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import {
+    Alert,
     View,
     StyleSheet,
     TextInput,
@@ -26,20 +27,17 @@ import {
 } from "../../../components/forms";
 
 import AppMaterialIcon from "../../../components/appMaterialCommunityIcon";
-
 import CategoryPickerItem from "../../../components/appCategoryPickerItem";
-
 import AppPicker from "../../../components/appPicker";
-
-/*************************************************************************************************/
-import * as SQLite from "expo-sqlite";
-
-// open the database
-const db = SQLite.openDatabase("db.db");
-
 import { UsersContext } from "../../../context/UsersContext";
 
 /*************************************************************************************************/
+
+import {
+    establishCategoryTasksListInObjectFormat,
+    establishRewardListInObjectFormat,
+    establishKidListInObjectFormat,
+} from "../../../helpers/createObjectLists";
 
 function CreateTaskListForChildScreen({ navigation }) {
     const usersContext = useContext(UsersContext);
@@ -96,79 +94,35 @@ function CreateTaskListForChildScreen({ navigation }) {
         setNumberOfSpecificTaskColumns,
     ] = useState(null);
 
+    const [submitButtonEnabled, setSubmitButtonEnabled] = useState(true);
+
     //************************************ */
     // Categories - make the selectable category list
     //************************************ */
     var categoryList = [];
 
-    // now loop through each item to obatin id and value and assign to an object. Push this object into the array
-    for (
-        var loopIterator = 0;
-        loopIterator < categories.length;
-        loopIterator++
-    ) {
-        var tempObject = {};
-        tempObject.label = categories[loopIterator].category_name;
-        tempObject.value = categories[loopIterator].category_id;
-        tempObject.backgroundColor = categories[loopIterator].category_colour;
-        tempObject.icon = categories[loopIterator].category_icon;
-        categoryList.push(tempObject);
-    }
+    categoryList = establishCategoryTasksListInObjectFormat(categories);
 
     //************************************ */
     // Tasks - make the selectable task list
     //************************************ */
     var taskList = [];
 
-    // now loop through each item to obatin id and value and assign to an object. Push this object into the array
-    for (var loopIterator = 0; loopIterator < tasks.length; loopIterator++) {
-        var tempObject = {};
-        tempObject.label =
-            tasks[loopIterator].task_name +
-            " (" +
-            tasks[loopIterator].task_points +
-            ")";
-
-        tempObject.value = tasks[loopIterator].task_id;
-        tempObject.points = tasks[loopIterator].task_points;
-        tempObject.backgroundColor = tasks[loopIterator].task_colour;
-        tempObject.icon = tasks[loopIterator].task_icon;
-        taskList.push(tempObject);
-    }
+    taskList = establishCategoryTasksListInObjectFormat(tasks);
 
     //************************************ */
     // Kids - make the selectabel kid list
     //************************************ */
     var kidList = [];
-    // now loop through each item to obatin id and value and assign to an object. Push this object into the array
 
-    for (var loopIterator = 0; loopIterator < kids.length; loopIterator++) {
-        var tempObject = {};
-        tempObject.label = kids[loopIterator].user_name;
-        tempObject.value = kids[loopIterator].user_id;
-
-        kidList.push(tempObject);
-    }
+    kidList = establishKidListInObjectFormat(kids);
 
     //************************************ */
     // Reward - make the selectable reward list
     //************************************ */
     var rewardList = [];
 
-    // now loop through each item to obatin id and value and assign to an object. Push this object into the array
-    for (var loopIterator = 0; loopIterator < rewards.length; loopIterator++) {
-        var tempObject = {};
-        tempObject.label =
-            rewards[loopIterator].reward_name +
-            " (" +
-            rewards[loopIterator].reward_points +
-            ")";
-        tempObject.value = rewards[loopIterator].reward_id;
-        tempObject.points = rewards[loopIterator].reward_points;
-        tempObject.icon = "trophy";
-        tempObject.backgroundColor = "gold";
-        rewardList.push(tempObject);
-    }
+    rewardList = establishRewardListInObjectFormat(rewards);
 
     // needed as SPECIFICS from teh set state was not geting updated immediately.
     useEffect(() => {
@@ -242,17 +196,6 @@ function CreateTaskListForChildScreen({ navigation }) {
         }
     }, []);
 
-    // This effect is used that when a category is selected and retrieves teh specific tasks, it makes sure that the correct number of columns in show.
-    // useEffect(() => {
-    //     if (specifics != undefined || specifics != null) {
-    //         if (pickableTasks.length % 2 === 0) {
-    //             setNumberOfSpecificTaskColumns(2);
-    //         } else {
-    //             setNumberOfSpecificTaskColumns(2);
-    //         }
-    //     }
-    // }, [pickableTasks]);
-
     // this function is to obtain teh values from teh UI and insert hte data into the tables.
     const handleAssignTasksToKid = async () => {
         const items = {
@@ -268,13 +211,28 @@ function CreateTaskListForChildScreen({ navigation }) {
             reward_points: selectedReward.points,
         };
         try {
-            await addChoresToKid(items);
+            if (totalTaskPoints >= selectedReward.points) {
+                await addChoresToKid(items);
 
-            navigation.navigate(screens.ParentDashBoard);
+                navigation.navigate(screens.ParentDashBoard);
 
-            // reset the drop down boxes to null
-            setSelectedCategory(null);
-            setSelectedTask(null);
+                // reset the drop down boxes to null
+                setSelectedCategory(null);
+                setSelectedTask(null);
+            } else {
+                Alert.alert(
+                    "Cannot Submit Changes",
+                    "Please make sure sure that TASKS TOTAL >= REWARD TOTAL",
+                    [
+                        {
+                            text: "Close",
+                            onPress: () => console.log("Cancel Pressed"),
+                            style: "cancel",
+                        },
+                    ],
+                    { cancelable: false }
+                );
+            }
         } catch (error) {
             console.log("The error inserting kids to chorse is", error);
         }
@@ -359,7 +317,7 @@ function CreateTaskListForChildScreen({ navigation }) {
                         />
                     )}
 
-                    {selectedReward && (
+                    {selectedKid && selectedReward && (
                         <View style={styles.score}>
                             <View style={styles.currentRewardTaskContainer}>
                                 <Text style={styles.currentRewardTaskScore}>
@@ -380,10 +338,12 @@ function CreateTaskListForChildScreen({ navigation }) {
                         </View>
                     )}
 
-                    <AppButton
-                        title="Add Another task"
-                        onPress={handleResetDropDownAndContinue}
-                    />
+                    {selectedKid && selectedReward && (
+                        <AppButton
+                            title="Add Another task"
+                            onPress={handleResetDropDownAndContinue}
+                        />
+                    )}
 
                     <AppButton
                         title="Submit Changes"
