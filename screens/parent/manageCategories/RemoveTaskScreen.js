@@ -1,5 +1,12 @@
 import React, { useState, useContext } from "react";
-import { View, StyleSheet, TextInput, Alert } from "react-native";
+import {
+    View,
+    StyleSheet,
+    TextInput,
+    Alert,
+    SafeAreaView,
+    ScrollView,
+} from "react-native";
 import screens from "../../../config/screens";
 import AppButton from "../../../components/appButton";
 import AppHeading from "../../../components/appHeading.js";
@@ -59,7 +66,7 @@ export default function RemoveTaskScreen({ navigation }) {
                         console.log(selectedItem.value);
                         await removeTask(selectedItem.value);
                         setSelectedItem(null);
-                        navigation.navigate(screens.ParentDashBoard);
+                        navigation.navigate(screens.AddCategory);
                     },
                 },
             ],
@@ -71,31 +78,33 @@ export default function RemoveTaskScreen({ navigation }) {
     };
 
     return (
-        <Screen style={styles.container}>
-            <AppHeading title="Remove a task" />
+        <SafeAreaView style={styles.container}>
+            <ScrollView>
+                <AppHeading title="Remove a task" />
 
-            <AppPicker
-                items={taskList}
-                icon="face"
-                name="chore"
-                numberOfColumns={3}
-                PickerItemComponent={CategoryPickerItem}
-                selectedItem={selectedItem}
-                onSelectItem={handleSelectItem}
-                placeholder="Select Task to Remove"
-                justifyContent="center"
-                width="90%"
-            />
+                <AppPicker
+                    items={taskList}
+                    icon="face"
+                    name="chore"
+                    numberOfColumns={3}
+                    PickerItemComponent={CategoryPickerItem}
+                    selectedItem={selectedItem}
+                    onSelectItem={handleSelectItem}
+                    placeholder="Select Task to Remove"
+                    justifyContent="center"
+                    width="90%"
+                />
 
-            {selectedItem && (
-                <AppButton title="Remove Task" onPress={removeTaskAlert} />
-            )}
+                {selectedItem && (
+                    <AppButton title="Remove Task" onPress={removeTaskAlert} />
+                )}
 
-            <AppButton
-                title="Return"
-                onPress={() => navigation.navigate(screens.AddCategory)}
-            />
-        </Screen>
+                <AppButton
+                    title="Return"
+                    onPress={() => navigation.navigate(screens.AddCategory)}
+                />
+            </ScrollView>
+        </SafeAreaView>
     );
 }
 

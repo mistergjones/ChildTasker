@@ -1,5 +1,12 @@
 import React, { useContext, useState } from "react";
-import { View, StyleSheet, Text, Alert } from "react-native";
+import {
+    View,
+    StyleSheet,
+    Text,
+    Alert,
+    SafeAreaView,
+    ScrollView,
+} from "react-native";
 
 import screens from "../../../config/screens";
 import AppButton from "../../../components/appButton";
@@ -63,6 +70,7 @@ export default function RemoveCategoryScreen({ navigation }) {
                         console.log(selectedItem.value);
                         await removeCategory(selectedItem.value);
                         setSelectedItem(null);
+                        navigation.navigate(screens.AddCategory);
                     },
                 },
             ],
@@ -74,9 +82,10 @@ export default function RemoveCategoryScreen({ navigation }) {
     };
 
     return (
-        <Screen style={styles.container}>
-            <AppHeading title="Remove Category" />
-            <Form>
+        <SafeAreaView style={styles.container}>
+            <ScrollView>
+                <AppHeading title="Remove Category" />
+
                 <AppPicker
                     items={categoryList}
                     icon="face"
@@ -101,8 +110,8 @@ export default function RemoveCategoryScreen({ navigation }) {
                     title="Return"
                     onPress={() => navigation.navigate(screens.AddCategory)}
                 />
-            </Form>
-        </Screen>
+            </ScrollView>
+        </SafeAreaView>
     );
 }
 

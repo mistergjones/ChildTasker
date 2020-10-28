@@ -1,8 +1,17 @@
 import React, { useContext, useState, useEffect } from "react";
-import { View, StyleSheet, TextInput } from "react-native";
+import {
+    Alert,
+    View,
+    StyleSheet,
+    TextInput,
+    SafeAreaView,
+    ScrollView,
+    Text,
+} from "react-native";
 
 import AppButton from "../../../components/appButton";
 import AppHeading from "../../../components/appHeading.js";
+import colours from "../../../config/colours";
 
 import AppLabel from "../../../components/appLabel";
 // the below is to pass screens/child as per mosh bideo
@@ -18,20 +27,17 @@ import {
 } from "../../../components/forms";
 
 import AppMaterialIcon from "../../../components/appMaterialCommunityIcon";
-
 import CategoryPickerItem from "../../../components/appCategoryPickerItem";
-
 import AppPicker from "../../../components/appPicker";
-
-/*************************************************************************************************/
-import * as SQLite from "expo-sqlite";
-
-// open the database
-const db = SQLite.openDatabase("db.db");
-
 import { UsersContext } from "../../../context/UsersContext";
 
 /*************************************************************************************************/
+
+import {
+    establishCategoryTasksListInObjectFormat,
+    establishRewardListInObjectFormat,
+    establishKidListInObjectFormat,
+} from "../../../helpers/createObjectLists";
 
 function CreateTaskListForChildScreen({ navigation }) {
     const usersContext = useContext(UsersContext);
@@ -68,6 +74,8 @@ function CreateTaskListForChildScreen({ navigation }) {
 
     // TASK
     const [selectedTask, setSelectedTask] = useState(null);
+    const [selectedTaskPoints, setSelectedTaskPoints] = useState(0);
+    const [totalTaskPoints, setTotalTaskPoints] = useState(0);
 
     // KiDS
     const [selectedKid, setSelectedKid] = useState(null);
@@ -75,86 +83,68 @@ function CreateTaskListForChildScreen({ navigation }) {
     // REWARDS
     const [selectedReward, setSelectedReward] = useState(null);
 
+    // used to set the number of columns to show in the AppPicker components that will vary the width % accordingly.
+    const [numberOfCategoryColumns, setNumberOfCategoryColumns] = useState(
+        null
+    );
+    const [numberOfRewardColumns, setNumberOfRewardColumns] = useState(null);
+
+    const [
+        numberOfSpecificTaskColumns,
+        setNumberOfSpecificTaskColumns,
+    ] = useState(null);
+
+    const [submitButtonEnabled, setSubmitButtonEnabled] = useState(true);
+
     //************************************ */
     // Categories - make the selectable category list
     //************************************ */
     var categoryList = [];
 
-    // now loop through each item to obatin id and value and assign to an object. Push this object into the array
-    for (
-        var loopIterator = 0;
-        loopIterator < categories.length;
-        loopIterator++
-    ) {
-        var tempObject = {};
-        tempObject.label = categories[loopIterator].category_name;
-        tempObject.value = categories[loopIterator].category_id;
-        tempObject.backgroundColor = "blue";
-        tempObject.icon = "school";
-        categoryList.push(tempObject);
-    }
+    categoryList = establishCategoryTasksListInObjectFormat(categories);
 
     //************************************ */
     // Tasks - make the selectable task list
     //************************************ */
     var taskList = [];
 
-    // now loop through each item to obatin id and value and assign to an object. Push this object into the array
-    for (var loopIterator = 0; loopIterator < tasks.length; loopIterator++) {
-        var tempObject = {};
-        tempObject.label = tasks[loopIterator].task_name;
-        tempObject.value = tasks[loopIterator].task_id;
-        tempObject.points = tasks[loopIterator].task_points;
-        tempObject.backgroundColor = "red";
-        tempObject.icon = "silverware-fork-knife";
-        taskList.push(tempObject);
-    }
+    taskList = establishCategoryTasksListInObjectFormat(tasks);
 
     //************************************ */
     // Kids - make the selectabel kid list
     //************************************ */
     var kidList = [];
-    // now loop through each item to obatin id and value and assign to an object. Push this object into the array
 
-    for (var loopIterator = 0; loopIterator < kids.length; loopIterator++) {
-        var tempObject = {};
-        tempObject.label = kids[loopIterator].user_name;
-        tempObject.value = kids[loopIterator].user_id;
-
-        kidList.push(tempObject);
-    }
+    kidList = establishKidListInObjectFormat(kids);
 
     //************************************ */
     // Reward - make the selectable reward list
     //************************************ */
     var rewardList = [];
 
-    // now loop through each item to obatin id and value and assign to an object. Push this object into the array
-    for (var loopIterator = 0; loopIterator < rewards.length; loopIterator++) {
-        var tempObject = {};
-        tempObject.label = rewards[loopIterator].reward_name;
-        tempObject.value = rewards[loopIterator].reward_id;
-        tempObject.points = rewards[loopIterator].reward_points;
-        rewardList.push(tempObject);
-    }
+    rewardList = establishRewardListInObjectFormat(rewards);
 
     // needed as SPECIFICS from teh set state was not geting updated immediately.
     useEffect(() => {
         var pickableTasksForThatChosenCategory = {};
 
         // on first render it is probabaly undefined
-        if (specifics != undefined) {
+        if (specifics != undefined || specifics != null) {
             pickableTasksForThatChosenCategory = specifics.map((theResult) => {
                 let a = {};
-                a.label = theResult.task_name;
+                a.label =
+                    theResult.task_name + " (" + theResult.task_points + ")";
                 a.value = theResult.task_id;
                 a.points = theResult.task_points;
-                a.backgroundColor = "red";
-                a.icon = "silverware-fork-knife";
+                a.backgroundColor = theResult.task_colour;
+                a.icon = theResult.task_icon;
+
                 return a;
             });
         } else {
-            console.log("WE ARE IN THE ELSE STATEMNT");
+            console.log(
+                "Initial loading of specific tasks is undefined until a user selects a category. WE ARE IN CreateTaskListForChild --> useEffect()"
+            );
         }
 
         // console.log("TEMP OBJECT: ", pickableTasksForThatChosenCategory);
@@ -163,8 +153,14 @@ function CreateTaskListForChildScreen({ navigation }) {
     }, [specifics]);
 
     // this function is to set the status of only the kids mapped to kids
+    const handleSelectKid = async (item) => {
+        setSelectedKid(item);
+    };
+
+    // this function is to set the status of only the kids mapped to kids
     const handleSelectReward = async (item) => {
         setSelectedReward(item);
+        setSelectedCategory(null);
     };
 
     const handleSelectItem = async (item) => {
@@ -172,17 +168,33 @@ function CreateTaskListForChildScreen({ navigation }) {
         await getSpecificTasksGlen(item.value);
         // update the state to capture the cateogories
         setSelectedCategory(item);
+        setSelectedTask(null);
     };
 
     // this function is to set the status of only the tasks mapped to the cateogory
     const handleSelectTask = async (item) => {
         setSelectedTask(item);
+        setSelectedTaskPoints(item.points);
     };
 
-    // this function is to set the status of only the kids mapped to kids
-    const handleSelectKid = async (item) => {
-        setSelectedKid(item);
-    };
+    // if there is a render change, we will sue the below to ensure the correct number of columns will be rendered to the scren.
+    useEffect(() => {
+        if (categories.length % 2 === 0) {
+            setNumberOfCategoryColumns(2);
+        } else if (categories.length % 3 === 0) {
+            setNumberOfCategoryColumns(3);
+        } else {
+            setNumberOfCategoryColumns(2);
+        }
+
+        if (rewards.length % 2 === 0) {
+            setNumberOfRewardColumns(2);
+        } else if (setNumberOfRewardColumns % 3 === 3) {
+            setNumberOfRewardColumns(3);
+        } else {
+            setNumberOfRewardColumns(2);
+        }
+    }, []);
 
     // this function is to obtain teh values from teh UI and insert hte data into the tables.
     const handleAssignTasksToKid = async () => {
@@ -199,84 +211,154 @@ function CreateTaskListForChildScreen({ navigation }) {
             reward_points: selectedReward.points,
         };
         try {
-            await addChoresToKid(items);
+            if (totalTaskPoints >= selectedReward.points) {
+                await addChoresToKid(items);
 
-            await console.log(items);
+                navigation.navigate(screens.ParentDashBoard);
+
+                // reset the drop down boxes to null
+                setSelectedCategory(null);
+                setSelectedTask(null);
+            } else {
+                Alert.alert(
+                    "Cannot Submit Changes",
+                    "Please make sure sure that TASKS TOTAL >= REWARD TOTAL",
+                    [
+                        {
+                            text: "Close",
+                            onPress: () => console.log("Cancel Pressed"),
+                            style: "cancel",
+                        },
+                    ],
+                    { cancelable: false }
+                );
+            }
         } catch (error) {
             console.log("The error inserting kids to chorse is", error);
         }
     };
 
+    const handleResetDropDownAndContinue = () => {
+        console.log("we are in:  handleResetDropDownAndContinue()");
+
+        setTotalTaskPoints(totalTaskPoints + selectedTaskPoints);
+
+        setSelectedCategory(null);
+        setSelectedTask(null);
+
+        // the code below should catpure all details in an object each and once the task total >= to REWARD total, then we submit to the database.
+    };
+
     return (
-        <Screen style={styles.container}>
-            <AppHeading title="Create Task For Child" />
-            <Form
-                initialValues={{
-                    category_id: "",
-                    category_name: "",
-                    task_id: "",
-                    task_name: "",
-                    task_points: "",
-                    kid_id: "",
-                    kid_name: "",
-                    reward_id: "",
-                    reward_name: "",
-                    reward_Points: "",
-                }}
-                onSubmit={(values) => console.log(values)}
-            >
-                <AppPicker
-                    items={kidList}
-                    icon="face"
-                    placeholder="Select Child"
-                    onSelectItem={handleSelectKid}
-                    selectedItem={selectedKid}
-                />
-
-                {selectedKid && (
+        <SafeAreaView style={styles.container}>
+            <ScrollView>
+                <AppHeading title="Create Task For Child" />
+                <Form
+                    initialValues={{
+                        category_id: "",
+                        category_name: "",
+                        task_id: "",
+                        task_name: "",
+                        task_points: "",
+                        kid_id: "",
+                        kid_name: "",
+                        reward_id: "",
+                        reward_name: "",
+                        reward_Points: "",
+                    }}
+                    // onSubmit={(values) => console.log(values)}
+                >
                     <AppPicker
-                        items={rewardList}
+                        items={kidList}
                         icon="face"
-                        placeholder="Select Reward"
-                        onSelectItem={handleSelectReward}
-                        selectedItem={selectedReward}
-                    />
-                )}
-
-                {selectedReward && (
-                    <AppPicker
-                        items={categoryList}
-                        icon="apps"
-                        placeholder="Select Category"
                         numberOfColumns={3}
-                        PickerItemComponent={CategoryPickerItem}
-                        onSelectItem={handleSelectItem}
-                        selectedItem={selectedCategory}
+                        placeholder="Select Child"
+                        onSelectItem={handleSelectKid}
+                        selectedItem={selectedKid}
+                        width="90%"
                     />
-                )}
-                {selectedCategory && (
-                    <AppPicker
-                        items={pickableTasks}
-                        icon="star-box-outline"
-                        placeholder="Select Task"
-                        numberOfColumns={3}
-                        PickerItemComponent={CategoryPickerItem}
-                        onSelectItem={handleSelectTask}
-                        selectedItem={selectedTask}
+
+                    {selectedKid && (
+                        <AppPicker
+                            items={rewardList}
+                            icon="trophy"
+                            placeholder="Select Reward"
+                            numberOfColumns={numberOfRewardColumns}
+                            PickerItemComponent={CategoryPickerItem}
+                            onSelectItem={handleSelectReward}
+                            selectedItem={selectedReward}
+                            width="90%"
+                        />
+                    )}
+
+                    {selectedReward && (
+                        <AppPicker
+                            items={categoryList}
+                            icon="sitemap"
+                            placeholder="Select Category"
+                            numberOfColumns={numberOfCategoryColumns}
+                            PickerItemComponent={CategoryPickerItem}
+                            onSelectItem={handleSelectItem}
+                            selectedItem={selectedCategory}
+                            width="90%"
+                        />
+                    )}
+                    {selectedCategory && (
+                        <AppPicker
+                            //numberofElements={}
+                            items={pickableTasks}
+                            icon="star-box-outline"
+                            placeholder="Select Task"
+                            numberOfColumns={2}
+                            PickerItemComponent={CategoryPickerItem}
+                            onSelectItem={handleSelectTask}
+                            selectedItem={selectedTask}
+                            width="90%"
+                        />
+                    )}
+
+                    {selectedKid && selectedReward && (
+                        <View style={styles.score}>
+                            <View style={styles.currentRewardTaskContainer}>
+                                <Text style={styles.currentRewardTaskScore}>
+                                    Reward Total:
+                                </Text>
+                                <Text style={styles.currentRewardTaskValue}>
+                                    {selectedReward.points}
+                                </Text>
+                            </View>
+                            <View style={styles.currentRewardTaskContainer}>
+                                <Text style={styles.currentRewardTaskScore}>
+                                    Tasks Total:
+                                </Text>
+                                <Text style={styles.currentRewardTaskValue}>
+                                    {totalTaskPoints}
+                                </Text>
+                            </View>
+                        </View>
+                    )}
+
+                    {selectedKid && selectedReward && (
+                        <AppButton
+                            title="Add Another task"
+                            onPress={handleResetDropDownAndContinue}
+                        />
+                    )}
+
+                    <AppButton
+                        title="Submit Changes"
+                        onPress={handleAssignTasksToKid}
                     />
-                )}
 
-                <AppButton
-                    title="Finalise Changes"
-                    onPress={handleAssignTasksToKid}
-                />
-
-                <AppButton
-                    title="Return"
-                    onPress={() => navigation.navigate(screens.ParentDashBoard)}
-                />
-            </Form>
-        </Screen>
+                    <AppButton
+                        title="Return"
+                        onPress={() =>
+                            navigation.navigate(screens.ParentDashBoard)
+                        }
+                    />
+                </Form>
+            </ScrollView>
+        </SafeAreaView>
     );
 }
 
@@ -287,6 +369,40 @@ const styles = StyleSheet.create({
         height: 50,
         width: 150,
         alignSelf: "center",
+    },
+    currentRewardTaskContainer: {
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: colours.defaultButtonColour,
+        width: "50%",
+        borderWidth: 1,
+        borderColor: colours.white,
+        borderTopStartRadius: 20,
+        borderTopEndRadius: 20,
+        borderBottomStartRadius: 20,
+        borderBottomEndRadius: 20,
+    },
+    currentRewardTaskScore: {
+        paddingTop: 10,
+        fontSize: 18,
+        textTransform: "uppercase",
+        fontWeight: "bold",
+        color: colours.white,
+    },
+    currentRewardTaskValue: {
+        padding: 5,
+        fontSize: 18,
+        color: "gold",
+    },
+    scrollView: {
+        height: "50%",
+        paddingLeft: 15,
+    },
+    score: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+        padding: 15,
     },
 });
 

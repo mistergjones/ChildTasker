@@ -4,10 +4,22 @@ import { View, StyleSheet, TouchableOpacity, Image } from "react-native";
 import Icon from "./Icon";
 import Text from "./appText";
 
-function appCategoryPickerItem({ item, onPress }) {
+function appCategoryPickerItem({ item, onPress, numColumns }) {
+    //console.log(`The item is: `, item);
+    var widthStyle = null;
+
+    // the below determines the width percentage to be used depending on teh number of columns that will need to be displayed.
+    if (numColumns % 2 === 0) {
+        //console.log("2 columns");
+        widthStyle = "50%";
+    } else if (numColumns % 3 === 0) {
+        //console.log("3 columns");
+        widthStyle = "33%";
+    }
+
     if ("icon" in item) {
         return (
-            <View style={styles.container}>
+            <View style={[styles.container, { width: widthStyle }]}>
                 <TouchableOpacity onPress={onPress}>
                     <Icon
                         backgroundColor={item.backgroundColor}
@@ -35,7 +47,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 30,
         paddingVertical: 15,
         alignItems: "center",
-        width: "33%",
+        // width: "33%",
     },
     label: {
         marginTop: 5,

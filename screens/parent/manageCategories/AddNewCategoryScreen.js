@@ -51,7 +51,7 @@ function AddNewCategoryScreen({ navigation }) {
                     try {
                         await addNewCategory(fields.category_name);
 
-                        navigation.navigate(screens.ParentDashBoard);
+                        navigation.navigate(screens.AddCategory);
                     } catch (error) {
                         console.log("error = ", error);
                     }

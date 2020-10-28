@@ -7,14 +7,20 @@ import colours from "../config/colours.js";
 // import our standard library of colours
 import colors from "../config/colours.js";
 import AuthContext from "./auth/context.js";
-import User from '../screens/login/User';
+import User from "../screens/login/User";
 
 const AppButton = ({ title, color = "defaultHeadingColour" }) => {
     const { user } = useContext(AuthContext);
     return (
         <View style={[styles.button, { backgroundColor: colors[color] }]}>
             <Text style={styles.text}>{title}</Text>
-            {user && <User iconName={"human"} color={"gold"} username={user.username} />}
+            {/* {user && (
+                <User
+                    iconName={"human"}
+                    color={"gold"}
+                    username={user.username}
+                />
+            )} */}
         </View>
     );
 };
@@ -42,7 +48,7 @@ const styles = StyleSheet.create({
         textAlign: "center",
     },
     user: {
-        color: colours.white
-    }
+        color: colours.white,
+    },
 });
 export default AppButton;
