@@ -211,7 +211,8 @@ function CreateTaskListForChildScreen({ navigation }) {
             reward_points: selectedReward.points,
         };
         try {
-            if (totalTaskPoints >= selectedReward.points) {
+            // if (totalTaskPoints >= selectedReward.points) {
+            if (totalTaskPoints > -1) {
                 await addChoresToKid(items);
 
                 navigation.navigate(screens.ParentDashBoard);
