@@ -15,7 +15,7 @@ function appLabel({ labelText, materialIcon }) {
 const styles = StyleSheet.create({
     container: {},
     textFormatting: {
-        color: "black",
+        color: colours.text,
         fontSize: 24,
         fontWeight: "bold",
         justifyContent: "center",

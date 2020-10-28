@@ -27,25 +27,30 @@ function User({ username, color, iconName, onPress }) {
 const styles = StyleSheet.create({
 
     container: {
-        width: "90%",
+        width: "100%",
         alignItems: "center",
         justifyContent: "center",
         alignSelf: "center",
-        marginBottom: 15
+        marginBottom: 15,
+        borderColor: colours.buttonBorder,
+        borderWidth: 1,
+        width: "100%",
+        borderRadius: 20,
+        shadowOpacity: 1
 
     },
     text: {
         alignItems: "center",
         justifyContent: "center",
-        width: 125,
+        // width: 125,
         padding: 20,
-        color: "gold"
+        color: colours.buttonText
     },
     view: {
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: colours.defaultHeadingColour,
+        backgroundColor: colours.buttonBackground,
         width: "100%",
         borderRadius: 20
 

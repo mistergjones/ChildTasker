@@ -9,4 +9,15 @@ export default {
     light: "#f8f4f4",
     dark: "#0c0c0c",
     danger: "#ff5252",
+    headingText: "green",
+    buttonText: "red",
+    buttonBorder: "#502274",
+    buttonBackground: "transparent",
+    inputText: "gold",
+    inputErrorMessage: "blue",
+    inputLabel: "orange",
+    inputPlaceholder: "dodgerblue",
+    inputIcon: "tomato",
+    text: "aqua"
+
 };

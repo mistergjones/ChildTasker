@@ -58,7 +58,8 @@ function EditChildScreen({ navigation }) {
         <Screen>
             <ScrollView style={styles.container}>
                 <AppHeading title="Edit Child" />
-                <UserPicker items={kidsData}
+                <UserPicker style={styles.picker}
+                    items={kidsData}
                     icon="account-child"
                     placeholder="Select Child"
                     onSelectItem={handleSelectItem}
@@ -89,7 +90,7 @@ function EditChildScreen({ navigation }) {
 
                                     <AppTextInput labelText="Child name"
                                         icon="account" onChangeText={handleChange("childname")}
-                                        errorStyle={{ color: "red" }}
+                                        errorStyle={{ color: "white" }}
                                         error={errors ? errors.childname : ""}
                                         defaultValue={selectedItem.label}
                                     />
@@ -140,9 +141,10 @@ const styles = StyleSheet.create({
     },
     picker: {
         marginBottom: 150,
-        height: 50,
-        width: 150,
+        // height: 50,
+        width: "90%",
         alignSelf: "center",
+        backgroundColor: "transparent"
     },
 });
 
