@@ -205,7 +205,7 @@ function CreateTaskListForChildScreen({ navigation }) {
 
     // this determines when to ENABLE the SUBMIT button to allow insertions to the database
     useEffect(() => {
-        if (totalTaskPoints > selectedRewardPoints) {
+        if (totalTaskPoints >= selectedRewardPoints) {
             setSaveAllChangesButtonEnabled(true);
         } else {
             setSaveAllChangesButtonEnabled(false);
