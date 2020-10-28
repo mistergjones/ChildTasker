@@ -12,7 +12,7 @@ import User from "../screens/login/User";
 const AppButton = ({ title, color = "defaultHeadingColour" }) => {
     const { user } = useContext(AuthContext);
     return (
-        <View style={[styles.button, { backgroundColor: colors[color] }]}>
+        <View style={[styles.button,]}>
             <Text style={styles.text}>{title}</Text>
             {/* {user && (
                 <User
@@ -39,9 +39,10 @@ const styles = StyleSheet.create({
         borderBottomRightRadius: 20,
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,
+        shadowOpacity: 1
     },
     text: {
-        color: colors.white,
+        color: colors.headingText,
         fontSize: 24,
         textTransform: "uppercase",
         fontWeight: "bold",

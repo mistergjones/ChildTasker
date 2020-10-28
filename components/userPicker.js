@@ -25,7 +25,7 @@ function UserPicker({
     PickerItemComponent = PickerItem,
     placeholder,
     selectedItem,
-    width = "100%",
+    //width = "100%",
     marginLeft = 12,
 }) {
     console.log("Placeholder", placeholder);
@@ -33,36 +33,38 @@ function UserPicker({
     const [modalVisible, setModalVisible] = useState(false);
 
     return (
-        <Screen>
-            <TouchableWithoutFeedback onPress={() => setModalVisible(true)}>
-                <View style={[styles.container, { width }, { marginLeft }]}>
-                    {icon && (
-                        <MaterialCommunityIcons
-                            name={icon}
-                            size={20}
-                            color={defaultStyles.colors.medium}
-                            style={styles.icon}
-                        />
-                    )}
-                    {selectedItem ? (
-                        <Text style={styles.text}>{selectedItem.label}</Text>
-                    ) : (
-                            <Text style={styles.placeholder}>{placeholder}</Text>
+        <>
+            <View style={styles.screen}>
+                <TouchableWithoutFeedback onPress={() => setModalVisible(true)}>
+                    <View style={[styles.container]}>
+                        {icon && (
+                            <MaterialCommunityIcons
+                                name={icon}
+                                size={20}
+                                color={colours.inputIcon}
+                                style={styles.icon}
+                            />
                         )}
+                        {selectedItem ? (
+                            <Text style={styles.text}>{selectedItem.label}</Text>
+                        ) : (
+                                <Text style={styles.placeholder}>{placeholder}</Text>
+                            )}
 
-                    <MaterialCommunityIcons
-                        name="chevron-down"
-                        size={20}
-                        color={defaultStyles.colors.medium}
-                    />
-                </View>
-            </TouchableWithoutFeedback>
+                        <MaterialCommunityIcons
+                            name="chevron-down"
+                            size={20}
+                            color={colours.inputIcon}
+                        />
+                    </View>
+                </TouchableWithoutFeedback>
+            </View>
             <Modal visible={modalVisible} animationType="slide">
                 <Screen>
                     <AppButton
                         title="Close"
                         onPress={() => setModalVisible(false)}
-                        style={{ color: colours.defaultButtonColour }}
+
                     />
                     <FlatList
                         contentContainerStyle={styles.pickerItem}
@@ -71,7 +73,7 @@ function UserPicker({
                         numColumns={numberOfColumns}
                         renderItem={({ item }) => (
 
-                            <User iconName={item.icon} username={item.label} color={"gold"} onPress={() => {
+                            <User iconName={item.icon} username={item.label} color={colours.buttonText} onPress={() => {
                                 setModalVisible(false);
                                 onSelectItem(item);
                             }} />
@@ -79,32 +81,45 @@ function UserPicker({
                     />
                 </Screen>
             </Modal>
-        </Screen>
+        </>
+
     );
 }
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: defaultStyles.colors.light,
+        backgroundColor: colours.buttonBackground,
         borderRadius: 25,
         flexDirection: "row",
         padding: 15,
         marginVertical: 10,
-        width: "90%"
+        width: "90%",
+        shadowOpacity: 1,
+        borderWidth: 1,
+
     },
     icon: {
         marginRight: 10,
     },
     placeholder: {
-        color: defaultStyles.colors.medium,
+        color: colours.inputPlaceholder,
         flex: 1,
+        textAlign: "center"
+
     },
     text: {
         flex: 1,
+        color: colours.buttonText,
+        alignSelf: "center",
+        textAlign: "center"
+
     },
     pickerItem: {
 
-        width: "100%",
+        width: "90%",
+        alignSelf: "center",
+
+
 
 
     },
@@ -112,6 +127,16 @@ const styles = StyleSheet.create({
         width: "100%",
         backgroundColor: "yellow",
         marginBottom: 20
+    },
+    screen: {
+        width: "100%",
+        alignSelf: "center",
+        // backgroundColor: "transparent",
+        alignItems: "center",
+        justifyContent: "center"
+    },
+    button: {
+        opacity: .2
     }
 });
 

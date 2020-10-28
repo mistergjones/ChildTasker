@@ -20,29 +20,33 @@ function SwitchUser({ navigation, route }) {
     <Screen>
       <AppHeading title="Switch User" />
       <View style={styles.container}>
-        {users.map((u, index) => (user.username !== u.user_name && <User iconName="human-child" key={index} username={u.user_name} color={"gold"} onPress={() => {
+        {users.map((u, index) => (user.username !== u.user_name && <User iconName="human-child" key={index} username={u.user_name} color={colours.text} onPress={() => {
           user.isParent
             ? navigation.jumpTo("Parent")
             : navigation.jumpTo("Child");
           setSwitchUser(true);
           setSwitchUserName(u.user_name)
         }} />))}
-        <AppButton
-          title="Logout"
-          onPress={() => {
-            user.isParent
-              ? navigation.jumpTo("Parent")
-              : navigation.jumpTo("Child");
-            setSwitchUser(true);
-          }}
-        />
+
       </View>
+      <AppButton
+        title="Logout"
+        onPress={() => {
+          user.isParent
+            ? navigation.jumpTo("Parent")
+            : navigation.jumpTo("Child");
+          setSwitchUser(true);
+        }}
+      />
     </Screen>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {},
+  container: {
+    width: "90%",
+    alignSelf: "center"
+  },
 });
 
 export default SwitchUser;

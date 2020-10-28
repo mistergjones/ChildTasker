@@ -21,6 +21,8 @@ import { database } from "../../../components/database";
 import AppLabel from "../../../components/appLabel";
 import { UsersContext } from "../../../context/UsersContext";
 import ParentDashBoardScreen from "../../ParentDashBoardScreen";
+import Screen from "../../../components/appScreen"
+import colours from "../../../config/colours";
 
 const loginSchema = Yup.object().shape({
   childname: Yup.string().required().label("Child name"),
@@ -31,8 +33,9 @@ function AddNewChildScreen({ navigation }) {
   );
 
   const [newPin, setNewPin] = useState(null);
+
   return (
-    <SafeAreaView>
+    <Screen>
       <AppHeading title="Add Child" />
       <Formik
         initialValues={{ childname: "" }}
@@ -68,7 +71,7 @@ function AddNewChildScreen({ navigation }) {
               labelText="Child name"
               icon="account"
               onChangeText={handleChange("childname")}
-              errorStyle={{ color: "red" }}
+              errorStyle={{ color: colours.inputErrorMessage }}
               error={errors ? errors.childname : ""}
             />
             {newPin && <AppLabel labelText={newPin} />}
@@ -90,7 +93,7 @@ function AddNewChildScreen({ navigation }) {
           </>
         )}
       </Formik>
-    </SafeAreaView>
+    </Screen>
   );
 }
 // return (
