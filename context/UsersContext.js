@@ -16,6 +16,7 @@ import { databaseRewards } from "../database/rewards/rewardQueries";
 import { databaseUsers } from "../database/users/userQueries";
 import { databaseAssignChoresToKid } from "../database/assignChoresToKid/assignChoresToKid";
 
+
 // Creates a Context object.
 export const UsersContext = createContext({});
 // We are set up to take an initial state through props when we create the UsersContextProvider, but those values are quickly overwritten with the useEffect call. I left the code here for reference.
@@ -43,6 +44,12 @@ export const UsersContextProvider = (props) => {
     // Chores To Kid
     const [chores, setChores] = useState();
 
+    const [choresForKid, setChoresForKid] = useState([]);
+
+    const [choresForKidScore, setChoresForKidScore] = useState(0)
+
+    const [choresTotalPoints, setChoresTotalPoints] = useState(0)
+
     //Icon
     const [icons, setIcons] = useState();
     const loadDataFromDB = async () => { };
@@ -57,7 +64,7 @@ export const UsersContextProvider = (props) => {
         getKids();
         // //getSpecificTasksGlen();
         refreshIcons();
-        refreshChores();
+        //refreshChores();
     }, []);
     // make a database call to insert an item and then call refreshItems to update the state
     const addNewItem = async (userItem) => {
@@ -142,6 +149,18 @@ export const UsersContextProvider = (props) => {
         return databaseAssignChoresToKid.getChores(setChores);
     };
     // END CHORES TO KID
+    const getChoresForKid = async (kid_name) => {
+        console.log("getChoresForKid ", kid_name)
+        await databaseAssignChoresToKid.getChoresByKidName(kid_name, setChoresForKid, setChoresForKidScore, setChoresTotalPoints)
+
+        return
+    }
+
+    const updateChoresForKid = async (kid_name, task_id) => {
+        await databaseAssignChoresToKid.updateChoresByKidName(kid_name, task_id);
+        await getChoresForKid(kid_name);
+        return
+    }
     //*************************************************************************
 
     //*************************************************************************
@@ -279,6 +298,12 @@ export const UsersContextProvider = (props) => {
         //Chores for the kids
         addChoresToKid,
         chores,
+        choresForKid,
+        getChoresForKid,
+        setChoresForKid,
+        updateChoresForKid,
+        choresForKidScore,
+        choresTotalPoints
     };
     // pass the value in provider and return
     return (

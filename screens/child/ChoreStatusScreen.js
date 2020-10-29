@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { StyleSheet, Switch, Text, View } from "react-native";
 // import * as Yup from "yup";
 
@@ -9,9 +9,17 @@ import Heading from "../../components/appHeading";
 import AppButton from "../../components/appButton";
 import screens from "../../config/screens";
 import colours from "../../config/colours";
+import { UsersContext } from "../../context/UsersContext";
 
 function ChoreStatusScreen({ navigation, route }) {
+  const { users, choresForKid, getChoresForKid, updateChoresForKid } = useContext(UsersContext);
   const [choreCompleted, setChoreCompleted] = useState(false);
+
+  const handleCompleted = async () => {
+    console.log("route params " + route.params.task_id)
+    await updateChoresForKid(choresForKid[0].kid_name, route.params.task_id)
+    navigation.navigate(screens.ChoreProgress)
+  }
   return (
     <Screen style={styles.container}>
       <Heading title="Chore Status" />
@@ -42,7 +50,7 @@ function ChoreStatusScreen({ navigation, route }) {
             {choreCompleted && (
               <AppButton
                 title="Save"
-                onPress={() => navigation.navigate(screens.ChoreProgress)}
+                onPress={handleCompleted}
               />
             )}
             <AppButton

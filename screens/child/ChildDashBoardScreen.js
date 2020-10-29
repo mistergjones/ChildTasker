@@ -32,27 +32,27 @@ const tasks = [
     { title: "Task 20", icon: "tennis", points: 19 },
 ];
 function ChildDashBoardScreen({ navigation }) {
-    const { setUser } = useContext(AuthContext);
-    const { users, chores } = useContext(UsersContext);
+    const { setUser, user } = useContext(AuthContext);
+    const { users, choresForKid, getChoresForKid, choresForKidScore, choresTotalPoints } = useContext(UsersContext);
     const [availablePoints, setAvailblePoints] = useState(0);
     const [rewardPoints, setRewardPoints] = useState(0)
+    const [rewardName, setRewardName] = useState("")
+    const [chores, setChores] = useState([])
 
     // GJ: the below obtains who is logged in on the child screen.
     // We will use the username as a placeholder for querying the chores table to retreive that specific's child data
-    const { user } = useContext(AuthContext);
+
     console.log(`Child Dashboard Screen. Child name is: `, user.username);
-    // chores.map(chore => {
-    //     console.log("chore = ", chore)
-    // })
+
+    const loadChoresForKid = async () => {
+        await getChoresForKid(user.username);
+    }
+
     useEffect(() => {
-        let points = 0;
-        chores.map((chore) => {
-            points += chore.task_points;
-        });
-        setAvailblePoints(points);
-        if (chores.length > 0) {
-            setRewardPoints(chores[0].reward_points)
-        }
+
+        // async function called to load initial state of page
+        loadChoresForKid();
+
     }, []);
 
     return (
@@ -62,8 +62,8 @@ function ChildDashBoardScreen({ navigation }) {
                 {/* GJ: Added the reward heading */}
                 <View style={styles.reward}>
                     <View style={styles.rewardContainer}>
-                        <Text style={styles.currentScore}>Reward:</Text>
-                        <Text style={styles.currentScoreValue}>{rewardPoints}</Text>
+                        <Text style={styles.currentScore}>Reward: {rewardName}</Text>
+                        <Text style={styles.currentScoreValue}>Points: {rewardPoints}</Text>
                     </View>
                 </View>
                 <ScrollView
@@ -74,30 +74,34 @@ function ChildDashBoardScreen({ navigation }) {
                 >
                     <View>
                         <View style={styles.tasks}>
-                            {chores.map((chore, index) => {
+                            {choresForKid.map((chore, index) => {
                                 if (index % 2 === 0) {
                                     return (
                                         <TaskIcon
                                             style={styles.task}
                                             key={index}
                                             title={chore.task_name}
-                                            icon={"tennis"}
+                                            icon={chore.icon_name}
                                             points={chore.task_points}
+                                            color={chore.is_completed === 1 ? "green" : "red"}
+                                            task_id={chore.task_id}
                                         />
                                     );
                                 }
                             })}
                         </View>
                         <View style={styles.tasks}>
-                            {chores.map((chore, index) => {
+                            {choresForKid.map((chore, index) => {
                                 if (index % 2 !== 0) {
                                     return (
                                         <TaskIcon
                                             style={styles.task}
                                             key={index}
                                             title={chore.task_name}
-                                            icon={"clock"}
+                                            icon={chore.icon_name}
                                             points={chore.task_points}
+                                            color={chore.is_completed === 1 ? "green" : "red"}
+                                            task_id={chore.task_id}
                                         />
                                     );
                                 }
@@ -108,12 +112,12 @@ function ChildDashBoardScreen({ navigation }) {
                 <View style={styles.score}>
                     <View style={styles.currentScoreContainer}>
                         <Text style={styles.currentScore}>Score</Text>
-                        <Text style={styles.currentScoreValue}>100</Text>
+                        <Text style={styles.currentScoreValue}>{choresForKidScore}</Text>
                     </View>
                     <View style={styles.currentScoreContainer}>
-                        <Text style={styles.currentScore}>Available</Text>
+                        <Text style={styles.currentScore}>Remaining</Text>
                         <Text style={styles.currentScoreValue}>
-                            {availablePoints}
+                            {choresTotalPoints}
                         </Text>
                     </View>
                 </View>
@@ -162,7 +166,7 @@ const styles = StyleSheet.create({
     },
     currentScore: {
         fontSize: 25,
-        color: colours.white,
+        color: "gold",
     },
     currentScoreValue: {
         fontSize: 25,
