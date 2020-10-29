@@ -7,6 +7,8 @@ import { array } from "yup";
 // open the database
 const db = SQLite.openDatabase("db.db");
 
+// helper function
+
 // GET ALL CHORES: the below just simply retrieves all chores.
 const getChores = (setUserFunc) => {
     return new Promise(async (resolve, reject) => {
@@ -34,15 +36,80 @@ const getChores = (setUserFunc) => {
 };
 
 // GET CHORES VY CHILD NAME: the below just simply retrieves all chores for a specific child
-const getChoresByKidName = (kid_name, setUserFunc) => {
+const updateChoresByKidName = (kid_name, task_id) => {
+    console.log("kid_name = " + kid_name + " task_id = " + task_id)
     return new Promise(async (resolve, reject) => {
+        let array = [];
+        db.transaction(
+            (tx) => {
+
+                tx.executeSql(
+                    "update kidchores set is_completed = 1 where kid_name = ? and task_id = ?",
+                    [kid_name, task_id],
+
+
+                );
+            },
+            (t, error) => {
+                console.log("db error in updateing KIDCHORES");
+                console.log(error);
+                reject(error);
+            },
+            (_t, _success) => {
+                console.log("updated KIDCHORES by kid name");
+                resolve(array);
+            }
+        );
+    });
+};
+
+const getChoresByKidName = (kid_name, setUserFunc, setScore, setAvailablePoints) => {
+    return new Promise(async (resolve, reject) => {
+        let array = [];
+        let choresForRewards = [];
+
         db.transaction(
             (tx) => {
                 tx.executeSql(
                     "select * from kidchores where kid_name = ?",
                     [kid_name],
                     (_, { rows: { _array } }) => {
-                        setUserFunc(_array);
+
+                        array = _array;
+                        choresForRewards.push([array[0]]);
+                        for (let i = 1; i < array.length; i++) {
+                            let chore = array[i];
+                            console.log("chore " + chore)
+                            let noMatch = true
+                            for (let x = 0; x < choresForRewards.length; x++) {
+                                console.log("chore name and id " + chore.reward_name + chore.reward_id)
+                                if (chore.reward_id === choresForRewards[x][0].reward_id) {
+                                    choresForRewards[x].push(chore)
+                                    noMatch = false
+                                }
+                            }
+
+                            if (noMatch) {
+                                choresForRewards.push([chore])
+                            }
+                        }
+
+                        console.log("chores for rewards lenght = ", choresForRewards.length)
+                        let score = 0;
+                        let availablePoints = 0
+                        array.map(chore => {
+                            if (chore.is_completed === 1) {
+                                score += chore.task_points;
+                                console.log("score = " + score)
+                            } else {
+                                availablePoints += chore.task_points
+                            }
+                        })
+                        setScore(score)
+                        setAvailablePoints(availablePoints)
+                        setUserFunc(array);
+                        console.log("chores for rewards lenght = ", choresForRewards.length)
+
                     }
                 );
             },
@@ -52,8 +119,9 @@ const getChoresByKidName = (kid_name, setUserFunc) => {
                 reject(error);
             },
             (_t, _success) => {
-                console.log("Retrieved KIDCHORES");
-                resolve(_success);
+                console.log("Retrieved KIDCHORES by kid name");
+
+                resolve(choresForRewards);
             }
         );
     });
@@ -103,4 +171,5 @@ export const databaseAssignChoresToKid = {
     insertChoresToKid,
     getChores,
     getChoresByKidName,
+    updateChoresByKidName
 };

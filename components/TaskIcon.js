@@ -12,12 +12,12 @@ import screens from "../config/screens";
 import AppMaterialIcon from "../components/appMaterialCommunityIcon";
 import colours from "../config/colours";
 
-function TaskIcon({ title, icon, points, style }) {
+function TaskIcon({ title, icon, points, style, color, task_id }) {
   const navigation = useNavigation();
   return (
     <TouchableOpacity
       onPress={() =>
-        navigation.navigate(screens.ChoreStatus, { title, icon, points })
+        navigation.navigate(screens.ChoreStatus, { title, icon, points, task_id })
       }
     >
       <View style={style}>
@@ -25,7 +25,7 @@ function TaskIcon({ title, icon, points, style }) {
         <AppMaterialIcon
           iconName={icon}
           iconSize={60}
-          iconColor={colours.defaultButtonColour}
+          iconColor={color}
         />
         <Text>{points}</Text>
       </View>
