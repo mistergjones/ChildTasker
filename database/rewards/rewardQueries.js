@@ -117,7 +117,7 @@ const getRewardByID = async (reward_id, setUserFunc) => {
     db.transaction(
       (tx) => {
         tx.executeSql(
-          "select reward_id,reward_name,reward_points,rewards.icon_id,icons.icon_name from rewards,icons WHERE rewards.icon_id=icons.icon_id and reward_id=?",
+          "select reward_id,reward_name,reward_points,rewards.icon_id,icons.icon_name as icon,icons.label from rewards,icons WHERE rewards.icon_id=icons.icon_id and reward_id=?",
           [reward_id],
           (_, { rows: { _array } }) => {
             setUserFunc(_array);
