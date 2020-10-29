@@ -1,7 +1,7 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { View, StyleSheet } from "react-native";
 import * as Yup from "yup";
-
+// import Picker from "../../../components/appPicker";
 import AppButton from "../../../components/appButton";
 import AppHeading from "../../../components/appHeading.js";
 import Screen from "../../../components/appScreen";
@@ -15,6 +15,8 @@ import CategoryPickerItem from "../../../components/appCategoryPickerItem";
 import screens from "../../../config/screens";
 import { UsersContext } from "../../../context/UsersContext.js";
 import { Formik } from "formik";
+import AppTextInput from "../../../components/AppTextInput";
+import AppPicker from "../../../components/appPicker";
 
 const validationSchema = Yup.object().shape({
   label: Yup.string().required().min(1).label("label"),
@@ -24,50 +26,74 @@ const validationSchema = Yup.object().shape({
 
 function EditReward({ navigation }) {
   const usersContext = useContext(UsersContext);
-  const { icons, selectedReward, updateReward, getRewardByID } = usersContext;
-
+  const {
+    icons,
+    selectedReward,
+    updateReward,
+    // getRewardByID,
+    selectedRewardDetails,
+  } = usersContext;
+  const [rewardName, setRewardName] = useState(
+    selectedRewardDetails ? selectedRewardDetails[0].reward_name : ""
+  );
+  const [point, setPoint] = useState(
+    selectedRewardDetails ? selectedRewardDetails[0].reward_points : ""
+  );
+  const [selectedIcon, setSelectedIcon] = useState({
+    label: selectedRewardDetails ? selectedRewardDetails[0].icon_name : "",
+    value: selectedRewardDetails ? selectedRewardDetails[0].icon_id : "",
+  });
   console.log({ selectedReward });
-  // console.log({ usersContext });
+  console.log({ selectedRewardDetails });
 
-  let categories = [];
+  let placeHolder;
+  let iconData = [];
   icons.map((i) => {
     let tempObj = {};
     tempObj.backgroundColor = i.background_color;
     tempObj.icon = i.icon_name;
     tempObj.label = i.label;
     tempObj.value = i.icon_id;
-    categories.push(tempObj);
+    iconData.push(tempObj);
+    // selectedRewardDetails
+    //   ? i.icon_id === selectedRewardDetails[0].icon_id
+    //     ? (placeHolder = i.label)
+    //     : (placeHolder = "")
+    //   : "";
   });
 
-  // let reward = {
-  //   background_color: "#2bcbba",
-  //   icon_id: 5,
-  //   icon_name: "shoe-heel",
-  //   label: "Clothing",
-  //   point: 10,
-  // };reward_id,reward_name,reward_points,rewards.icon_id,icons.icon_name from rewards,icons WHERE rewards.icon_id=icons.icon_id and reward_id
-  let reward = getRewardByID(selectedReward);
-  console.log({ reward });
-  let placeHolder = categories.filter(
-    (category) => category.icon_id === selectedReward.icon_id
-  ).icon_name;
+  // console.log(icons.filter((icon) => icon.icon_id == iconID));
+  // console.log({ selectedRewardDetails });
+  const handleSelectedIcon = (item) => {
+    console.log("ITEM", item);
+    setSelectedIcon(item);
+  };
+
   return (
     <Screen style={styles.container}>
       <AppHeading title="Edit Reward Form" />
       <Formik
         initialValues={{
-          label: reward.reward_name,
-          point: reward.reward_points,
-          icon: reward.icon_id,
+          label: rewardName,
+          point: point,
+          icon: selectedIcon,
         }}
         onSubmit={async (fields, { setFieldError }) => {
           // console.log("reached here");
           // console.log(fields);
           try {
+            console.log(
+              "hit edit reward button",
+              fields.label,
+              fields.point,
+              // fields.icon
+              selectedIcon.value,
+              selectedReward
+            );
             await updateReward({
               reward_name: fields.label,
               reward_points: fields.point,
-              icon_id: fields.icon.value,
+              icon_id: selectedIcon.value,
               reward_id: selectedReward,
             });
             navigation.navigate("ViewReward");
@@ -79,28 +105,60 @@ function EditReward({ navigation }) {
       >
         {({ handleChange, handleSubmit, errors }) => (
           <>
-            <FormField
+            {/* <FormField
               maxLength={255}
               icon="pen"
               name="label"
-              placeholder={reward.reward_name}
+              placeholder={
+                selectedRewardDetails
+                  ? selectedRewardDetails[0].reward_name
+                  : ""
+              }
+            /> */}
+            <AppTextInput
+              labelText="Reward Name"
+              icon="pen"
+              onChangeText={handleChange("label")}
+              errorStyle={{ color: "white" }}
+              error={errors ? errors.label : ""}
+              defaultValue={rewardName}
             />
-            <FormField
+            {/* <FormField
               keyboardType="numeric"
               maxLength={8}
               name="point"
-              placeholder={reward.reward_points}
+              placeholder={
+                selectedRewardDetails
+                  ? selectedRewardDetails[0].reward_points.toString()
+                  : ""
+              }
               width={120}
               icon="lock"
+            /> */}
+            <AppTextInput
+              labelText="Reward Points"
+              icon="lock"
+              onChangeText={handleChange("point")}
+              errorStyle={{ color: "white" }}
+              error={errors ? errors.point : ""}
+              defaultValue={point.toString()}
             />
-            <Picker
-              items={categories}
+
+            <AppPicker
+              items={iconData}
               name="icon"
               numberOfColumns={3}
               PickerItemComponent={CategoryPickerItem}
-              placeholder={placeHolder}
+              placeholder={
+                // icons.filter((icon) => icon.icon_id == iconID).icon_name
+                selectedRewardDetails ? selectedRewardDetails[0].icon_name : ""
+              }
+              // placeholder={placeHolder}
               width="90%"
-              icon="lock"
+              icon={selectedIcon.label}
+              onSelectItem={handleSelectedIcon}
+              selectedItem={selectedIcon}
+              defaultValue={selectedIcon}
             />
             <AppButton title="Edit Reward" onPress={handleSubmit} />
           </>
