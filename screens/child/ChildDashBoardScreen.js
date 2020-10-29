@@ -33,20 +33,26 @@ const tasks = [
 ];
 function ChildDashBoardScreen({ navigation }) {
     const { setUser } = useContext(AuthContext);
-    const { users } = useContext(UsersContext);
+    const { users, chores } = useContext(UsersContext);
     const [availablePoints, setAvailblePoints] = useState(0);
+    const [rewardPoints, setRewardPoints] = useState(0)
 
     // GJ: the below obtains who is logged in on the child screen.
     // We will use the username as a placeholder for querying the chores table to retreive that specific's child data
     const { user } = useContext(AuthContext);
     console.log(`Child Dashboard Screen. Child name is: `, user.username);
-
+    // chores.map(chore => {
+    //     console.log("chore = ", chore)
+    // })
     useEffect(() => {
         let points = 0;
-        tasks.map((task) => {
-            points += task.points;
+        chores.map((chore) => {
+            points += chore.task_points;
         });
         setAvailblePoints(points);
+        if (chores.length > 0) {
+            setRewardPoints(chores[0].reward_points)
+        }
     }, []);
 
     return (
@@ -57,7 +63,7 @@ function ChildDashBoardScreen({ navigation }) {
                 <View style={styles.reward}>
                     <View style={styles.rewardContainer}>
                         <Text style={styles.currentScore}>Reward:</Text>
-                        <Text style={styles.currentScoreValue}>100</Text>
+                        <Text style={styles.currentScoreValue}>{rewardPoints}</Text>
                     </View>
                 </View>
                 <ScrollView
@@ -68,30 +74,30 @@ function ChildDashBoardScreen({ navigation }) {
                 >
                     <View>
                         <View style={styles.tasks}>
-                            {tasks.map((task, index) => {
+                            {chores.map((chore, index) => {
                                 if (index % 2 === 0) {
                                     return (
                                         <TaskIcon
                                             style={styles.task}
                                             key={index}
-                                            title={task.title}
-                                            icon={task.icon}
-                                            points={task.points}
+                                            title={chore.task_name}
+                                            icon={"tennis"}
+                                            points={chore.task_points}
                                         />
                                     );
                                 }
                             })}
                         </View>
                         <View style={styles.tasks}>
-                            {tasks.map((task, index) => {
+                            {chores.map((chore, index) => {
                                 if (index % 2 !== 0) {
                                     return (
                                         <TaskIcon
                                             style={styles.task}
                                             key={index}
-                                            title={task.title}
-                                            icon={task.icon}
-                                            points={task.points}
+                                            title={chore.task_name}
+                                            icon={"clock"}
+                                            points={chore.task_points}
                                         />
                                     );
                                 }
