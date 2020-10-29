@@ -50,6 +50,8 @@ export default function RemoveTaskScreen({ navigation }) {
         taskList.push(tempObject);
     }
 
+    console.log(`The tasks are:`, tasks);
+
     const removeTaskAlert = () =>
         Alert.alert(
             "Remove Task",

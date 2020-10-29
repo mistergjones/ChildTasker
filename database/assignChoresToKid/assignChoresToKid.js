@@ -68,7 +68,7 @@ const insertChoresToKid = (kidChores, successFunc) => {
             (tx) => {
                 console.log(`The kid chores are: `, kidChores);
                 tx.executeSql(
-                    "insert into kidchores (category_id, category_name, task_id, task_name, task_points, kid_id, kid_name, reward_id, reward_name, reward_points) values (?,?,?,?,?,?,?,?,?,?)",
+                    "insert into kidchores (category_id, category_name, task_id, task_name, task_points, kid_id, kid_name, reward_id, reward_name, reward_points, is_completed, icon_name) values (?,?,?,?,?,?,?,?,?,?,?,?)",
                     [
                         kidChores.category_id,
                         kidChores.category_name,
@@ -80,6 +80,8 @@ const insertChoresToKid = (kidChores, successFunc) => {
                         kidChores.reward_id,
                         kidChores.reward_name,
                         kidChores.reward_points,
+                        kidChores.is_completed,
+                        kidChores.icon_name,
                     ]
                 );
             },

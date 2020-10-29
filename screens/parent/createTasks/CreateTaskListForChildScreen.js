@@ -39,7 +39,7 @@ import {
     establishKidListInObjectFormat,
 } from "../../../helpers/createObjectLists";
 
-const runningTasksToAssign = [];
+let runningTasksToAssign = [];
 
 function CreateTaskListForChildScreen({ navigation }) {
     const usersContext = useContext(UsersContext);
@@ -77,13 +77,17 @@ function CreateTaskListForChildScreen({ navigation }) {
     // TASK
     const [selectedTask, setSelectedTask] = useState(null);
     const [selectedTaskPoints, setSelectedTaskPoints] = useState(0);
-    const [totalTaskPoints, setTotalTaskPoints] = useState(0);
+    const [totalTaskPoints, setTotalTaskPoints] = useState(null);
 
     // KiDS
     const [selectedKid, setSelectedKid] = useState(null);
 
     // REWARDS
     const [selectedReward, setSelectedReward] = useState(null);
+    const [selectedRewardPoints, setSelectedRewardPoints] = useState(0);
+
+    // used to determine if to show a ZERO on first load in  TOTAL TASKS but then gets set to false once tasks are added so points will tally and enable the SUBMIT button
+    const [isInitialScreenLoaded, setIsInitialScreenLoaded] = useState(true);
 
     // used to set the number of columns to show in the AppPicker components that will vary the width % accordingly.
     const [numberOfCategoryColumns, setNumberOfCategoryColumns] = useState(
@@ -106,28 +110,24 @@ function CreateTaskListForChildScreen({ navigation }) {
     // Categories - make the selectable category list
     //************************************ */
     var categoryList = [];
-
     categoryList = establishCategoryTasksListInObjectFormat(categories);
 
     //*************************************/
     // Tasks - make the selectable task list
     //*************************************/
     var taskList = [];
-
     taskList = establishCategoryTasksListInObjectFormat(tasks);
 
     //************************************ */
     // Kids - make the selectabel kid list
     //************************************ */
     var kidList = [];
-
     kidList = establishKidListInObjectFormat(kids);
 
     //************************************ */
     // Reward - make the selectable reward list
     //************************************ */
     var rewardList = [];
-
     rewardList = establishRewardListInObjectFormat(rewards);
 
     // needed as SPECIFICS from teh set state was not geting updated immediately.
@@ -166,6 +166,7 @@ function CreateTaskListForChildScreen({ navigation }) {
     // this function is to set the status of only the kids mapped to kids
     const handleSelectReward = async (item) => {
         setSelectedReward(item);
+        setSelectedRewardPoints(item.points);
         setSelectedCategory(null);
     };
 
@@ -202,6 +203,15 @@ function CreateTaskListForChildScreen({ navigation }) {
         }
     }, []);
 
+    // this determines when to ENABLE the SUBMIT button to allow insertions to the database
+    useEffect(() => {
+        if (totalTaskPoints >= selectedRewardPoints) {
+            setSaveAllChangesButtonEnabled(true);
+        } else {
+            setSaveAllChangesButtonEnabled(false);
+        }
+    });
+
     // this function is submit the required fields to the database. TABLE: kidchores
     const handleSubmitChangesToDatabase = async () => {
         try {
@@ -230,10 +240,15 @@ function CreateTaskListForChildScreen({ navigation }) {
                             runningTasksToAssign[loopIterator].reward_name,
                         reward_points:
                             runningTasksToAssign[loopIterator].reward_points,
+                        icon_name: runningTasksToAssign[loopIterator].icon_name,
+                        is_completed:
+                            runningTasksToAssign[loopIterator].is_completed,
                     };
 
                     await addChoresToKid(items);
                 }
+                // empty the array
+                runningTasksToAssign = [];
 
                 navigation.navigate(screens.ParentDashBoard);
 
@@ -260,8 +275,12 @@ function CreateTaskListForChildScreen({ navigation }) {
     };
 
     const handleResetDropDownAndContinue = () => {
-        console.log("we are in:  handleResetDropDownAndContinue()");
-        // now add the
+        console.log("We are in:  handleResetDropDownAndContinue()");
+
+        // set the is initalScreenLoaded to false so the TASKS TOTAL box acutatlly shows the points
+        setIsInitialScreenLoaded(false);
+
+        // now add the variables to the to the item
         const items = {
             category_id: selectedCategory.value,
             category_name: selectedCategory.label,
@@ -273,17 +292,27 @@ function CreateTaskListForChildScreen({ navigation }) {
             reward_id: selectedReward.value,
             reward_name: selectedReward.label,
             reward_points: selectedReward.points,
+            icon_name: selectedTask.icon,
+            is_completed: 0,
         };
 
+        console.log(`Selected Task icon is`, selectedTask);
+        console.log(`Items is:`, items);
+
         runningTasksToAssign.push(items);
-        console.log(runningTasksToAssign);
+        //console.log(runningTasksToAssign);
 
         // calculate the total task points added
         setTotalTaskPoints(totalTaskPoints + selectedTaskPoints);
 
+        // check to see if there are
+        //checkToEnableSubmitButton();
+
         setSelectedCategory(null);
         setSelectedTask(null);
+    };
 
+    const checkToEnableSubmitButton = () => {
         // the below determines when to show the "Save All Changes" button. NOTE: it is still passive and waits for next butotn click to render correctly.
         if (totalTaskPoints >= selectedReward.points) {
             setSaveAllChangesButtonEnabled(true);
@@ -372,12 +401,14 @@ function CreateTaskListForChildScreen({ navigation }) {
                                     Tasks Total:
                                 </Text>
                                 <Text style={styles.currentRewardTaskValue}>
-                                    {totalTaskPoints}
+                                    {isInitialScreenLoaded
+                                        ? "0"
+                                        : totalTaskPoints}
                                 </Text>
                             </View>
                         </View>
                     )}
-                    {selectedKid && selectedReward && (
+                    {selectedKid && selectedReward && selectedTask && (
                         <AppButton
                             title="Add Another task"
                             onPress={handleResetDropDownAndContinue}
@@ -390,7 +421,7 @@ function CreateTaskListForChildScreen({ navigation }) {
                         />
                     )}
                     <AppButton
-                        title="Return"
+                        title="Cancel"
                         onPress={() =>
                             navigation.navigate(screens.ParentDashBoard)
                         }

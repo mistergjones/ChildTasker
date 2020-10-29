@@ -123,8 +123,12 @@ const createTablesDatabaseAsync = async () => {
                 tx.executeSql(
                     "create table if not exists icons (icon_id integer primary key not null, icon_name TEXT not null,background_color TEXT not null,label TEXT not null)"
                 );
+                // gj: original kidshores
+                // tx.executeSql(
+                //     "create table if not exists kidchores (chore_id integer primary key not null, category_id integer NOT null, category_name TEXT not null, task_id integer not null, task_name TEXT not null, task_points INTEGER not null, kid_id integer NOT null, kid_name TEXT not null, reward_id integer NOT null, reward_name TEXT not null, reward_points integer not null)"
+                // );
                 tx.executeSql(
-                    "create table if not exists kidchores (chore_id integer primary key not null, category_id integer NOT null, category_name TEXT not null, task_id integer not null, task_name TEXT not null, task_points INTEGER not null, kid_id integer NOT null, kid_name TEXT not null, reward_id integer NOT null, reward_name TEXT not null, reward_points integer not null)"
+                    "create table if not exists kidchores (chore_id integer primary key not null, category_id integer NOT null, category_name TEXT not null, task_id integer not null, task_name TEXT not null, task_points INTEGER not null, kid_id integer NOT null, kid_name TEXT not null, reward_id integer NOT null, reward_name TEXT not null, reward_points integer not null, is_completed integer not null, icon_name TEXT not null)"
                 );
             },
             // the error and success functions are called when the transaction is complete. We use the promise resolve and reject functions here.
