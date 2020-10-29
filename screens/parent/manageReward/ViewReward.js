@@ -26,9 +26,11 @@ function ViewReward({ navigation }) {
     setSelectedReward,
     deleteReward,
     // updateReward,
-    // getRewardByID,
+    getRewardByID,
+    selectedRewardDetails,
+    // selectedRewardDetails,
   } = useContext(UsersContext);
-  console.log("View Reward", rewards);
+  // console.log("View Reward", rewards);
   const [modalVisible, setModalVisible] = useState(false);
 
   return (
@@ -83,7 +85,7 @@ function ViewReward({ navigation }) {
                     onPress={() => {
                       setModalVisible(!modalVisible);
                       deleteReward(selectedReward);
-                      console.log("Long pressed deleted", selectedReward);
+                      // console.log("Long pressed deleted", selectedReward);
                       Alert.alert("Deleted");
                       // setSelectedReward(null);
                       navigation.navigate(screens.ViewReward);
@@ -91,8 +93,11 @@ function ViewReward({ navigation }) {
                   />
                   <AppButton
                     title="Edit Reward"
-                    onPress={() => {
+                    onPress={async () => {
                       setModalVisible(!modalVisible);
+                      // console.log("1", selectedRewardDetails);
+                      await getRewardByID(selectedReward);
+                      // console.log("2", selectedRewardDetails);
                       navigation.navigate("EditReward");
                     }}
                   />

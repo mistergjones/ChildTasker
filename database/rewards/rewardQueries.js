@@ -83,15 +83,16 @@ const deleteReward = async (reward) => {
 
 /******* Update reward */
 const updateReward = (reward) => {
+  console.log(reward);
   return new Promise(async (resolve, reject) => {
     db.transaction(
       (tx) => {
         tx.executeSql(
-          "UPDATE rewards SET reward_name = ?, reward_points = ?, icon_id = ?,WHERE reward_id=?",
+          "update rewards set reward_name = ?, reward_points = ?, icon_id = ? where reward_id=?",
           [
             reward.reward_name,
             reward.reward_points,
-            reward.reward.icon_id,
+            reward.icon_id,
             reward.reward_id,
           ]
         );
@@ -111,7 +112,7 @@ const updateReward = (reward) => {
 
 /******* get specific reward given a reward id */
 const getRewardByID = async (reward_id, setUserFunc) => {
-  console.log("reward_id is: ", reward_id);
+  // console.log("reward_id is: ", reward_id);
   return new Promise(async (resolve, reject) => {
     db.transaction(
       (tx) => {
