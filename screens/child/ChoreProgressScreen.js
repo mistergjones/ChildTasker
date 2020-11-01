@@ -21,8 +21,8 @@ function ChoreProgressScreen({ navigation, route }) {
     //const { chores } = usersContext;
     // obtain the logged in user. We will use this for the query on the table.
     const { user } = useContext(AuthContext);
-    console.log("route params ", route.params)
-    const { chores } = route.params
+    console.log("route params ", route.params);
+    const { chores } = route.params;
     // console.log(`Child Dashboard Screen. Child name is: `, user.username);
 
     var rewardPoints = 20;
@@ -35,16 +35,18 @@ function ChoreProgressScreen({ navigation, route }) {
     const labelName = [];
     // an array just for the task points
     const taskPoints = [];
-    // an array for all rewards
+    // an array for all rewards. This will also be used to set the HEADING furtherdown below iva
     const rewardNames = [];
 
     // variable for counting how many tasks completed and how many remaining
     var completedTasks = 0;
     var notCompletedTasks = 0;
-    // obtain the data relevant for the logged in user.
 
+    // obtain the data relevant for the logged in user.
     for (var i = 0; i < chores.length; i++) {
         if (chores[i].kid_name === user.username) {
+            //console.log(user.username);
+            //console.log(chores[i].is_completed);
             // console.log(chores[i].task_points);
 
             // push some items into a seperate array
@@ -61,10 +63,13 @@ function ChoreProgressScreen({ navigation, route }) {
             if (chores[i].is_completed === 0) {
                 // assign a light shade of purle
                 tempObject.svg = { fill: "#ecb3ff" };
+                tempObject.is_complete = 0;
+                // update the not completed task counter
                 notCompletedTasks += 1;
             } else if (chores[i].is_completed === 1) {
                 // assign a dark shade of purle
                 tempObject.svg = { fill: "#600080" };
+                tempObject.is_complete = 1;
                 completedTasks += 1;
             }
 
@@ -73,10 +78,21 @@ function ChoreProgressScreen({ navigation, route }) {
     }
     //console.log(`the GRAPH data array is:`, data);
 
+    // set the REWARD heading to the first instance in the array.
+    var rewardName = rewardNames[0];
+
     const Labels = ({ slices, height, width }) => {
         return slices.map((slice, index) => {
-            console.log(slice);
+            // console.log(slice);
             const { labelCentroid, pieCentroid, data } = slice;
+
+            // change the icon depending on whether it is completed or not
+
+            if (data.is_complete === 0) {
+                var isTaskCompleted = false;
+            } else {
+                var isTaskCompleted = true;
+            }
 
             return (
                 <G key={index} x={labelCentroid[0]} y={labelCentroid[1]}>
@@ -90,7 +106,12 @@ function ChoreProgressScreen({ navigation, route }) {
                         preserveAspectRatio="xMidYMid slice"
                         opacity="1"
                         // href={Images.memes[index + 1]}
-                        href={Images.questionMark[index + 1]}
+                        // href={Images.questionMark[index + 1]}
+                        href={
+                            isTaskCompleted
+                                ? Images.ticks[index + 1]
+                                : Images.questionMark[index + 1]
+                        }
                     />
 
                     {/* <Text>{labelName[index]}</Text> */}
@@ -98,23 +119,6 @@ function ChoreProgressScreen({ navigation, route }) {
             );
         });
     };
-
-    const randomColor = () =>
-        ("#" + ((Math.random() * 0xffffff) << 0).toString(16) + "000000").slice(
-            0,
-            7
-        );
-
-    const pieData = taskPoints
-        .filter((value) => value > 0)
-        .map((value, index) => ({
-            value,
-            svg: {
-                fill: randomColor(),
-                onPress: () => console.log("press", index),
-            },
-            key: `pie-${index}`,
-        }));
 
     return (
         <SafeAreaView>
@@ -124,13 +128,14 @@ function ChoreProgressScreen({ navigation, route }) {
                     <View style={styles.rewardContainer}>
                         <Text style={styles.currentScore}>Reward:</Text>
                         <Text style={styles.currentScoreValue}>
-                            {rewardPoints}
+                            {rewardName}
                         </Text>
                     </View>
                 </View>
 
                 <View>
                     <PieChart
+                        key={1}
                         style={{ height: 400 }}
                         valueAccessor={({ item }) => item.amount}
                         data={data}
@@ -141,14 +146,6 @@ function ChoreProgressScreen({ navigation, route }) {
                         <Labels />
                     </PieChart>
                 </View>
-                {/* <View>
-                    <PieChart
-                        style={{ height: 200 }}
-                        data={pieData}
-                        outerRadius="100%"
-                        innerRadius="50%"
-                    />
-                </View> */}
 
                 <View style={styles.score}>
                     <View style={styles.currentScoreContainer}>

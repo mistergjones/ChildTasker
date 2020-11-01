@@ -178,22 +178,41 @@ function CreateTaskListForChildScreen({ navigation }) {
 
         // on first render it is probabaly undefined
         if (specifics != undefined || specifics != null) {
-            pickableTasksForThatChosenCategory = specifics.map((theResult) => {
-                let a = {};
-                a.label =
-                    theResult.task_name + " (" + theResult.task_points + ")";
-                a.value = theResult.task_id;
-                a.points = theResult.task_points;
-                a.backgroundColor = theResult.task_colour;
-                a.icon = theResult.task_icon;
+            pickableTasksForThatChosenCategory = specifics.map(
+                (theResult, index) => {
+                    let tempObject = {};
+                    tempObject.label =
+                        theResult.task_name +
+                        " (" +
+                        theResult.task_points +
+                        ")";
+                    tempObject.value = theResult.task_id;
+                    tempObject.points = theResult.task_points;
+                    tempObject.backgroundColor = theResult.task_colour;
+                    tempObject.icon = theResult.task_icon;
+                    return tempObject;
+                }
+            );
 
-                return a;
-            });
+            // To assist with showing 2 columns on the pickable tasks, if the length %2 != 0, we will simply add a "blank"
+            if (pickableTasksForThatChosenCategory.length % 2 != 0) {
+                let g = {
+                    backgroundColor: "_",
+                    icon:
+                        "usedToEnsureThatColumnsAreNeatlyAllignedIfThereisAnOddNumber",
+                    label: "",
+                    points: 999,
+                    value: 999,
+                };
+                // push the intentionaly created useless object into the array so it can then be used to RENDER OUT as a blank iten
+                pickableTasksForThatChosenCategory.push(g);
+            }
         } else {
             console.log(
                 "Initial loading of specific tasks is undefined until a user selects a category. WE ARE IN CreateTaskListForChild --> useEffect()"
             );
         }
+        // console.log(specifics.length);
 
         // console.log("TEMP OBJECT: ", pickableTasksForThatChosenCategory);
         // update the state. i.e. ensure to only provide the tasks applicable to the category.
