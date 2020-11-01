@@ -6,6 +6,7 @@ import {
     Modal,
     Button,
     FlatList,
+    SafeAreaView,
 } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
@@ -32,7 +33,7 @@ function AppPicker({
     const [modalVisible, setModalVisible] = useState(false);
 
     return (
-        <Screen>
+        <SafeAreaView>
             <TouchableWithoutFeedback onPress={() => setModalVisible(true)}>
                 <View style={[styles.container, { width }, { marginLeft }]}>
                     {icon && (
@@ -46,8 +47,8 @@ function AppPicker({
                     {selectedItem ? (
                         <Text style={styles.text}>{selectedItem.label}</Text>
                     ) : (
-                        <Text style={styles.placeholder}>{placeholder}</Text>
-                    )}
+                            <Text style={styles.placeholder}>{placeholder}</Text>
+                        )}
 
                     <MaterialCommunityIcons
                         name="chevron-down"
@@ -82,7 +83,7 @@ function AppPicker({
                     />
                 </Screen>
             </Modal>
-        </Screen>
+        </SafeAreaView>
     );
 }
 

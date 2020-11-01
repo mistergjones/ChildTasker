@@ -64,7 +64,7 @@ export const UsersContextProvider = (props) => {
         getKids();
         // //getSpecificTasksGlen();
         refreshIcons();
-        //refreshChores();
+        refreshChores();
     }, []);
     // make a database call to insert an item and then call refreshItems to update the state
     const addNewItem = async (userItem) => {
@@ -151,9 +151,9 @@ export const UsersContextProvider = (props) => {
     // END CHORES TO KID
     const getChoresForKid = async (kid_name) => {
         console.log("getChoresForKid ", kid_name)
-        await databaseAssignChoresToKid.getChoresByKidName(kid_name, setChoresForKid, setChoresForKidScore, setChoresTotalPoints)
+        return await databaseAssignChoresToKid.getChoresByKidName(kid_name, setChoresForKid, setChoresForKidScore, setChoresTotalPoints)
 
-        return
+
     }
 
     const updateChoresForKid = async (kid_name, task_id) => {

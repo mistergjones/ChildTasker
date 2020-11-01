@@ -52,12 +52,13 @@ function AddReward({ navigation }) {
         }}
         onSubmit={async (fields, { setFieldError }) => {
           // console.log("reached here");
-          // console.log(fields);
+          console.log("fields" + fields.label + fields.point + fields.icon.icon + fields.icon.label + fields.icon.value);
           try {
             await addNewReward({
               reward_name: fields.label,
               reward_points: fields.point,
               icon_id: fields.icon.value,
+              icon_name: fields.icon.icon
             });
             navigation.navigate("ViewReward");
           } catch (error) {
