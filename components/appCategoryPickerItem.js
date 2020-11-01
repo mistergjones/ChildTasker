@@ -17,7 +17,27 @@ function appCategoryPickerItem({ item, onPress, numColumns }) {
         widthStyle = "33%";
     }
 
-    if ("icon" in item) {
+    // the first condition is to render an empty space to retain perfect 2 column alignment.
+    if (
+        item.icon ===
+        "usedToEnsureThatColumnsAreNeatlyAllignedIfThereisAnOddNumber"
+    ) {
+        return (
+            <View style={[styles.container, { width: widthStyle }]}>
+                {/* <TouchableOpacity onPress={onPress}>
+                    <Icon
+                        backgroundColor={item.backgroundColor}
+                        name={item.icon}
+                        size={80}
+                    />
+                </TouchableOpacity>
+                <Text style={styles.label}>{item.label}</Text> */}
+            </View>
+        );
+    } else if (
+        item.icon !=
+        "usedToEnsureThatColumnsAreNeatlyAllignedIfThereisAnOddNumber"
+    ) {
         return (
             <View style={[styles.container, { width: widthStyle }]}>
                 <TouchableOpacity onPress={onPress}>
@@ -39,6 +59,8 @@ function appCategoryPickerItem({ item, onPress, numColumns }) {
                 <Text style={styles.label}>{item.label}</Text>
             </View>
         );
+    } else {
+        return null;
     }
 }
 

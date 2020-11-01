@@ -35,7 +35,7 @@ const removeValue = async (key) => {
 };
 
 const getIsLoaded = async (key) => {
-    // await removeValue(key);
+    await removeValue(key);
     const loaded = await getData(key);
     if (loaded) {
         console.log("loaded = ", loaded);
