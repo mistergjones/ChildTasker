@@ -57,6 +57,9 @@ function CreateTaskListForChildScreen({ navigation }) {
         getSpecificTasksGlen,
         specifics,
         addChoresToKid,
+        choresForKid,
+        getChoresForKid,
+        chores,
     } = usersContext;
 
     // ITEM: used to set the item name and insert into table
@@ -85,6 +88,7 @@ function CreateTaskListForChildScreen({ navigation }) {
     // REWARDS
     const [selectedReward, setSelectedReward] = useState(null);
     const [selectedRewardPoints, setSelectedRewardPoints] = useState(0);
+    const [rewardList, setRewardList] = useState([]);
 
     // used to determine if to show a ZERO on first load in  TOTAL TASKS but then gets set to false once tasks are added so points will tally and enable the SUBMIT button
     const [isInitialScreenLoaded, setIsInitialScreenLoaded] = useState(true);
@@ -127,12 +131,50 @@ function CreateTaskListForChildScreen({ navigation }) {
     //************************************ */
     // Reward - make the selectable reward list
     //************************************ */
-    var rewardList = [];
-    rewardList = establishRewardListInObjectFormat(rewards);
+    //var rewardList = [];
+    // moved rewardList as state variable
+
+    const getRewardsThaHaveNotBeenAssignedToKid = (kidName) => {
+
+        // here we want to show the rewards if they have not been assigned to the child.
+        // filtered Rewards used to store the reward that has not been assigned to the child
+        let filteredRewards = [];
+
+        // loop through rewards
+        for (let x = 0; x < rewards.length; x++) {
+            let reward = rewards[x];
+            // Flag used to determine if the reward is not assigned to the child already
+            let noMatch = true;
+            // loop through chores
+            for (let i = 0; i < chores.length; i++) {
+                let chore = chores[i];
+                // if the reward id matches the chore rewards id and the chore kid name is the same
+                // as the selected child this reward has been assigned to child so don't want
+                // to display for selection as it has been assigned already
+                // set noMatch to false and stop looping through chores
+                if (reward.reward_id === chore.reward_id && chore.kid_name === kidName) {
+                    noMatch = false;
+                    break;
+                }
+
+            }
+            // if there is no match add rewards to filtered rewrds 
+            if (noMatch) {
+                filteredRewards.push(reward)
+            }
+
+        }
+        return filteredRewards;
+    }
+
+
 
     // needed as SPECIFICS from teh set state was not geting updated immediately.
     useEffect(() => {
+        setRewardList(establishRewardListInObjectFormat(rewards));
+        console.log("rewards", rewards[0])
         var pickableTasksForThatChosenCategory = {};
+
 
         // on first render it is probabaly undefined
         if (specifics != undefined || specifics != null) {
@@ -161,10 +203,17 @@ function CreateTaskListForChildScreen({ navigation }) {
     // this function is to set the status of only the kids mapped to kids
     const handleSelectKid = async (item) => {
         setSelectedKid(item);
+        const filteredRewards = getRewardsThaHaveNotBeenAssignedToKid(item.label);
+
+        // set the rewrads list to only contain rewards that have not been assigned for the child selected
+        setRewardList(establishRewardListInObjectFormat(filteredRewards));
+
+
     };
 
     // this function is to set the status of only the kids mapped to kids
     const handleSelectReward = async (item) => {
+        console.log("item ****" + item.icon)
         setSelectedReward(item);
         setSelectedRewardPoints(item.points);
         setSelectedCategory(null);
@@ -243,6 +292,8 @@ function CreateTaskListForChildScreen({ navigation }) {
                         icon_name: runningTasksToAssign[loopIterator].icon_name,
                         is_completed:
                             runningTasksToAssign[loopIterator].is_completed,
+                        reward_icon_name: runningTasksToAssign[loopIterator].reward_icon_name,
+
                     };
 
                     await addChoresToKid(items);
@@ -294,6 +345,7 @@ function CreateTaskListForChildScreen({ navigation }) {
             reward_points: selectedReward.points,
             icon_name: selectedTask.icon,
             is_completed: 0,
+            reward_icon_name: selectedReward.icon
         };
 
         console.log(`Selected Task icon is`, selectedTask);
@@ -322,113 +374,113 @@ function CreateTaskListForChildScreen({ navigation }) {
     };
 
     return (
-        <SafeAreaView style={styles.container}>
-            <ScrollView>
-                <AppHeading title="Create Task For Child" />
-                <Form
-                    initialValues={{
-                        category_id: "",
-                        category_name: "",
-                        task_id: "",
-                        task_name: "",
-                        task_points: "",
-                        kid_id: "",
-                        kid_name: "",
-                        reward_id: "",
-                        reward_name: "",
-                        reward_Points: "",
-                    }}
-                    // onSubmit={(values) => console.log(values)}
-                >
+        <Screen style={styles.container}>
+            {/* <ScrollView> */}
+            <AppHeading title="Create Task For Child" />
+            <Form
+                initialValues={{
+                    category_id: "",
+                    category_name: "",
+                    task_id: "",
+                    task_name: "",
+                    task_points: "",
+                    kid_id: "",
+                    kid_name: "",
+                    reward_id: "",
+                    reward_name: "",
+                    reward_Points: "",
+                }}
+            // onSubmit={(values) => console.log(values)}
+            >
+                <AppPicker
+                    items={kidList}
+                    icon="face"
+                    numberOfColumns={3}
+                    placeholder="Select Child"
+                    onSelectItem={handleSelectKid}
+                    selectedItem={selectedKid}
+                    width="90%"
+                />
+                {selectedKid && (
                     <AppPicker
-                        items={kidList}
-                        icon="face"
-                        numberOfColumns={3}
-                        placeholder="Select Child"
-                        onSelectItem={handleSelectKid}
-                        selectedItem={selectedKid}
+                        items={rewardList}
+                        icon={selectedReward ? selectedReward.icon : "trophy"}
+                        placeholder="Select Reward"
+                        numberOfColumns={numberOfRewardColumns}
+                        PickerItemComponent={CategoryPickerItem}
+                        onSelectItem={handleSelectReward}
+                        selectedItem={selectedReward}
                         width="90%"
                     />
-                    {selectedKid && (
-                        <AppPicker
-                            items={rewardList}
-                            icon="trophy"
-                            placeholder="Select Reward"
-                            numberOfColumns={numberOfRewardColumns}
-                            PickerItemComponent={CategoryPickerItem}
-                            onSelectItem={handleSelectReward}
-                            selectedItem={selectedReward}
-                            width="90%"
-                        />
-                    )}
-                    {selectedReward && (
-                        <AppPicker
-                            items={categoryList}
-                            icon="sitemap"
-                            placeholder="Select Category"
-                            numberOfColumns={numberOfCategoryColumns}
-                            PickerItemComponent={CategoryPickerItem}
-                            onSelectItem={handleSelectItem}
-                            selectedItem={selectedCategory}
-                            width="90%"
-                        />
-                    )}
-                    {selectedCategory && (
-                        <AppPicker
-                            //numberofElements={}
-                            items={pickableTasks}
-                            icon="star-box-outline"
-                            placeholder="Select Task"
-                            numberOfColumns={2}
-                            PickerItemComponent={CategoryPickerItem}
-                            onSelectItem={handleSelectTask}
-                            selectedItem={selectedTask}
-                            width="90%"
-                        />
-                    )}
-                    {selectedKid && selectedReward && (
-                        <View style={styles.score}>
-                            <View style={styles.currentRewardTaskContainer}>
-                                <Text style={styles.currentRewardTaskScore}>
-                                    Reward Total:
-                                </Text>
-                                <Text style={styles.currentRewardTaskValue}>
-                                    {selectedReward.points}
-                                </Text>
-                            </View>
-                            <View style={styles.currentRewardTaskContainer}>
-                                <Text style={styles.currentRewardTaskScore}>
-                                    Tasks Total:
-                                </Text>
-                                <Text style={styles.currentRewardTaskValue}>
-                                    {isInitialScreenLoaded
-                                        ? "0"
-                                        : totalTaskPoints}
-                                </Text>
-                            </View>
-                        </View>
-                    )}
-                    {selectedKid && selectedReward && selectedTask && (
-                        <AppButton
-                            title="Add Another task"
-                            onPress={handleResetDropDownAndContinue}
-                        />
-                    )}
-                    {saveAllChangesButtonEnabled && (
-                        <AppButton
-                            title="Save All Changes"
-                            onPress={handleSubmitChangesToDatabase}
-                        />
-                    )}
-                    <AppButton
-                        title="Cancel"
-                        onPress={() =>
-                            navigation.navigate(screens.ParentDashBoard)
-                        }
+                )}
+                {selectedReward && (
+                    <AppPicker
+                        items={categoryList}
+                        icon="sitemap"
+                        placeholder="Select Category"
+                        numberOfColumns={numberOfCategoryColumns}
+                        PickerItemComponent={CategoryPickerItem}
+                        onSelectItem={handleSelectItem}
+                        selectedItem={selectedCategory}
+                        width="90%"
                     />
-                </Form>
-            </ScrollView>
-        </SafeAreaView>
+                )}
+                {selectedCategory && (
+                    <AppPicker
+                        //numberofElements={}
+                        items={pickableTasks}
+                        icon="star-box-outline"
+                        placeholder="Select Task"
+                        numberOfColumns={2}
+                        PickerItemComponent={CategoryPickerItem}
+                        onSelectItem={handleSelectTask}
+                        selectedItem={selectedTask}
+                        width="90%"
+                    />
+                )}
+                {selectedKid && selectedReward && (
+                    <View style={styles.score}>
+                        <View style={styles.currentRewardTaskContainer}>
+                            <Text style={styles.currentRewardTaskScore}>
+                                Reward Total:
+                                </Text>
+                            <Text style={styles.currentRewardTaskValue}>
+                                {selectedReward.points}
+                            </Text>
+                        </View>
+                        <View style={styles.currentRewardTaskContainer}>
+                            <Text style={styles.currentRewardTaskScore}>
+                                Tasks Total:
+                                </Text>
+                            <Text style={styles.currentRewardTaskValue}>
+                                {isInitialScreenLoaded
+                                    ? "0"
+                                    : totalTaskPoints}
+                            </Text>
+                        </View>
+                    </View>
+                )}
+                {selectedKid && selectedReward && selectedTask && (
+                    <AppButton
+                        title="Add Another task"
+                        onPress={handleResetDropDownAndContinue}
+                    />
+                )}
+                {saveAllChangesButtonEnabled && (
+                    <AppButton
+                        title="Save All Changes"
+                        onPress={handleSubmitChangesToDatabase}
+                    />
+                )}
+                <AppButton
+                    title="Cancel"
+                    onPress={() =>
+                        navigation.navigate(screens.ParentDashBoard)
+                    }
+                />
+            </Form>
+            {/* </ScrollView> */}
+        </Screen>
     );
 }
 

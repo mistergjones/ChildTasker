@@ -33,7 +33,7 @@ export const establishRewardListInObjectFormat = (rewards) => {
             ")";
         tempObject.value = rewards[loopIterator].reward_id;
         tempObject.points = rewards[loopIterator].reward_points;
-        tempObject.icon = "trophy";
+        tempObject.icon = rewards[loopIterator].reward_icon_name;
         tempObject.backgroundColor = "gold";
         rewardList.push(tempObject);
     }

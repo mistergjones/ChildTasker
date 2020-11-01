@@ -13,15 +13,18 @@ const getRewards = async (setUserFunc) => {
     db.transaction(
       (tx) => {
         tx.executeSql(
-          "select reward_id,reward_name,reward_points,rewards.icon_id,icons.icon_name from rewards,icons WHERE rewards.icon_id=icons.icon_id",
+          "select reward_id,reward_name,reward_points,rewards.icon_id,rewards.reward_icon_name,icons.icon_name from rewards,icons WHERE rewards.icon_id=icons.icon_id",
           [],
           (_, { rows: { _array } }) => {
+            _array.map(a => {
+              console.log("reward = " + a.reward_icon_name)
+            })
             setUserFunc(_array);
           }
         );
       },
       (t, error) => {
-        console.log("db error load tasks");
+        console.log("db error load rewards");
         console.log(error);
         reject(error);
       },
@@ -43,12 +46,12 @@ const insertReward = async (
     db.transaction(
       (tx) => {
         tx.executeSql(
-          "insert into rewards (reward_name,reward_points,icon_id) values (?,?,?)",
-          [reward.reward_name, reward.reward_points, Number(reward.icon_id)]
+          "insert into rewards (reward_name,reward_points,icon_id,reward_icon_name) values (?,?,?,?)",
+          [reward.reward_name, reward.reward_points, Number(reward.icon_id), reward.icon_name]
         );
       },
       (t, error) => {
-        console.log("db error INSERT REWARD");
+        console.log("db error INSERT REWARD a");
         console.log(error);
         reject(error);
       },
@@ -83,17 +86,19 @@ const deleteReward = async (reward) => {
 
 /******* Update reward */
 const updateReward = (reward) => {
-  console.log(reward);
+  console.log("update reward = " + reward.icon_name);
   return new Promise(async (resolve, reject) => {
     db.transaction(
       (tx) => {
         tx.executeSql(
-          "update rewards set reward_name = ?, reward_points = ?, icon_id = ? where reward_id=?",
+          "update rewards set reward_name = ?, reward_points = ?, icon_id = ?, reward_icon_name = ? where reward_id=?",
           [
             reward.reward_name,
             reward.reward_points,
             reward.icon_id,
+            reward.icon_name,
             reward.reward_id,
+
           ]
         );
       },

@@ -67,6 +67,7 @@ const getChoresByKidName = (kid_name, setUserFunc, setScore, setAvailablePoints)
     return new Promise(async (resolve, reject) => {
         let array = [];
         let choresForRewards = [];
+        let rewardsForChild = [];
 
         db.transaction(
             (tx) => {
@@ -76,25 +77,33 @@ const getChoresByKidName = (kid_name, setUserFunc, setScore, setAvailablePoints)
                     (_, { rows: { _array } }) => {
 
                         array = _array;
-                        choresForRewards.push([array[0]]);
+                        console.log("length = " + array.length)
+                        //choresForRewards.push([array[0]]);
+
+                        rewardsForChild.push({ rewardName: array[0].reward_name, rewardIcon: array[0].reward_icon_name, chores: [array[0]] })
                         for (let i = 1; i < array.length; i++) {
                             let chore = array[i];
-                            console.log("chore " + chore)
+                            console.log("reward name " + chore.reward_id)
+
                             let noMatch = true
-                            for (let x = 0; x < choresForRewards.length; x++) {
-                                console.log("chore name and id " + chore.reward_name + chore.reward_id)
-                                if (chore.reward_id === choresForRewards[x][0].reward_id) {
-                                    choresForRewards[x].push(chore)
-                                    noMatch = false
+                            for (let x = 0; x < rewardsForChild.length; x++) {
+                                console.log("chore id = " + chore.reward_id);
+                                console.log("rewardsForCild id = " + rewardsForChild[x].chores[0].reward_id)
+                                if (chore.reward_id === rewardsForChild[x].chores[0].reward_id) {
+                                    //choresForRewards[x].push(chore);
+                                    rewardsForChild[x].chores.push(chore);
+                                    noMatch = false;
                                 }
                             }
 
                             if (noMatch) {
+                                console.log("no match ")
                                 choresForRewards.push([chore])
+                                rewardsForChild.push({ rewardName: chore.reward_name, rewardIcon: chore.reward_icon_name, chores: [chore] })
                             }
                         }
 
-                        console.log("chores for rewards lenght = ", choresForRewards.length)
+                        rewardsForChild.map(reward => console.log(reward.rewardName))
                         let score = 0;
                         let availablePoints = 0
                         array.map(chore => {
@@ -107,8 +116,8 @@ const getChoresByKidName = (kid_name, setUserFunc, setScore, setAvailablePoints)
                         })
                         setScore(score)
                         setAvailablePoints(availablePoints)
-                        setUserFunc(array);
-                        console.log("chores for rewards lenght = ", choresForRewards.length)
+                        setUserFunc(rewardsForChild);
+                        console.log("chores for rewards lenght = ", rewardsForChild.length)
 
                     }
                 );
@@ -121,7 +130,7 @@ const getChoresByKidName = (kid_name, setUserFunc, setScore, setAvailablePoints)
             (_t, _success) => {
                 console.log("Retrieved KIDCHORES by kid name");
 
-                resolve(choresForRewards);
+                resolve(rewardsForChild);
             }
         );
     });
@@ -136,7 +145,7 @@ const insertChoresToKid = (kidChores, successFunc) => {
             (tx) => {
                 console.log(`The kid chores are: `, kidChores);
                 tx.executeSql(
-                    "insert into kidchores (category_id, category_name, task_id, task_name, task_points, kid_id, kid_name, reward_id, reward_name, reward_points, is_completed, icon_name) values (?,?,?,?,?,?,?,?,?,?,?,?)",
+                    "insert into kidchores (category_id, category_name, task_id, task_name, task_points, kid_id, kid_name, reward_id, reward_name, reward_points, is_completed, icon_name, reward_icon_name) values (?,?,?,?,?,?,?,?,?,?,?,?,?)",
                     [
                         kidChores.category_id,
                         kidChores.category_name,
@@ -150,6 +159,7 @@ const insertChoresToKid = (kidChores, successFunc) => {
                         kidChores.reward_points,
                         kidChores.is_completed,
                         kidChores.icon_name,
+                        kidChores.reward_icon_name
                     ]
                 );
             },

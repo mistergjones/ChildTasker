@@ -15,6 +15,7 @@ export default {
     RemoveChild: "RemoveChild",
     ViewReward: "ViewReward",
     ChildDashBoard: "ChildDashBoard",
+    ChildTaskForRewards: "ChildTasksForReward",
     ChoreStatus: "ChoreStatus",
     ChoreProgress: "ChoreProgress",
     EditProfile: "EditProfile",

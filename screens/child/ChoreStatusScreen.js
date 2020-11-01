@@ -16,9 +16,9 @@ function ChoreStatusScreen({ navigation, route }) {
   const [choreCompleted, setChoreCompleted] = useState(false);
 
   const handleCompleted = async () => {
-    console.log("route params " + route.params.task_id)
-    await updateChoresForKid(choresForKid[0].kid_name, route.params.task_id)
-    navigation.navigate(screens.ChoreProgress)
+    console.log("route params = " + route.params.chores.length)
+    await updateChoresForKid(choresForKid[0].chores[0].kid_name, route.params.task_id)
+    navigation.navigate(screens.ChoreProgress, { chores: route.params.chores })
   }
   return (
     <Screen style={styles.container}>

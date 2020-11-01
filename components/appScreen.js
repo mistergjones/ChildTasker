@@ -1,15 +1,20 @@
 import React from "react";
 import Constants from "expo-constants";
-import { StyleSheet, SafeAreaView, View, ImageBackground } from "react-native";
+import { StyleSheet, SafeAreaView, View, ImageBackground, ScrollView } from "react-native";
 import colours from "../config/colours";
 
 function appScreen({ children, style }) {
   return (
+
     <SafeAreaView style={[styles.screen, style]}>
       <ImageBackground source={require("../assets/avatar/9.png")} style={styles.image} >
+
         <View style={[styles.view, style]}>{children}</View>
+
       </ImageBackground>
+
     </SafeAreaView>
+
   );
 }
 

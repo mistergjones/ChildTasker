@@ -15,12 +15,14 @@ import Images from "../../assets/images";
 import AuthContext from "../../components/auth/context";
 import { UsersContext } from "../../context/UsersContext";
 
-function ChoreProgressScreen({ navigation }) {
+function ChoreProgressScreen({ navigation, route }) {
     const usersContext = useContext(UsersContext);
 
-    const { chores } = usersContext;
+    //const { chores } = usersContext;
     // obtain the logged in user. We will use this for the query on the table.
     const { user } = useContext(AuthContext);
+    console.log("route params ", route.params)
+    const { chores } = route.params
     // console.log(`Child Dashboard Screen. Child name is: `, user.username);
 
     var rewardPoints = 20;
@@ -134,6 +136,7 @@ function ChoreProgressScreen({ navigation }) {
                         data={data}
                         spacing={0}
                         outerRadius={"80%"}
+                        key={1}
                     >
                         <Labels />
                     </PieChart>

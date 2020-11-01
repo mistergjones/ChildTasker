@@ -87,15 +87,17 @@ function EditReward({ navigation }) {
               "hit edit reward button",
               fields.label,
               fields.point,
-              // fields.icon
+              selectedIcon.icon,
               selectedIcon.value,
-              selectedReward
+              selectedReward,
+
             );
             await updateReward({
               reward_name: fields.label,
               reward_points: fields.point,
               icon_id: selectedIcon.value,
               reward_id: selectedReward,
+              icon_name: selectedIcon.icon
             });
             navigation.navigate("ViewReward");
           } catch (error) {
