@@ -473,7 +473,7 @@ const loadDataIntoTablesAsync = async () => {
         await loadItems();
         await loadCategories();
         await loadTasks();
-        // await loadRewards();
+        await loadRewards();
         await loadIcons();
         resolve();
     });

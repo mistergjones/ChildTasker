@@ -90,7 +90,8 @@ export default function EditExistingCategoryScreen({ navigation }) {
     });
 
     return (
-        <SafeAreaView style={styles.container}>
+        <Screen>
+            {/* <SafeAreaView style={styles.container}> */}
             <ScrollView>
                 <AppHeading title="Edit Category" />
 
@@ -204,7 +205,8 @@ export default function EditExistingCategoryScreen({ navigation }) {
                     />
                 </Form> */}
             </ScrollView>
-        </SafeAreaView>
+            {/* </SafeAreaView> */}
+        </Screen>
     );
 }
 

@@ -38,7 +38,7 @@ function AddNewCategoryScreen({ navigation }) {
     });
 
     return (
-        <SafeAreaView>
+        <Screen>
             <AppHeading title="Add New Category" />
 
             <Formik
@@ -87,7 +87,7 @@ function AddNewCategoryScreen({ navigation }) {
                     </>
                 )}
             </Formik>
-        </SafeAreaView>
+        </Screen>
     );
 }
 
