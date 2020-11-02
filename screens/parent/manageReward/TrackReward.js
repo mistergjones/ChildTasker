@@ -79,7 +79,7 @@ function TrackReward({ navigation }) {
 
     // set the rewrads list to only contain rewards that have not been assigned for the child selected
     setRewardList(establishRewardListInObjectFormat(filteredRewards));
-
+    setSelectedReward(null);
     // console.log(selectedKid);
   };
 
@@ -126,8 +126,8 @@ function TrackReward({ navigation }) {
             taskName: chore.task_name,
             svg:
               chore.is_completed === 1
-                ? { fill: "#859C27" }
-                : { fill: "#A42CD6" },
+                ? { fill: "#A42CD6" }
+                : { fill: "#859C27" },
           };
         });
         setGraphData(data);
@@ -156,12 +156,12 @@ function TrackReward({ navigation }) {
           {index === 0 ? (
             <>
               {/* <AppText style={{ color: "black" }}>Legend:</AppText> */}
-              <AppText style={{ color: "#859C27", fontWeight: "bold" }}>
+              <AppText style={{ color: "#A42CD6", fontWeight: "bold" }}>
                 Completed
               </AppText>
               <AppText
                 style={{
-                  color: "#A42CD6",
+                  color: "#859C27",
                   fontWeight: "bold",
                   marginRight: 5,
                 }}
