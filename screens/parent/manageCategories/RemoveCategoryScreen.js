@@ -82,7 +82,8 @@ export default function RemoveCategoryScreen({ navigation }) {
     };
 
     return (
-        <SafeAreaView style={styles.container}>
+        <Screen>
+            {/* <SafeAreaView style={styles.container}> */}
             <ScrollView>
                 <AppHeading title="Remove Category" />
 
@@ -111,7 +112,8 @@ export default function RemoveCategoryScreen({ navigation }) {
                     onPress={() => navigation.navigate(screens.AddCategory)}
                 />
             </ScrollView>
-        </SafeAreaView>
+            {/* </SafeAreaView> */}
+        </Screen>
     );
 }
 

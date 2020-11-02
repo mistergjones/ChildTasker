@@ -143,7 +143,8 @@ export default function AddNewTaskScreen({ navigation }) {
     ];
 
     return (
-        <SafeAreaView style={styles.container}>
+        <Screen>
+            {/* <SafeAreaView style={styles.container}> */}
             <ScrollView>
                 <AppHeading title="Add New Task" />
 
@@ -225,7 +226,8 @@ export default function AddNewTaskScreen({ navigation }) {
                     />
                 </Form>
             </ScrollView>
-        </SafeAreaView>
+            {/* </SafeAreaView> */}
+        </Screen>
     );
 }
 

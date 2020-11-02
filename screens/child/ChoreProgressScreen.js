@@ -21,9 +21,16 @@ function ChoreProgressScreen({ navigation, route }) {
     //const { chores } = usersContext;
     // obtain the logged in user. We will use this for the query on the table.
     const { user } = useContext(AuthContext);
-    console.log("route params ", route.params);
+    //console.log("Route params contains:  ", route.params);
+
+    // it seems that the first completed task is never being passed by route.params.
     const { chores } = route.params;
+    // const { chores } = usersContext;
     // console.log(`Child Dashboard Screen. Child name is: `, user.username);
+
+    // get the latest copy of the kidchores table for the logged in KID. We will then use this in a for loop to update our chart.
+    // Given the depth of the array provided to us, we have to add [0].chores to the array to get exactly what we want.
+    const { choresForKid } = useContext(UsersContext);
 
     var rewardPoints = 20;
 
@@ -43,30 +50,31 @@ function ChoreProgressScreen({ navigation, route }) {
     var notCompletedTasks = 0;
 
     // obtain the data relevant for the logged in user.
-    for (var i = 0; i < chores.length; i++) {
-        if (chores[i].kid_name === user.username) {
+    // Given the depth of the array provided to us, we have to add [0].chores to the array to get exactly what we want.
+    for (var i = 0; i < choresForKid[0].chores.length; i++) {
+        if (choresForKid[0].chores[i].kid_name === user.username) {
             //console.log(user.username);
-            //console.log(chores[i].is_completed);
-            // console.log(chores[i].task_points);
+            //console.log(choresForKid[0].chores[i].is_completed);
+            // console.log(choresForKid[0].chores[i].task_points);
 
             // push some items into a seperate array
-            labelName.push(chores[i].task_name);
-            taskPoints.push(chores[i].task_points);
-            rewardNames.push(chores[i].reward_name);
+            labelName.push(choresForKid[0].chores[i].task_name);
+            taskPoints.push(choresForKid[0].chores[i].task_points);
+            rewardNames.push(choresForKid[0].chores[i].reward_name);
 
             let tempObject = {};
             // to start the numbering at 1 instead of 0 for the keys
             tempObject.Key = i + 1;
-            tempObject.amount = chores[i].task_points;
+            tempObject.amount = choresForKid[0].chores[i].task_points;
 
             // determine if the task is completed or not/
-            if (chores[i].is_completed === 0) {
+            if (choresForKid[0].chores[i].is_completed === 0) {
                 // assign a light shade of purle
                 tempObject.svg = { fill: "#ecb3ff" };
                 tempObject.is_complete = 0;
                 // update the not completed task counter
                 notCompletedTasks += 1;
-            } else if (chores[i].is_completed === 1) {
+            } else if (choresForKid[0].chores[i].is_completed === 1) {
                 // assign a dark shade of purle
                 tempObject.svg = { fill: "#600080" };
                 tempObject.is_complete = 1;
