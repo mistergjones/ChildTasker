@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import {
   View,
   StyleSheet,
@@ -8,7 +8,6 @@ import {
   TouchableHighlight,
   Alert,
 } from "react-native";
-
 import Screen from "../../../components/appScreen";
 import AppButton from "../../../components/appButton";
 import AppHeading from "../../../components/appHeading.js";
@@ -17,249 +16,221 @@ import AppText from "../../../components/appText";
 import ListItem from "../../../components/appListItem";
 import screens from "../../../config/screens";
 import AppMaterialIcon from "../../../components/appMaterialCommunityIcon";
-import { LineChart, Path, Grid, XAxis, YAxis } from "react-native-svg-charts";
-
 import {
   Form,
   FormField,
   FormPicker as Picker,
   SubmitButton,
 } from "../../../components/forms";
-
 import CategoryPickerItem from "../../../components/appCategoryPickerItem";
-// avatars
-const avatars = [
-  {
-    value: 1,
-    label: "Takeaway",
-    points: 10,
-    image: require("../../../assets/avatar/1.png"),
-  },
-  {
-    value: 2,
-    label: "Games",
-    points: 15,
-    image: require("../../../assets/avatar/2.png"),
-  },
-  {
-    value: 3,
-    label: "Internet",
-    points: 15,
-    image: require("../../../assets/avatar/3.png"),
-  },
-  {
-    value: 4,
-    label: "Whatever",
-    points: 10,
-    image: require("../../../assets/avatar/4.png"),
-  },
-  {
-    value: 5,
-    label: "Whatever",
-    points: 10,
-    image: require("../../../assets/avatar/5.png"),
-  },
-  {
-    value: 6,
-    label: "Whatever",
-    points: 10,
-    image: require("../../../assets/avatar/6.png"),
-  },
-  {
-    value: 7,
-    label: "Whatever",
-    points: 10,
-    image: require("../../../assets/avatar/7.png"),
-  },
-  {
-    value: 8,
-    label: "Whatever",
-    points: 10,
-    image: require("../../../assets/avatar/8.png"),
-  },
-  {
-    value: 9,
-    label: "Whatever",
-    points: 10,
-    image: require("../../../assets/avatar/9.png"),
-  },
-  {
-    value: 10,
-    label: "Whatever",
-    points: 10,
-    image: require("../../../assets/avatar/10.png"),
-  },
-  {
-    value: 11,
-    label: "Whatever",
-    points: 10,
-    image: require("../../../assets/avatar/11.png"),
-  },
-  {
-    value: 12,
-    label: "Whatever",
-    points: 10,
-    image: require("../../../assets/avatar/12.png"),
-  },
-];
-
+import { UsersContext } from "../../../context/UsersContext";
+import {
+  establishCategoryTasksListInObjectFormat,
+  establishRewardListInObjectFormat,
+  establishKidListInObjectFormat,
+} from "../../../helpers/createObjectLists";
+import AppPicker from "../../../components/appPicker";
+import { PieChart } from "react-native-svg-charts";
+import { Circle, G, Image, Text } from "react-native-svg";
 function TrackReward({ navigation }) {
-  const data1 = [
-    50,
-    10,
-    40,
-    95,
-    -4,
-    -24,
-    85,
-    91,
-    35,
-    53,
-    -53,
-    24,
-    50,
-    -20,
-    -80,
-  ];
-  const data2 = [
-    -87,
-    66,
-    -69,
-    92,
-    -40,
-    -61,
-    16,
-    62,
-    20,
-    -93,
-    -54,
-    47,
-    -89,
-    -44,
-    18,
-  ];
+  const usersContext = useContext(UsersContext);
+  const {
+    kids,
+    rewards,
+    items,
+    addNewItem,
+    categories,
+    addNewCategory,
+    tasks,
+    addNewTask,
+    getSpecificTasksGlen,
+    specifics,
+    addChoresToKid,
+    choresForKid,
+    getChoresForKid,
+    chores,
+  } = usersContext;
 
-  const data = [
-    {
-      data: data1,
-      svg: { stroke: "purple" },
-    },
-    {
-      data: data2,
-      svg: { stroke: "red" },
-    },
-  ];
-  const axesSvg = { fontSize: 10, fill: "grey" };
-  const verticalContentInset = { top: 10, bottom: 10 };
-  const xAxisHeight = 30;
-  const contentInset = { top: 20, bottom: 20 };
+  // KiDS
+  const [selectedKid, setSelectedKid] = useState(null);
+
+  //to get all kids name for dropdown menu
+  var kidList = [];
+  kidList = establishKidListInObjectFormat(kids);
+
+  // REWARDS
+  const [selectedReward, setSelectedReward] = useState(null);
+
+  const [rewardList, setRewardList] = useState([]);
+  const [kidChoresForReward, setKidChoresForReward] = useState([]);
+  const [choresForReward, setChoresForReward] = useState([]); //this will be storing filtered actual chores for the reward
+
+  const [graphData, setGraphData] = useState();
+  // this function is to set the status of only the kids mapped to kids
+  const handleSelectKid = async (item) => {
+    setSelectedKid(item);
+    let choresForSelectedKid = await getChoresForKid(item.label);
+    console.log("choresForSelectedKid", choresForSelectedKid.length);
+    setKidChoresForReward(choresForSelectedKid);
+    const filteredRewards = getRewardsHaveBeenAssignedToKid(
+      item.label,
+      choresForSelectedKid
+    );
+
+    // set the rewrads list to only contain rewards that have not been assigned for the child selected
+    setRewardList(establishRewardListInObjectFormat(filteredRewards));
+
+    // console.log(selectedKid);
+  };
+
+  const getRewardsHaveBeenAssignedToKid = (kidName, rewardsForKid) => {
+    console.log("rewardsForKid = ", Object.keys(rewardsForKid[0]));
+
+    let filteredRewards = [];
+    let filteredChores = [];
+    // let choresForKid
+    // loop through rewards
+    for (let x = 0; x < rewards.length; x++) {
+      let reward = rewards[x];
+
+      let match = false;
+      // loop through chores
+      for (let i = 0; i < rewardsForKid.length; i++) {
+        if (rewardsForKid[i].rewardID === reward.reward_id) {
+          match = true;
+          filteredChores.push({
+            rewardID: reward.reward_id,
+            chores: rewardsForKid[i].chores,
+          });
+        }
+      }
+
+      if (match) {
+        filteredRewards.push(reward);
+      }
+    }
+    setKidChoresForReward(filteredChores);
+    return filteredRewards;
+  };
+  // this function is to set the status of only the kids mapped to kids
+  const handleSelectReward = async (item) => {
+    console.log("item ****" + item.icon);
+    setSelectedReward(item);
+    for (let i = 0; i < kidChoresForReward.length; i++) {
+      if (kidChoresForReward[i].rewardID === item.value) {
+        setChoresForReward(kidChoresForReward[i].chores);
+        const data = kidChoresForReward[i].chores.map((chore, index) => {
+          return {
+            key: index,
+            amount: chore.task_points,
+            taskName: chore.task_name,
+            svg:
+              chore.is_completed === 1
+                ? { fill: "#859C27" }
+                : { fill: "#A42CD6" },
+          };
+        });
+        setGraphData(data);
+        break;
+      }
+    }
+  };
+
+  const Labels = ({ slices, height, width }) => {
+    return slices.map((slice, index) => {
+      const { labelCentroid, pieCentroid, data } = slice;
+      return (
+        <Text
+          key={index}
+          x={pieCentroid[0]}
+          y={pieCentroid[1]}
+          fill={"white"}
+          textAnchor={"middle"}
+          alignmentBaseline={"middle"}
+          fontSize={18}
+          fontWeight="bold"
+          stroke={"white"}
+          strokeWidth={0.2}
+        >
+          {(data.amount, data.taskName)}
+          {index === 0 ? (
+            <>
+              {/* <AppText style={{ color: "black" }}>Legend:</AppText> */}
+              <AppText style={{ color: "#859C27", fontWeight: "bold" }}>
+                Completed
+              </AppText>
+              <AppText
+                style={{
+                  color: "#A42CD6",
+                  fontWeight: "bold",
+                  marginRight: 5,
+                }}
+              >
+                Incomplete
+              </AppText>
+            </>
+          ) : (
+            ""
+          )}
+        </Text>
+      );
+    });
+  };
   return (
     <Screen>
       <AppHeading title="Track Reward" />
-      {/* <AppLabel labelText="For Child...X" /> */}
-      <View>
-        <Form
-          initialValues={{
-            avatar: "",
-          }}
-          onSubmit={(values) => {
-            console.log(values);
-            navigation.navigate("ViewReward");
-          }}
-          // validationSchema={validationSchema}
-        >
-          <Picker
-            items={avatars}
-            name="avatar"
-            numberOfColumns={3}
-            PickerItemComponent={CategoryPickerItem}
-            placeholder="Select Child"
-            width="90%"
-            textAlign="center"
-          />
-        </Form>
-      </View>
-      <View
-        style={{
-          height: 200,
-          padding: 10,
-          width: "100%",
-          flexDirection: "row",
+      <Form
+        initialValues={{
+          category_id: "",
+          category_name: "",
+          task_id: "",
+          task_name: "",
+          task_points: "",
+          kid_id: "",
+          kid_name: "",
+          reward_id: "",
+          reward_name: "",
+          reward_Points: "",
         }}
+        // onSubmit={(values) => console.log(values)}
       >
-        <YAxis
-          data={data2}
-          style={{ marginBottom: xAxisHeight }}
-          formatLabel={(value, index) => value}
-          contentInset={verticalContentInset}
-          svg={axesSvg}
+        <AppPicker
+          items={kidList}
+          icon="face"
+          numberOfColumns={3}
+          placeholder="Select Child"
+          onSelectItem={handleSelectKid}
+          selectedItem={selectedKid}
+          width="90%"
         />
-        <View style={{ flex: 1 }}>
-          <LineChart
-            style={{ flex: 1 }}
-            data={data}
-            contentInset={{ top: 20, bottom: 20 }}
-            // xAccessor={({ item }) => item}
-            svg={{ stroke: "rgb(134, 65, 244)" }}
-            // contentInset={contentInset}
-          >
-            <Grid />
-          </LineChart>
-          <XAxis
-            style={{
-              height: xAxisHeight,
-              width: "100%",
-            }}
-            data={data2}
-            formatLabel={(value, index) => index}
-            contentInset={{ left: 5, right: 5 }}
-            svg={{
-              fontSize: 10,
-              fill: "black",
-              flexWrap: "wrap",
-            }}
+        {selectedKid && (
+          <AppPicker
+            items={rewardList}
+            icon={selectedReward ? selectedReward.icon : "trophy"}
+            placeholder="Select Reward"
+            numberOfColumns="2"
+            PickerItemComponent={CategoryPickerItem}
+            onSelectItem={handleSelectReward}
+            selectedItem={selectedReward}
+            width="90%"
           />
-        </View>
-      </View>
-      {/* <View style={styles.tabLinks}>
-        <View style={styles.tab}>
-          <AppMaterialIcon iconName="dice-5" iconSize={42} iconColor="blue" />
-          <AppText>Tab 1</AppText>
-        </View>
-        <View style={styles.tab}>
-          <AppMaterialIcon iconName="table-large" iconSize={42} />
-          <AppText>Tab 2</AppText>
-        </View>
-      </View> */}
-      <View>
+        )}
+        {selectedReward && (
+          <PieChart
+            style={{ height: "50%", width: "95%", alignSelf: "center" }}
+            valueAccessor={({ item }) => item.amount}
+            data={graphData}
+            spacing={0}
+            outerRadius={"94%"}
+          >
+            <Labels />
+          </PieChart>
+        )}
         <AppButton
           title="Return"
           onPress={() => navigation.navigate(screens.ManageRewards)}
         />
-      </View>
-      <View>
-        <Form
-          initialValues={{
-            avatar: "",
-          }}
-          onSubmit={(values) => {
-            console.log(values);
-            navigation.navigate("ViewReward");
-          }}
-          // validationSchema={validationSchema}
-        >
-          {/* Avatar Selection to be used somewhere else */}
-          {/* <Picker
-            items={avatars}
-            name="avatar"
-            numberOfColumns={3}
-            PickerItemComponent={CategoryPickerItem}
-            placeholder="Avatar"
-            width="50%"
-          /> */}
-          {/* <SubmitButton title="Submit" /> */}
-        </Form>
-      </View>
+      </Form>
     </Screen>
   );
 }
