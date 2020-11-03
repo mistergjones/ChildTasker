@@ -11,45 +11,21 @@ import {
 import Screen from "../../../components/appScreen";
 import AppButton from "../../../components/appButton";
 import AppHeading from "../../../components/appHeading.js";
-import AppLabel from "../../../components/appLabel";
-import AppText from "../../../components/appText";
-import ListItem from "../../../components/appListItem";
 import screens from "../../../config/screens";
-import AppMaterialIcon from "../../../components/appMaterialCommunityIcon";
-import {
-  Form,
-  FormField,
-  FormPicker as Picker,
-  SubmitButton,
-} from "../../../components/forms";
+import { Form } from "../../../components/forms";
 import CategoryPickerItem from "../../../components/appCategoryPickerItem";
 import { UsersContext } from "../../../context/UsersContext";
 import {
-  establishCategoryTasksListInObjectFormat,
   establishRewardListInObjectFormat,
   establishKidListInObjectFormat,
 } from "../../../helpers/createObjectLists";
 import AppPicker from "../../../components/appPicker";
-import { PieChart } from "react-native-svg-charts";
-import { Circle, G, Image, Text } from "react-native-svg";
+//Added component
+import PieChartWithLabels from "../../../components/PieChartWithLabels";
+
 function TrackReward({ navigation }) {
   const usersContext = useContext(UsersContext);
-  const {
-    kids,
-    rewards,
-    items,
-    addNewItem,
-    categories,
-    addNewCategory,
-    tasks,
-    addNewTask,
-    getSpecificTasksGlen,
-    specifics,
-    addChoresToKid,
-    choresForKid,
-    getChoresForKid,
-    chores,
-  } = usersContext;
+  const { kids, rewards, getChoresForKid } = usersContext;
 
   // KiDS
   const [selectedKid, setSelectedKid] = useState(null);
@@ -120,10 +96,13 @@ function TrackReward({ navigation }) {
       if (kidChoresForReward[i].rewardID === item.value) {
         setChoresForReward(kidChoresForReward[i].chores);
         const data = kidChoresForReward[i].chores.map((chore, index) => {
+          console.log("Chore Test", Object.keys(chore));
           return {
             key: index,
+            id: chore.chore_id,
             amount: chore.task_points,
             taskName: chore.task_name,
+            icon: chore.icon_name,
             svg:
               chore.is_completed === 1
                 ? { fill: "#A42CD6" }
@@ -136,46 +115,6 @@ function TrackReward({ navigation }) {
     }
   };
 
-  const Labels = ({ slices, height, width }) => {
-    return slices.map((slice, index) => {
-      const { labelCentroid, pieCentroid, data } = slice;
-      return (
-        <Text
-          key={index}
-          x={pieCentroid[0]}
-          y={pieCentroid[1]}
-          fill={"white"}
-          textAnchor={"middle"}
-          alignmentBaseline={"middle"}
-          fontSize={18}
-          fontWeight="bold"
-          stroke={"white"}
-          strokeWidth={0.2}
-        >
-          {(data.amount, data.taskName)}
-          {index === 0 ? (
-            <>
-              {/* <AppText style={{ color: "black" }}>Legend:</AppText> */}
-              <AppText style={{ color: "#A42CD6", fontWeight: "bold" }}>
-                Completed
-              </AppText>
-              <AppText
-                style={{
-                  color: "#859C27",
-                  fontWeight: "bold",
-                  marginRight: 5,
-                }}
-              >
-                Incomplete
-              </AppText>
-            </>
-          ) : (
-            ""
-          )}
-        </Text>
-      );
-    });
-  };
   return (
     <Screen>
       <AppHeading title="Track Reward" />
@@ -192,7 +131,6 @@ function TrackReward({ navigation }) {
           reward_name: "",
           reward_Points: "",
         }}
-        // onSubmit={(values) => console.log(values)}
       >
         <AppPicker
           items={kidList}
@@ -215,17 +153,7 @@ function TrackReward({ navigation }) {
             width="90%"
           />
         )}
-        {selectedReward && (
-          <PieChart
-            style={{ height: "50%", width: "95%", alignSelf: "center" }}
-            valueAccessor={({ item }) => item.amount}
-            data={graphData}
-            spacing={0}
-            outerRadius={"94%"}
-          >
-            <Labels />
-          </PieChart>
-        )}
+        {selectedReward && <PieChartWithLabels data={graphData} />}
         <AppButton
           title="Return"
           onPress={() => navigation.navigate(screens.ManageRewards)}

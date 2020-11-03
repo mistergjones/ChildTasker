@@ -5,21 +5,21 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import colours from "../config/colours.js";
 
 function appMaterialCommunityIcon({ iconName, iconSize, iconColor = "green" }) {
-    return (
-        <View style={styles.container}>
-            <MaterialCommunityIcons
-                name={iconName}
-                size={iconSize}
-                color={iconColor}
-            />
-        </View>
-    );
+  return (
+    <View style={styles.container}>
+      <MaterialCommunityIcons
+        name={iconName}
+        size={iconSize}
+        color={iconColor}
+      />
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        color: colours.black,
-    },
+  container: {
+    color: colours.black,
+  },
 });
 
 export default appMaterialCommunityIcon;
