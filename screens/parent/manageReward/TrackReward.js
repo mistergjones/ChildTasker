@@ -1,13 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
-import {
-  View,
-  StyleSheet,
-  FlatList,
-  Modal,
-  Button,
-  TouchableHighlight,
-  Alert,
-} from "react-native";
+import { StyleSheet } from "react-native";
 import Screen from "../../../components/appScreen";
 import AppButton from "../../../components/appButton";
 import AppHeading from "../../../components/appHeading.js";
@@ -18,6 +10,7 @@ import { UsersContext } from "../../../context/UsersContext";
 import {
   establishRewardListInObjectFormat,
   establishKidListInObjectFormat,
+  changeChoresToPieChartDataObject,
 } from "../../../helpers/createObjectLists";
 import AppPicker from "../../../components/appPicker";
 //Added component
@@ -95,20 +88,9 @@ function TrackReward({ navigation }) {
     for (let i = 0; i < kidChoresForReward.length; i++) {
       if (kidChoresForReward[i].rewardID === item.value) {
         setChoresForReward(kidChoresForReward[i].chores);
-        const data = kidChoresForReward[i].chores.map((chore, index) => {
-          console.log("Chore Test", Object.keys(chore));
-          return {
-            key: index,
-            id: chore.chore_id,
-            amount: chore.task_points,
-            taskName: chore.task_name,
-            icon: chore.icon_name,
-            svg:
-              chore.is_completed === 1
-                ? { fill: "#A42CD6" }
-                : { fill: "#859C27" },
-          };
-        });
+        const data = changeChoresToPieChartDataObject(
+          kidChoresForReward[i].chores
+        );
         setGraphData(data);
         break;
       }
