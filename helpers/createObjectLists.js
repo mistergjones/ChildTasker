@@ -45,7 +45,7 @@ export const establishKidListInObjectFormat = (kids) => {
     var tempObject = {};
     tempObject.label = kids[loopIterator].user_name;
     tempObject.value = kids[loopIterator].user_id;
-
+    tempObject.icon = "human-child";
     kidList.push(tempObject);
   }
 

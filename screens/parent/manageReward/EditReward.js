@@ -1,7 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import { View, StyleSheet } from "react-native";
 import * as Yup from "yup";
-// import Picker from "../../../components/appPicker";
 import AppButton from "../../../components/appButton";
 import AppHeading from "../../../components/appHeading.js";
 import Screen from "../../../components/appScreen";
@@ -30,7 +29,6 @@ function EditReward({ navigation }) {
     icons,
     selectedReward,
     updateReward,
-    // getRewardByID,
     selectedRewardDetails,
   } = usersContext;
   const [rewardName, setRewardName] = useState(
@@ -56,15 +54,8 @@ function EditReward({ navigation }) {
     tempObj.label = i.label;
     tempObj.value = i.icon_id;
     iconData.push(tempObj);
-    // selectedRewardDetails
-    //   ? i.icon_id === selectedRewardDetails[0].icon_id
-    //     ? (placeHolder = i.label)
-    //     : (placeHolder = "")
-    //   : "";
   });
 
-  // console.log(icons.filter((icon) => icon.icon_id == iconID));
-  // console.log({ selectedRewardDetails });
   const handleSelectedIcon = (item) => {
     console.log("ITEM", item);
     setSelectedIcon(item);
@@ -80,8 +71,6 @@ function EditReward({ navigation }) {
           icon: selectedIcon,
         }}
         onSubmit={async (fields, { setFieldError }) => {
-          // console.log("reached here");
-          // console.log(fields);
           try {
             console.log(
               "hit edit reward button",
@@ -89,15 +78,14 @@ function EditReward({ navigation }) {
               fields.point,
               selectedIcon.icon,
               selectedIcon.value,
-              selectedReward,
-
+              selectedReward
             );
             await updateReward({
               reward_name: fields.label,
               reward_points: fields.point,
               icon_id: selectedIcon.value,
               reward_id: selectedReward,
-              icon_name: selectedIcon.icon
+              icon_name: selectedIcon.icon,
             });
             navigation.navigate("ViewReward");
           } catch (error) {
@@ -108,16 +96,6 @@ function EditReward({ navigation }) {
       >
         {({ handleChange, handleSubmit, errors }) => (
           <>
-            {/* <FormField
-              maxLength={255}
-              icon="pen"
-              name="label"
-              placeholder={
-                selectedRewardDetails
-                  ? selectedRewardDetails[0].reward_name
-                  : ""
-              }
-            /> */}
             <AppTextInput
               labelText="Reward Name"
               icon="pen"
@@ -126,18 +104,7 @@ function EditReward({ navigation }) {
               error={errors ? errors.label : ""}
               defaultValue={rewardName}
             />
-            {/* <FormField
-              keyboardType="numeric"
-              maxLength={8}
-              name="point"
-              placeholder={
-                selectedRewardDetails
-                  ? selectedRewardDetails[0].reward_points.toString()
-                  : ""
-              }
-              width={120}
-              icon="lock"
-            /> */}
+
             <AppTextInput
               labelText="Reward Points"
               icon="lock"
@@ -153,7 +120,6 @@ function EditReward({ navigation }) {
               numberOfColumns={3}
               PickerItemComponent={CategoryPickerItem}
               placeholder={selectedIcon.label}
-              // placeholder={placeHolder}
               width="90%"
               icon={selectedIcon.icon}
               onSelectItem={handleSelectedIcon}
