@@ -115,20 +115,29 @@ export const UsersContextProvider = (props) => {
     // make a database call to insert a TASK and then call refreshItems to update the state
     const addNewTask = async (userTask) => {
         // return database.insertTask(userTask, refreshTasks);
-
-        return await databaseTasks.insertTask(userTask, refreshTasks);
+        try {
+            await databaseTasks.insertTask(userTask, refreshTasks);
+            await getTasks();
+            return;
+        } catch (error) {
+            console.log("error inserting task = " + error);
+        }
     };
+
+    const getTasks = async () => {
+        return await databaseTasks.getTasks(setTasks);
+    };
+
     // make a database call to retrieve all tasks
     // In refreshItems we are sending the setItems function, which will allow the query to set our local state.
     const refreshTasks = async () => {
         // return database.getTasks(setTasks);
-
+        console.log("DOES THIS EVER WORK - refresh TASKS");
         return await databaseTasks.getTasks(setTasks);
     };
 
     const removeTask = async (task_id) => {
         await databaseTasks.removeTask(task_id);
-
         await refreshTasks();
 
         return;
@@ -136,7 +145,9 @@ export const UsersContextProvider = (props) => {
 
     const updateTask = async (task) => {
         await databaseTasks.updateTask(task);
+
         await refreshTasks();
+
         return;
     };
 

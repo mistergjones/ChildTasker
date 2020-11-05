@@ -85,9 +85,9 @@ const insertTask = async (userTask, successFunc) => {
                 console.log(error);
             },
             (t, _success) => {
-                console.log("TASK insertion was successful");
                 //successFunc();
                 resolve(_success);
+                console.log("TASK insertion was successful");
             }
         );
     });

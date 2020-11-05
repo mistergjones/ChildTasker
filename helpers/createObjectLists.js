@@ -65,23 +65,13 @@ export const establishKidListInObjectFormat = (kids) => {
     var kidList = [];
     // now loop through each item to obatin id and value and assign to an object. Push this object into the array
 
-<<<<<<< HEAD
-  for (var loopIterator = 0; loopIterator < kids.length; loopIterator++) {
-    var tempObject = {};
-    tempObject.label = kids[loopIterator].user_name;
-    tempObject.value = kids[loopIterator].user_id;
-    tempObject.icon = "human-child";
-    kidList.push(tempObject);
-  }
-=======
     for (var loopIterator = 0; loopIterator < kids.length; loopIterator++) {
         var tempObject = {};
         tempObject.label = kids[loopIterator].user_name;
         tempObject.value = kids[loopIterator].user_id;
-
+        tempObject.icon = "human-child";
         kidList.push(tempObject);
     }
->>>>>>> all minor enhancements
 
     return kidList;
 };

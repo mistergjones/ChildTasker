@@ -104,7 +104,7 @@ export default function EditExistingCategoryScreen({ navigation }) {
         <Screen>
             {/* <SafeAreaView style={styles.container}> */}
             <ScrollView>
-                <AppHeading title="Edit Category" />
+                <AppHeading title="Rename Category" />
 
                 <Formik
                     initialValues={{

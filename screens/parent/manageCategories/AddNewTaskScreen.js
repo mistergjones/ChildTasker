@@ -173,6 +173,7 @@ export default function AddNewTaskScreen({ navigation }) {
         console.log(infoToAdd);
         try {
             await addNewTask(infoToAdd);
+            console.log("WE are inside the try await Add New Tasks");
             navigation.navigate(screens.AddCategory);
         } catch (error) {
             console.log("There as an error inserting a NEW TASK");

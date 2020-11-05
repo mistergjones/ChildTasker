@@ -171,24 +171,26 @@ const getCategories = (setUserFunc) => {
 // get all categories
 // We will pass in a function that can take the users from the query and set the state.
 const getTasks = (setUserFunc) => {
-    db.transaction(
-        (tx) => {
-            tx.executeSql(
-                "select * from tasks",
-                [],
-                (_, { rows: { _array } }) => {
-                    setUserFunc(_array);
-                }
-            );
-        },
-        (t, error) => {
-            console.log("db error load tasks");
-            console.log(error);
-        },
-        (_t, _success) => {
-            console.log("Retrieved tasks");
-        }
-    );
+    return new Promise(async (resolve, reject) => {
+        db.transaction(
+            (tx) => {
+                tx.executeSql(
+                    "select * from tasks",
+                    [],
+                    (_, { rows: { _array } }) => {
+                        setUserFunc(_array);
+                    }
+                );
+            },
+            (t, error) => {
+                console.log("db error load tasks");
+                console.log(error);
+            },
+            (_t, _success) => {
+                console.log("Retrieved tasks");
+            }
+        );
+    });
 };
 
 /******* get specific tasks given a category id */

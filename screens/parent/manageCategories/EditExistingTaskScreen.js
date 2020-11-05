@@ -88,9 +88,10 @@ export default function EditExistingTaskScreen({ navigation }) {
                 <Formik
                     initialValues={{
                         task_name: "",
-                        // task_colour: "",
-                        // task_icon: "",
+                        task_colour: "",
+                        task_icon: "",
                         task_points: "",
+                        category_id: "",
                     }}
                     onSubmit={async (fields, { setFieldError }) => {
                         console.log(
@@ -110,6 +111,7 @@ export default function EditExistingTaskScreen({ navigation }) {
                                 task_points: Number(fields.task_points),
                                 category_id: Number(selectedTask.category_id),
                             });
+
                             console.log(
                                 "WE are inside the try await edit existing",
                                 fields
