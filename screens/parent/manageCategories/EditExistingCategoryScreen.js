@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { View, StyleSheet, ScrollView, SafeAreaView } from "react-native";
 
 import screens from "../../../config/screens";
@@ -22,6 +22,8 @@ import AppTextInput from "../../../components/AppTextInput";
 import { UsersContext } from "../../../context/UsersContext";
 import { Formik } from "formik";
 import * as Yup from "yup";
+
+import { renderOddColumnsNicely } from "../../../helpers/createBlankItem";
 
 export default function EditExistingCategoryScreen({ navigation }) {
     // need to obtain all the categires furst,
@@ -49,8 +51,8 @@ export default function EditExistingCategoryScreen({ navigation }) {
         var tempObject = {};
         tempObject.label = categories[loopIterator].category_name;
         tempObject.value = categories[loopIterator].category_id;
-        tempObject.backgroundColor = "blue";
-        tempObject.icon = "school";
+        tempObject.backgroundColor = categories[loopIterator].category_colour;
+        tempObject.icon = categories[loopIterator].category_icon;
         categoryList.push(tempObject);
     }
 
@@ -66,21 +68,30 @@ export default function EditExistingCategoryScreen({ navigation }) {
     // the below is to capture the text input for the renamed category
 
     // this function is to obtain teh values from teh UI and insert hte data into the tables.
-    const categoryUpdate = async () => {
-        const items = {
-            category_id: selectedItem.value,
-            category_name: renamedCategory,
-            category_colour: selectedItem.backgroundColor,
-            category_icon: selectedItem.icon,
-        };
+    // const categoryUpdate = async () => {
+    //     const items = {
+    //         category_id: selectedItem.value,
+    //         category_name: renamedCategory,
+    //         category_colour: selectedItem.backgroundColor,
+    //         category_icon: selectedItem.icon,
+    //     };
 
-        try {
-            await updateCategory(items);
-            console.log("ZZZZZZZZZZZZZZZZZZZZ");
-        } catch (error) {
-            console.log("The error inserting updated Category name", error);
+    //     try {
+    //         await updateCategory(items);
+    //         console.log("ZZZZZZZZZZZZZZZZZZZZ");
+    //     } catch (error) {
+    //         console.log("The error inserting updated Category name", error);
+    //     }
+    // };
+
+    useEffect(() => {
+        if (categoryList.length % 2 === 0) {
+        } else {
+            // need to create a blank icon object to render nicely on the appPickerITem. This is to make sure that if there is an ODD number of elements to be shown, we add a "silent" ojbect to make it render nicely by 2 columns each row.
+
+            categoryList = renderOddColumnsNicely(categoryList);
         }
-    };
+    });
 
     // Validation Schema
     const categorySchema = Yup.object().shape({
@@ -131,13 +142,13 @@ export default function EditExistingCategoryScreen({ navigation }) {
                             <AppPicker
                                 items={categoryList}
                                 icon="face"
-                                numberOfColumns={3}
+                                numberOfColumns={2}
                                 PickerItemComponent={CategoryPickerItem}
                                 placeholder="Select Category"
                                 onSelectItem={handleSelectItem}
                                 selectedItem={selectedItem}
                                 // justifyContent="center"
-                                // width="90%"
+                                width="90%"
                             />
 
                             <AppTextInput

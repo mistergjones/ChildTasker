@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import {
     View,
     StyleSheet,
@@ -30,6 +30,13 @@ import {
 // import AppPicker from "../../../components/appPicker";
 import { UsersContext } from "../../../context/UsersContext";
 
+import { renderOddColumnsNicely } from "../../../helpers/createBlankItem";
+
+import {
+    establishCategoryTasksListInObjectFormat,
+    establishIconListInObjectFormat,
+} from "../../../helpers/createObjectLists";
+
 export default function AddNewTaskScreen({ navigation }) {
     // need to utilise usersContext to make use of SQL
     const usersContext = useContext(UsersContext);
@@ -51,39 +58,21 @@ export default function AddNewTaskScreen({ navigation }) {
     // now set a state for selecting a category
     const [selectedCategoryItem, setSelectedCategoryItem] = useState();
 
+    // need a way to set the background colour of the selected icon
+    const [selectedColor, setSelectedColor] = useState();
+
     // show the tasks jsut to make sure they are retrieved
     // console.log(tasks);
 
     // need to establish a list of icons to be made available to the user
     let iconList = [];
-    icons.map((individualIcon) => {
-        let tempObj = {};
-        tempObj.backgroundColor = individualIcon.background_color;
-        tempObj.icon = individualIcon.icon_name;
-        tempObj.label = individualIcon.label;
-        tempObj.value = individualIcon.icon_id;
-        iconList.push(tempObj);
-    });
+    iconList = establishIconListInObjectFormat(icons);
 
-    // Categories
+    // console.log(iconList);
+
+    // needt to establish a list of Categories to made available to the user
     var categoryList = [];
-
-    // now loop through each item to obatin id and value and assign to an object. Push this object into the array
-    //************************************ */
-    // Categories - make the selectable task list
-    //************************************ */
-    for (
-        var loopIterator = 0;
-        loopIterator < categories.length;
-        loopIterator++
-    ) {
-        var tempObject = {};
-        tempObject.label = categories[loopIterator].category_name;
-        tempObject.value = categories[loopIterator].category_id;
-        tempObject.backgroundColor = "blue";
-        tempObject.icon = "school";
-        categoryList.push(tempObject);
-    }
+    categoryList = establishCategoryTasksListInObjectFormat(categories);
 
     const taskSchema = Yup.object().shape({
         task_name: Yup.string().required().label("Task name"),
@@ -96,6 +85,61 @@ export default function AddNewTaskScreen({ navigation }) {
     // this function is to set the status of icon
     const handleSelectIconItem = (item) => {
         setSelectedIconItem(item);
+
+        // now call function that will set the background colours with the selected Icon
+
+        let colorList = [
+            {
+                label: "Rebecca Purple",
+                backgroundColor: "rebeccapurple",
+                value: 1,
+                icon: item.icon,
+            },
+            {
+                label: "Dark Green",
+                backgroundColor: "darkgreen",
+                value: 2,
+                icon: item.icon,
+            },
+            {
+                label: "Orange",
+                backgroundColor: "orange",
+                value: 3,
+                icon: item.icon,
+            },
+            {
+                label: "Saddle Brown",
+                backgroundColor: "saddlebrown",
+                value: 4,
+                icon: item.icon,
+            },
+            {
+                label: "Blue",
+                backgroundColor: "blue",
+                value: 5,
+                icon: item.icon,
+            },
+            {
+                label: "Tomato",
+                backgroundColor: "tomato",
+                value: 6,
+                icon: item.icon,
+            },
+            {
+                label: "Dark Grey",
+                backgroundColor: "darkgrey",
+                value: 7,
+                icon: item.icon,
+            },
+            {
+                label: "Black",
+                backgroundColor: "black",
+                value: 8,
+                icon: item.icon,
+            },
+        ];
+
+        setSelectedColor(colorList);
     };
 
     // this function is to set the status of colours
@@ -122,10 +166,11 @@ export default function AddNewTaskScreen({ navigation }) {
         const infoToAdd = {
             task_name: newTaskName,
             task_points: Number(newPoints),
-            task_icon: selectedIconItem.value,
-            task_colour: selectedColourItem.label,
+            task_icon: selectedIconItem.icon,
+            task_colour: selectedColourItem.backgroundColor,
             category_id: selectedCategoryItem.value,
         };
+        console.log(infoToAdd);
         try {
             await addNewTask(infoToAdd);
             navigation.navigate(screens.AddCategory);
@@ -134,13 +179,21 @@ export default function AddNewTaskScreen({ navigation }) {
         }
     };
 
-    const dummyColours = [
-        { label: "Red", value: 1 },
-        { label: "Blue", value: 2 },
-        { label: "Teal", value: 3 },
-        { label: "Orange", value: 4 },
-        { label: "Red", value: 5 },
-    ];
+    useEffect(() => {
+        if (categoryList.length % 2 === 0) {
+        } else {
+            // need to create a blank icon object to render nicely on the appPickerITem. This is to make sure that if there is an ODD number of elements to be shown, we add a "silent" ojbect to make it render nicely by 2 columns each row.
+
+            categoryList = renderOddColumnsNicely(categoryList);
+        }
+
+        if (iconList.length % 2 === 0) {
+        } else {
+            // need to create a blank icon object to render nicely on the appPickerITem. This is to make sure that if there is an ODD number of elements to be shown, we add a "silent" ojbect to make it render nicely by 2 columns each row.
+
+            iconList = renderOddColumnsNicely(iconList);
+        }
+    });
 
     return (
         <Screen>
@@ -180,7 +233,7 @@ export default function AddNewTaskScreen({ navigation }) {
                         items={iconList}
                         icon="face"
                         labelText="Icon Theme:"
-                        numberOfColumns={3}
+                        numberOfColumns={2}
                         PickerItemComponent={CategoryPickerItem}
                         selectedItem={selectedIconItem}
                         onSelectItem={handleSelectIconItem}
@@ -189,34 +242,42 @@ export default function AddNewTaskScreen({ navigation }) {
                         width="90%"
                     />
 
-                    <AppPicker
-                        items={dummyColours}
-                        icon="face"
-                        labelText="Icon Theme:"
-                        selectedItem={selectedColourItem}
-                        onSelectItem={handleSelectColourItem}
-                        placeholder="Select a background colour"
-                        justifyContent="center"
-                        width="90%"
-                    />
+                    {selectedIconItem && (
+                        <AppPicker
+                            items={selectedColor}
+                            icon="face"
+                            labelText="Icon Theme:"
+                            numberOfColumns={2}
+                            PickerItemComponent={CategoryPickerItem}
+                            selectedItem={selectedColourItem}
+                            onSelectItem={handleSelectColourItem}
+                            placeholder="Select a background colour"
+                            justifyContent="center"
+                            width="90%"
+                        />
+                    )}
 
-                    <AppPicker
-                        items={categoryList}
-                        icon="face"
-                        labelText="Icon Theme:"
-                        numberOfColumns={3}
-                        PickerItemComponent={CategoryPickerItem}
-                        selectedItem={selectedCategoryItem}
-                        onSelectItem={handleSelectCategoryItem}
-                        placeholder="Assign task to category..."
-                        justifyContent="center"
-                        width="90%"
-                    />
+                    {selectedColourItem && (
+                        <AppPicker
+                            items={categoryList}
+                            icon="face"
+                            labelText="Icon Theme:"
+                            numberOfColumns={2}
+                            PickerItemComponent={CategoryPickerItem}
+                            selectedItem={selectedCategoryItem}
+                            onSelectItem={handleSelectCategoryItem}
+                            placeholder="Assign task to category..."
+                            justifyContent="center"
+                            width="90%"
+                        />
+                    )}
 
-                    <AppButton
-                        title="Save Changes"
-                        onPress={handleAddNewTask}
-                    />
+                    {selectedColourItem && (
+                        <AppButton
+                            title="Save Changes"
+                            onPress={handleAddNewTask}
+                        />
+                    )}
 
                     <AppButton
                         title="Return"

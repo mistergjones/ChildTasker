@@ -145,6 +145,275 @@ const createTablesDatabaseAsync = async () => {
     });
 };
 
+const loadUsers = async () => {
+    return new Promise((resolve, _reject) => {
+        db.transaction(
+            (tx) => {
+                tx.executeSql(
+                    "insert into users (user_name, password, is_parent) values (?,?,?)",
+                    ["Zz", "1111", 1]
+                );
+                tx.executeSql(
+                    "insert into users (user_name, password, is_parent) values (?,?,?)",
+                    ["A", "1111", 0]
+                );
+                tx.executeSql(
+                    "insert into users (user_name, password, is_parent) values (?,?,?)",
+                    ["B", "1111", 0]
+                );
+            },
+            (t, error) => {
+                console.log("db error on INSERT USERS");
+                console.log(error);
+                resolve();
+            },
+            (t, success) => {
+                console.log(
+                    "db - Successfully pre-loaded the USERS table with data"
+                );
+                resolve(success);
+            }
+        );
+    });
+};
+
+const loadKidChores = async () => {
+    return new Promise((resolve, _reject) => {
+        db.transaction(
+            (tx) => {
+                tx.executeSql(
+                    "insert into kidChores (category_id, category_name, icon_name, is_completed,kid_id, kid_name,reward_icon_name, reward_id, reward_name,reward_points,task_id, task_name,task_points) values (?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                    [
+                        1,
+                        "Kitchen",
+                        "silverware-clean",
+                        0,
+                        "A",
+                        2,
+                        "trophy",
+                        1,
+                        "Play Console (20)",
+                        20,
+                        1,
+                        "Wash Dishes (10)",
+                        10,
+                    ]
+                );
+                tx.executeSql(
+                    "insert into kidChores (category_id, category_name, icon_name, is_completed,kid_id, kid_name,reward_icon_name, reward_id, reward_name,reward_points,task_id, task_name,task_points) values (?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                    [
+                        1,
+                        "Kitchen",
+                        "silverware-fork-knife",
+                        0,
+                        "A",
+                        2,
+                        "trophy",
+                        1,
+                        "Play Console (20)",
+                        20,
+                        2,
+                        "Dry Dishes (11)",
+                        11,
+                    ]
+                );
+                tx.executeSql(
+                    "insert into kidChores (category_id, category_name, icon_name, is_completed,kid_id, kid_name,reward_icon_name, reward_id, reward_name,reward_points,task_id, task_name,task_points) values (?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                    [
+                        1,
+                        "Kitchen",
+                        "dishwasher",
+                        0,
+                        2,
+                        "A",
+                        "trophy",
+                        1,
+                        "Play Console (20)",
+                        20,
+                        3,
+                        "Load Dishwasher (11)",
+                        11,
+                    ]
+                );
+                tx.executeSql(
+                    "insert into kidChores (category_id, category_name, icon_name, is_completed,kid_id, kid_name,reward_icon_name, reward_id, reward_name,reward_points,task_id, task_name,task_points) values (?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                    [
+                        1,
+                        "Kitchen",
+                        "dishwasher",
+                        0,
+                        2,
+                        "A",
+                        "trophy",
+                        1,
+                        "Play Console (20)",
+                        20,
+                        4,
+                        "Empty Dishwasher (11)",
+                        11,
+                    ]
+                );
+                tx.executeSql(
+                    "insert into kidChores (category_id, category_name, icon_name, is_completed,kid_id, kid_name,reward_icon_name, reward_id, reward_name,reward_points,task_id, task_name,task_points) values (?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                    [
+                        1,
+                        "Kitchen",
+                        "dishwasher",
+                        0,
+                        2,
+                        "A",
+                        "trophy",
+                        1,
+                        "Play Console (20)",
+                        20,
+                        5,
+                        "Set Table (11)",
+                        11,
+                    ]
+                );
+                tx.executeSql(
+                    "insert into kidChores (category_id, category_name, icon_name, is_completed,kid_id, kid_name,reward_icon_name, reward_id, reward_name,reward_points,task_id, task_name,task_points) values (?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                    [
+                        1,
+                        "Kitchen",
+                        "dishwasher",
+                        0,
+                        2,
+                        "A",
+                        "trophy",
+                        1,
+                        "Play Console (20)",
+                        20,
+                        6,
+                        "Clear Table (11)",
+                        11,
+                    ]
+                );
+
+                tx.executeSql(
+                    "insert into kidChores (category_id, category_name, icon_name, is_completed,kid_id, kid_name,reward_icon_name, reward_id, reward_name,reward_points,task_id, task_name,task_points) values (?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                    [
+                        1,
+                        "Kitchen",
+                        "silverware-clean",
+                        0,
+                        "B",
+                        2,
+                        "trophy",
+                        1,
+                        "Play Console (20)",
+                        20,
+                        1,
+                        "Wash Dishes (10)",
+                        10,
+                    ]
+                );
+                tx.executeSql(
+                    "insert into kidChores (category_id, category_name, icon_name, is_completed,kid_id, kid_name,reward_icon_name, reward_id, reward_name,reward_points,task_id, task_name,task_points) values (?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                    [
+                        1,
+                        "Kitchen",
+                        "silverware-fork-knife",
+                        0,
+                        "B",
+                        2,
+                        "trophy",
+                        1,
+                        "Play Console (20)",
+                        20,
+                        2,
+                        "Dry Dishes (11)",
+                        11,
+                    ]
+                );
+                tx.executeSql(
+                    "insert into kidChores (category_id, category_name, icon_name, is_completed,kid_id, kid_name,reward_icon_name, reward_id, reward_name,reward_points,task_id, task_name,task_points) values (?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                    [
+                        1,
+                        "Kitchen",
+                        "dishwasher",
+                        0,
+                        2,
+                        "B",
+                        "trophy",
+                        1,
+                        "Play Console (20)",
+                        20,
+                        3,
+                        "Load Dishwasher (11)",
+                        11,
+                    ]
+                );
+                tx.executeSql(
+                    "insert into kidChores (category_id, category_name, icon_name, is_completed,kid_id, kid_name,reward_icon_name, reward_id, reward_name,reward_points,task_id, task_name,task_points) values (?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                    [
+                        1,
+                        "Kitchen",
+                        "dishwasher",
+                        0,
+                        2,
+                        "B",
+                        "trophy",
+                        1,
+                        "Play Console (20)",
+                        20,
+                        4,
+                        "Empty Dishwasher (11)",
+                        11,
+                    ]
+                );
+                tx.executeSql(
+                    "insert into kidChores (category_id, category_name, icon_name, is_completed,kid_id, kid_name,reward_icon_name, reward_id, reward_name,reward_points,task_id, task_name,task_points) values (?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                    [
+                        1,
+                        "Kitchen",
+                        "dishwasher",
+                        0,
+                        2,
+                        "B",
+                        "trophy",
+                        1,
+                        "Play Console (20)",
+                        20,
+                        5,
+                        "Set Table (11)",
+                        11,
+                    ]
+                );
+                tx.executeSql(
+                    "insert into kidChores (category_id, category_name, icon_name, is_completed,kid_id, kid_name,reward_icon_name, reward_id, reward_name,reward_points,task_id, task_name,task_points) values (?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                    [
+                        1,
+                        "Kitchen",
+                        "dishwasher",
+                        0,
+                        2,
+                        "B",
+                        "trophy",
+                        1,
+                        "Play Console (20)",
+                        20,
+                        6,
+                        "Clear Table (11)",
+                        11,
+                    ]
+                );
+            },
+            (t, error) => {
+                console.log("db error on INSERT KID CHORES");
+                console.log(error);
+                resolve();
+            },
+            (t, success) => {
+                console.log(
+                    "db - Successfully pre-loaded the KID CHORES table with data"
+                );
+                resolve(success);
+            }
+        );
+    });
+};
+
 const loadItems = async () => {
     return new Promise((resolve, _reject) => {
         db.transaction(
@@ -222,7 +491,7 @@ const loadCategories = async () => {
                 );
                 tx.executeSql(
                     "insert into categories (category_name, category_colour, category_icon) values (?,?,?)",
-                    ["Pets", "blue", "dog"]
+                    ["Pets", "black", "dog"]
                 );
                 tx.executeSql(
                     "insert into categories (category_name, category_colour, category_icon) values (?,?,?)",
@@ -358,15 +627,15 @@ const loadTasks = async () => {
 
                 tx.executeSql(
                     "insert into tasks (task_name, task_colour, task_icon, task_points, category_id) values (?,?,?,?,?)",
-                    ["Walk Dog", "Black", "dog-service", 24, 7]
+                    ["Walk Dog", "black", "dog-service", 24, 7]
                 );
                 tx.executeSql(
                     "insert into tasks (task_name, task_colour, task_icon, task_points, category_id) values (?,?,?,?,?)",
-                    ["Wash Dog", "Black", "dog", 25, 7]
+                    ["Wash Dog", "black", "dog", 25, 7]
                 );
                 tx.executeSql(
                     "insert into tasks (task_name, task_colour, task_icon, task_points, category_id) values (?,?,?,?,?)",
-                    ["Dry Dog", "Black", "dog", 25, 7]
+                    ["Dry Dog", "black", "dog", 25, 7]
                 );
             },
             (t, error) => {
@@ -475,6 +744,8 @@ const loadDataIntoTablesAsync = async () => {
         await loadTasks();
         await loadRewards();
         await loadIcons();
+        await loadKidChores();
+        await loadUsers();
         resolve();
     });
 };

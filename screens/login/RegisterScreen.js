@@ -1,5 +1,15 @@
 import React, { useContext, useState, useEffect } from "react";
-import { View, StyleSheet, SafeAreaView, Button, Text, Alert, Modal, ImageBackground, Image } from "react-native";
+import {
+    View,
+    StyleSheet,
+    SafeAreaView,
+    Button,
+    Text,
+    Alert,
+    Modal,
+    ImageBackground,
+    Image,
+} from "react-native";
 import AppTextInput from "../../components/AppTextInput";
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -10,193 +20,189 @@ import { database } from "../../components/database";
 import AppHeading from "../../components/appHeading";
 import { UsersContext } from "../../context/UsersContext";
 import { NavigationContainer } from "@react-navigation/native";
-import Screen from "../../components/appScreen"
+import Screen from "../../components/appScreen";
 import colours from "../../config/colours";
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 const loginSchema = Yup.object().shape({
-  username: Yup.string().required().label("Username"),
-  password: Yup.string().required().min(4).label("Password"),
-  confirmPassword: Yup.string().required().min(4).label("Confirm Password"),
+    username: Yup.string().required().label("Username"),
+    password: Yup.string().required().min(4).label("Password"),
+    confirmPassword: Yup.string().required().min(4).label("Confirm Password"),
 });
 function RegisterScreen({ navigation }) {
-  const { user, setUser, setCount, count, firstLoad, setFirstLoad } = useContext(AuthContext);
-  const { addNewUser, users, setUsers, checkIfNewUser, } = useContext(
-    UsersContext
-  );
-  const [alertLoaded, setAlertLoaded] = useState(firstLoad)
-  const [modalVisible, setModalVisible] = useState()
+    const {
+        user,
+        setUser,
+        setCount,
+        count,
+        firstLoad,
+        setFirstLoad,
+    } = useContext(AuthContext);
+    const { addNewUser, users, setUsers, checkIfNewUser } = useContext(
+        UsersContext
+    );
+    const [alertLoaded, setAlertLoaded] = useState(firstLoad);
+    const [modalVisible, setModalVisible] = useState();
 
+    useEffect(() => {
+        if (firstLoad) {
+            setModalVisible(true);
+        } else {
+            setModalVisible(false);
+        }
+    }, []);
 
+    return (
+        <Screen>
+            <AppHeading title="Register Parent" />
 
+            <Formik
+                initialValues={{
+                    username: "",
+                    password: "",
+                    confirmPassword: "",
+                }}
+                onSubmit={async (fields, { setFieldError }) => {
+                    // Check if passwords match
+                    console.log("pass", fields.password);
+                    console.log("cpass", fields.confirmPassword);
+                    if (fields.password !== fields.confirmPassword) {
+                        setFieldError("password", "passwords do not match");
+                        setFieldError(
+                            "confirmPassword",
+                            "passwords do not match"
+                        );
+                    }
 
-  useEffect(() => {
+                    // Check if username already exists
+                    const isNewUser = await checkIfNewUser(fields.username);
 
-    if (firstLoad) {
-      setModalVisible(true)
-    } else {
-      setModalVisible(false)
-    }
-  }
+                    // add user to db
 
-    , [])
+                    if (isNewUser) {
+                        try {
+                            await addNewUser({
+                                username: fields.username,
+                                isParent: true,
+                                password: fields.password,
+                            });
+                            // set user context
+                            //setUser({ username: fields.username, isParent: true });
 
-  return (
-    <Screen>
-      <AppHeading title="Register Parent" />
+                            if (firstLoad) {
+                                console.log("register firstload");
+                                setFirstLoad(false);
+                                setUser(null);
+                                navigation.navigate(screens.Login);
+                            } else {
+                                navigation.navigate(screens.ParentDashBoard);
+                            }
+                        } catch (error) {
+                            console.log("error = ", error);
+                        }
+                    } else {
+                        setFieldError("username", "username already exists");
+                    }
+                }}
+                validationSchema={loginSchema}
+            >
+                {({ handleChange, handleSubmit, errors }) => (
+                    <>
+                        <AppTextInput
+                            placeholder="User Name"
+                            labelText="User Name"
+                            icon="account"
+                            onChangeText={handleChange("username")}
+                            errorStyle={{ color: colours.inputErrorMessage }}
+                            error={errors ? errors.username : ""}
+                        />
+                        <AppTextInput
+                            placeholder="Password"
+                            labelText="Password"
+                            icon="lock"
+                            secureTextEntry
+                            onChangeText={handleChange("password")}
+                            errorStyle={{ color: colours.inputErrorMessage }}
+                            error={errors ? errors.password : ""}
+                        />
+                        <AppTextInput
+                            placeholder="Confirm Password "
+                            labelText="Confirm Password"
+                            icon="lock"
+                            secureTextEntry
+                            onChangeText={handleChange("confirmPassword")}
+                            errorStyle={{ color: colours.inputErrorMessage }}
+                            error={errors ? errors.confirmPassword : ""}
+                        />
 
-      <Formik
-        initialValues={{ username: "", password: "", confirmPassword: "" }}
-        onSubmit={async (fields, { setFieldError }) => {
-          // Check if passwords match
-          console.log("pass", fields.password);
-          console.log("cpass", fields.confirmPassword);
-          if (fields.password !== fields.confirmPassword) {
-            setFieldError("password", "passwords do not match");
-            setFieldError("confirmPassword", "passwords do not match");
-          }
+                        <AppButton title="Register" onPress={handleSubmit} />
+                    </>
+                )}
+            </Formik>
+            <Modal visible={modalVisible} animationType="slide">
+                <Screen style={styles.modal}>
+                    <AppHeading title="Child Tasker" />
 
-          // Check if username already exists
-          const isNewUser = await checkIfNewUser(fields.username);
-
-          // add user to db
-
-          if (isNewUser) {
-            try {
-              await addNewUser({
-                username: fields.username,
-                isParent: true,
-                password: fields.password,
-              });
-              // set user context
-              //setUser({ username: fields.username, isParent: true });
-
-
-
-              if (firstLoad) {
-                console.log("register firstload")
-                setFirstLoad(false);
-                setUser(null)
-                navigation.navigate(screens.Login);
-              } else {
-                navigation.navigate(screens.ParentDashBoard)
-              }
-            } catch (error) {
-              console.log("error = ", error);
-            }
-          } else {
-            setFieldError("username", "username already exists");
-          }
-        }}
-        validationSchema={loginSchema}
-      >
-        {({ handleChange, handleSubmit, errors }) => (
-          <>
-            <AppTextInput
-              placeholder="Parent Name"
-              labelText="Parent Name"
-              icon="account"
-              onChangeText={handleChange("username")}
-              errorStyle={{ color: colours.inputErrorMessage }}
-              error={errors ? errors.username : ""}
-            />
-            <AppTextInput
-              placeholder="Password"
-              labelText="Password"
-              icon="lock"
-              secureTextEntry
-              onChangeText={handleChange("password")}
-              errorStyle={{ color: colours.inputErrorMessage }}
-              error={errors ? errors.password : ""}
-            />
-            <AppTextInput
-              placeholder="Confirm Password "
-              labelText="Confirm Password"
-              icon="lock"
-              secureTextEntry
-              onChangeText={handleChange("confirmPassword")}
-              errorStyle={{ color: colours.inputErrorMessage }}
-              error={errors ? errors.confirmPassword : ""}
-            />
-
-            <AppButton title="Register" onPress={handleSubmit} />
-
-          </>
-        )}
-      </Formik>
-      <Modal visible={modalVisible} animationType="slide">
-        <Screen style={styles.modal} >
-
-          <AppHeading title="Child Tasker" />
-
-
-          <ImageBackground source={require("../../assets/avatar/9.png")} style={styles.image} >
-            <View style={styles.container} >
-              <Text style={styles.textHeading}>Welcome to Child Tasker.</Text>
-              <Text style={styles.textParagraph}>This app is designed to make the job of managing and tracking the tasks required in the household in an easy as well as fun manner.</Text>
-              {/* <MaterialCommunityIcons name="bike" size={100} color={colours.defaultButtonColour} /> */}
-              <AppButton
-                title="Continue"
-                onPress={() => setModalVisible(false)}
-                style={{ color: colours.defaultButtonColour }}
-              />
-            </View>
-
-
-          </ImageBackground>
-
-
+                    <ImageBackground
+                        source={require("../../assets/avatar/9.png")}
+                        style={styles.image}
+                    >
+                        <View style={styles.container}>
+                            <Text style={styles.textHeading}>
+                                Welcome to Child Tasker.
+                            </Text>
+                            <Text style={styles.textParagraph}>
+                                This app is designed to make the job of managing
+                                and tracking the tasks required in the household
+                                in an easy as well as fun manner.
+                            </Text>
+                            {/* <MaterialCommunityIcons name="bike" size={100} color={colours.defaultButtonColour} /> */}
+                            <AppButton
+                                title="Continue"
+                                onPress={() => setModalVisible(false)}
+                                style={{ color: colours.defaultButtonColour }}
+                            />
+                        </View>
+                    </ImageBackground>
+                </Screen>
+            </Modal>
         </Screen>
-      </Modal>
-    </Screen>
-
-  );
+    );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    justifyContent: "center",
-    alignItems: "center",
-    width: "90%",
-    alignSelf: "center",
-
-
-
-  },
-  textHeading: {
-    fontSize: 24,
-    color: colours.white,
-    fontWeight: "bold"
-
-  },
-  textParagraph: {
-    fontSize: 18,
-    color: colours.white,
-    marginTop: 20,
-    marginBottom: 20,
-    fontWeight: "bold",
-
-
-  },
-  modal: {
-    backgroundColor: colours.defaultHeadingColour,
-
-  },
-  view: {
-    backgroundColor: colours.defaultHeadingColour,
-    alignItems: "center",
-    justifyContent: "center",
-    height: "100%",
-
-  },
-  image: {
-    flex: 1,
-    resizeMode: "cover",
-    justifyContent: "center",
-  }
-
-
+    container: {
+        justifyContent: "center",
+        alignItems: "center",
+        width: "90%",
+        alignSelf: "center",
+    },
+    textHeading: {
+        fontSize: 24,
+        color: colours.white,
+        fontWeight: "bold",
+    },
+    textParagraph: {
+        fontSize: 18,
+        color: colours.white,
+        marginTop: 20,
+        marginBottom: 20,
+        fontWeight: "bold",
+    },
+    modal: {
+        backgroundColor: colours.defaultHeadingColour,
+    },
+    view: {
+        backgroundColor: colours.defaultHeadingColour,
+        alignItems: "center",
+        justifyContent: "center",
+        height: "100%",
+    },
+    image: {
+        flex: 1,
+        resizeMode: "cover",
+        justifyContent: "center",
+    },
 });
 
 export default RegisterScreen;

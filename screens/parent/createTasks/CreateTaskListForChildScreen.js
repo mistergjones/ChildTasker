@@ -39,9 +39,14 @@ import {
     establishKidListInObjectFormat,
 } from "../../../helpers/createObjectLists";
 
+import { renderOddColumnsNicely } from "../../../helpers/createBlankItem";
+
 let runningTasksToAssign = [];
 
 function CreateTaskListForChildScreen({ navigation }) {
+    // varaible to store teh current name. If name changes, we need to reset the Selected Reward other wise it still defaults to previous name's setting.
+    let currentSelectedName = "";
+
     const usersContext = useContext(UsersContext);
 
     // DESTRUCTURE: stores the name and addNewItem function
@@ -135,7 +140,6 @@ function CreateTaskListForChildScreen({ navigation }) {
     // moved rewardList as state variable
 
     const getRewardsThaHaveNotBeenAssignedToKid = (kidName) => {
-
         // here we want to show the rewards if they have not been assigned to the child.
         // filtered Rewards used to store the reward that has not been assigned to the child
         let filteredRewards = [];
@@ -152,29 +156,29 @@ function CreateTaskListForChildScreen({ navigation }) {
                 // as the selected child this reward has been assigned to child so don't want
                 // to display for selection as it has been assigned already
                 // set noMatch to false and stop looping through chores
-                if (reward.reward_id === chore.reward_id && chore.kid_name === kidName) {
+                if (
+                    reward.reward_id === chore.reward_id &&
+                    chore.kid_name === kidName
+                ) {
                     noMatch = false;
                     break;
                 }
-
             }
-            // if there is no match add rewards to filtered rewrds 
+            // if there is no match add rewards to filtered rewrds
             if (noMatch) {
-                filteredRewards.push(reward)
+                filteredRewards.push(reward);
             }
-
         }
         return filteredRewards;
-    }
-
-
+    };
 
     // needed as SPECIFICS from teh set state was not geting updated immediately.
     useEffect(() => {
-        setRewardList(establishRewardListInObjectFormat(rewards));
-        console.log("rewards", rewards[0])
-        var pickableTasksForThatChosenCategory = {};
+        // convert rewarads from objects into an array of objects
+        // etRewardList(establishRewardListInObjectFormat(rewards));
+        // console.log("rewards", rewards[0]);
 
+        var pickableTasksForThatChosenCategory = {};
 
         // on first render it is probabaly undefined
         if (specifics != undefined || specifics != null) {
@@ -219,20 +223,25 @@ function CreateTaskListForChildScreen({ navigation }) {
         setPickableTasks(pickableTasksForThatChosenCategory);
     }, [specifics]);
 
-    // this function is to set the status of only the kids mapped to kids
     const handleSelectKid = async (item) => {
         setSelectedKid(item);
-        const filteredRewards = getRewardsThaHaveNotBeenAssignedToKid(item.label);
+
+        // check to see if there has been a name change. If so, we want to nullify the Select Reward to null as we don't want to retatin the previous person's reaward
+        if (item.label !== currentSelectedName) {
+            setSelectedReward(null);
+        } else {
+            currentSelectedName = item.label;
+        }
+
+        var filteredRewards = getRewardsThaHaveNotBeenAssignedToKid(item.label);
 
         // set the rewrads list to only contain rewards that have not been assigned for the child selected
         setRewardList(establishRewardListInObjectFormat(filteredRewards));
-
-
     };
 
     // this function is to set the status of only the kids mapped to kids
     const handleSelectReward = async (item) => {
-        console.log("item ****" + item.icon)
+        //console.log("item ****" + item.icon);
         setSelectedReward(item);
         setSelectedRewardPoints(item.points);
         setSelectedCategory(null);
@@ -254,31 +263,51 @@ function CreateTaskListForChildScreen({ navigation }) {
 
     // if there is a render change, we will sue the below to ensure the correct number of columns will be rendered to the scren.
     useEffect(() => {
-        if (categories.length % 2 === 0) {
-            setNumberOfCategoryColumns(2);
-        } else if (categories.length % 3 === 0) {
-            setNumberOfCategoryColumns(3);
+        if (categoryList % 2 === 0) {
         } else {
-            setNumberOfCategoryColumns(2);
+            categoryList = renderOddColumnsNicely(categoryList);
         }
-
-        if (rewards.length % 2 === 0) {
-            setNumberOfRewardColumns(2);
-        } else if (setNumberOfRewardColumns % 3 === 3) {
-            setNumberOfRewardColumns(3);
-        } else {
-            setNumberOfRewardColumns(2);
-        }
-    }, []);
-
-    // this determines when to ENABLE the SUBMIT button to allow insertions to the database
-    useEffect(() => {
+        // this determines when to ENABLE the SUBMIT button to allow insertions to the database
         if (totalTaskPoints >= selectedRewardPoints) {
             setSaveAllChangesButtonEnabled(true);
         } else {
             setSaveAllChangesButtonEnabled(false);
         }
     });
+
+    // this effect will amke sure to add a "blank" reward object so that it renders nicely for 2 columns.
+    useEffect(() => {
+        if (rewardList.length % 2 != 0) {
+            console.log("Not even");
+
+            var tempObject = {
+                backgroundColor: "blue",
+                icon:
+                    "usedToEnsureThatColumnsAreNeatlyAllignedIfThereisAnOddNumber",
+                label: "whatever",
+                points: 100,
+                value: 1,
+            };
+            rewardList.push(tempObject);
+        }
+    }, [rewardList]);
+
+    // this effect will amke sure to add a "blank" reward object so that it renders nicely for 2 columns.
+    useEffect(() => {
+        if (kidList.length % 2 != 0) {
+            console.log("Not even");
+
+            var tempObject = {
+                backgroundColor: "blue",
+                icon:
+                    "usedToEnsureThatColumnsAreNeatlyAllignedIfThereisAnOddNumber",
+                label: "whatever",
+                points: 9999,
+                value: 9999,
+            };
+            kidList.push(tempObject);
+        }
+    }, [kidList]);
 
     // this function is submit the required fields to the database. TABLE: kidchores
     const handleSubmitChangesToDatabase = async () => {
@@ -311,8 +340,8 @@ function CreateTaskListForChildScreen({ navigation }) {
                         icon_name: runningTasksToAssign[loopIterator].icon_name,
                         is_completed:
                             runningTasksToAssign[loopIterator].is_completed,
-                        reward_icon_name: runningTasksToAssign[loopIterator].reward_icon_name,
-
+                        reward_icon_name:
+                            runningTasksToAssign[loopIterator].reward_icon_name,
                     };
 
                     await addChoresToKid(items);
@@ -345,7 +374,7 @@ function CreateTaskListForChildScreen({ navigation }) {
     };
 
     const handleResetDropDownAndContinue = () => {
-        console.log("We are in:  handleResetDropDownAndContinue()");
+        //console.log("We are in:  handleResetDropDownAndContinue()");
 
         // set the is initalScreenLoaded to false so the TASKS TOTAL box acutatlly shows the points
         setIsInitialScreenLoaded(false);
@@ -364,11 +393,11 @@ function CreateTaskListForChildScreen({ navigation }) {
             reward_points: selectedReward.points,
             icon_name: selectedTask.icon,
             is_completed: 0,
-            reward_icon_name: selectedReward.icon
+            reward_icon_name: selectedReward.icon,
         };
 
-        console.log(`Selected Task icon is`, selectedTask);
-        console.log(`Items is:`, items);
+        // console.log(`Selected Task icon is`, selectedTask);
+        // console.log(`Items is:`, items);
 
         runningTasksToAssign.push(items);
         //console.log(runningTasksToAssign);
@@ -409,12 +438,13 @@ function CreateTaskListForChildScreen({ navigation }) {
                     reward_name: "",
                     reward_Points: "",
                 }}
-            // onSubmit={(values) => console.log(values)}
+                // onSubmit={(values) => console.log(values)}
             >
                 <AppPicker
                     items={kidList}
                     icon="face"
-                    numberOfColumns={3}
+                    PickerItemComponent={CategoryPickerItem}
+                    numberOfColumns={2}
                     placeholder="Select Child"
                     onSelectItem={handleSelectKid}
                     selectedItem={selectedKid}
@@ -425,7 +455,7 @@ function CreateTaskListForChildScreen({ navigation }) {
                         items={rewardList}
                         icon={selectedReward ? selectedReward.icon : "trophy"}
                         placeholder="Select Reward"
-                        numberOfColumns={numberOfRewardColumns}
+                        numberOfColumns={2}
                         PickerItemComponent={CategoryPickerItem}
                         onSelectItem={handleSelectReward}
                         selectedItem={selectedReward}
@@ -437,7 +467,7 @@ function CreateTaskListForChildScreen({ navigation }) {
                         items={categoryList}
                         icon="sitemap"
                         placeholder="Select Category"
-                        numberOfColumns={numberOfCategoryColumns}
+                        numberOfColumns={2}
                         PickerItemComponent={CategoryPickerItem}
                         onSelectItem={handleSelectItem}
                         selectedItem={selectedCategory}
@@ -462,7 +492,7 @@ function CreateTaskListForChildScreen({ navigation }) {
                         <View style={styles.currentRewardTaskContainer}>
                             <Text style={styles.currentRewardTaskScore}>
                                 Reward Total:
-                                </Text>
+                            </Text>
                             <Text style={styles.currentRewardTaskValue}>
                                 {selectedReward.points}
                             </Text>
@@ -470,11 +500,9 @@ function CreateTaskListForChildScreen({ navigation }) {
                         <View style={styles.currentRewardTaskContainer}>
                             <Text style={styles.currentRewardTaskScore}>
                                 Tasks Total:
-                                </Text>
+                            </Text>
                             <Text style={styles.currentRewardTaskValue}>
-                                {isInitialScreenLoaded
-                                    ? "0"
-                                    : totalTaskPoints}
+                                {isInitialScreenLoaded ? "0" : totalTaskPoints}
                             </Text>
                         </View>
                     </View>
@@ -493,9 +521,7 @@ function CreateTaskListForChildScreen({ navigation }) {
                 )}
                 <AppButton
                     title="Cancel"
-                    onPress={() =>
-                        navigation.navigate(screens.ParentDashBoard)
-                    }
+                    onPress={() => navigation.navigate(screens.ParentDashBoard)}
                 />
             </Form>
             {/* </ScrollView> */}

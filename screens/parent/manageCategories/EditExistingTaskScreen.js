@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import {
     View,
     StyleSheet,
@@ -30,17 +30,14 @@ import { UsersContext } from "../../../context/UsersContext";
 import { Formik } from "formik";
 import * as Yup from "yup";
 
+import { renderOddColumnsNicely } from "../../../helpers/createBlankItem";
+
 export default function EditExistingTaskScreen({ navigation }) {
     // need to utilise usersContext to make use of SQL
     const usersContext = useContext(UsersContext);
 
-    const {
-        updateTask,
-        tasks,
-        addNewTask,
-        getSpecificTasksGlen,
-        specifics,
-    } = usersContext;
+    // obtain data/items from tasks users context
+    const { tasks, updateTask } = usersContext;
 
     // TASK
     const [selectedTask, setSelectedTask] = useState(null);
@@ -56,8 +53,8 @@ export default function EditExistingTaskScreen({ navigation }) {
         tempObject.label = tasks[loopIterator].task_name;
         tempObject.value = tasks[loopIterator].task_id;
         tempObject.category_id = tasks[loopIterator].category_id;
-        tempObject.backgroundColor = "blue";
-        tempObject.icon = "school";
+        tempObject.backgroundColor = tasks[loopIterator].task_colour;
+        tempObject.icon = tasks[loopIterator].task_icon;
         taskList.push(tempObject);
     }
 
@@ -69,30 +66,47 @@ export default function EditExistingTaskScreen({ navigation }) {
     // Validation Schema
     const taskSchema = Yup.object().shape({
         task_name: Yup.string().required().label("Task name"),
-        task_points: Yup.number().required().label("Task Points"),
-        task_colour: Yup.string().required().label("Task Colour"),
-        task_icon: Yup.string().required().label("Task Icon"),
+        // task_points: Yup.number().required().label("Task Points"),
+        // task_colour: Yup.string().required().label("Task Colour"),
+        // task_icon: Yup.string().required().label("Task Icon"),
+    });
+
+    useEffect(() => {
+        if (taskList.length % 2 === 0) {
+        } else {
+            // need to create a blank icon object to render nicely on the appPickerITem. This is to make sure that if there is an ODD number of elements to be shown, we add a "silent" ojbect to make it render nicely by 2 columns each row.
+            taskList = renderOddColumnsNicely(taskList);
+        }
     });
 
     return (
-        <SafeAreaView style={styles.container}>
+        <Screen>
+            {/* <SafeAreaView style={styles.container}> */}
             <ScrollView>
                 <AppHeading title="Edit Task" />
 
                 <Formik
                     initialValues={{
                         task_name: "",
-                        task_colour: "orange",
-                        task_icon: "pets",
+                        // task_colour: "",
+                        // task_icon: "",
                         task_points: "",
                     }}
                     onSubmit={async (fields, { setFieldError }) => {
+                        console.log(
+                            selectedTask.value,
+                            fields.task_name,
+                            selectedTask.backgroundColor,
+                            selectedTask.icon,
+                            fields.task_points,
+                            selectedTask.category_id
+                        );
                         try {
                             await updateTask({
                                 task_id: Number(selectedTask.value),
                                 task_name: fields.task_name,
-                                task_colour: fields.task_colour,
-                                task_icon: fields.task_icon,
+                                task_colour: selectedTask.backgroundColor,
+                                task_icon: selectedTask.icon,
                                 task_points: Number(fields.task_points),
                                 category_id: Number(selectedTask.category_id),
                             });
@@ -117,7 +131,7 @@ export default function EditExistingTaskScreen({ navigation }) {
                             <AppPicker
                                 items={taskList}
                                 icon="face"
-                                numberOfColumns={3}
+                                numberOfColumns={2}
                                 PickerItemComponent={CategoryPickerItem}
                                 placeholder="Select Task to Edit"
                                 onSelectItem={handleSelectedTask}
@@ -169,7 +183,8 @@ export default function EditExistingTaskScreen({ navigation }) {
                     )}
                 </Formik>
             </ScrollView>
-        </SafeAreaView>
+            {/* </SafeAreaView> */}
+        </Screen>
     );
 }
 const styles = StyleSheet.create({

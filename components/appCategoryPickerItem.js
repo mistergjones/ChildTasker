@@ -15,6 +15,8 @@ function appCategoryPickerItem({ item, onPress, numColumns }) {
     } else if (numColumns % 3 === 0) {
         //console.log("3 columns");
         widthStyle = "33%";
+    } else if (numColumns === 1) {
+        widthStyle = "100%";
     }
 
     // the first condition is to render an empty space to retain perfect 2 column alignment.
@@ -74,6 +76,7 @@ const styles = StyleSheet.create({
     label: {
         marginTop: 5,
         textAlign: "center",
+        color: "white",
     },
     image: {
         width: 60,

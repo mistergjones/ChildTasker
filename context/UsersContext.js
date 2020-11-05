@@ -16,7 +16,6 @@ import { databaseRewards } from "../database/rewards/rewardQueries";
 import { databaseUsers } from "../database/users/userQueries";
 import { databaseAssignChoresToKid } from "../database/assignChoresToKid/assignChoresToKid";
 
-
 // Creates a Context object.
 export const UsersContext = createContext({});
 // We are set up to take an initial state through props when we create the UsersContextProvider, but those values are quickly overwritten with the useEffect call. I left the code here for reference.
@@ -46,13 +45,13 @@ export const UsersContextProvider = (props) => {
 
     const [choresForKid, setChoresForKid] = useState([]);
 
-    const [choresForKidScore, setChoresForKidScore] = useState(0)
+    const [choresForKidScore, setChoresForKidScore] = useState(0);
 
-    const [choresTotalPoints, setChoresTotalPoints] = useState(0)
+    const [choresTotalPoints, setChoresTotalPoints] = useState(0);
 
     //Icon
     const [icons, setIcons] = useState();
-    const loadDataFromDB = async () => { };
+    const loadDataFromDB = async () => {};
     // We have a useEffect call to instantiate the users list from the database. We only call this function on the first render
     useEffect(() => {
         console.log("***** User Context ****");
@@ -86,7 +85,10 @@ export const UsersContextProvider = (props) => {
     // make a database call to insert an item and then call refreshItems to update the state
     const addNewCategory = async (userCategory) => {
         // return database.insertCategory(userCategory, refreshCategories);
-        return databaseCategories.insertCategory(userCategory, refreshCategories);
+        return databaseCategories.insertCategory(
+            userCategory,
+            refreshCategories
+        );
     };
     // make a database call to retrieve all categories
     // In refreshItems we are sending the setItems function, which will allow the query to set our local state.
@@ -113,24 +115,29 @@ export const UsersContextProvider = (props) => {
     // make a database call to insert a TASK and then call refreshItems to update the state
     const addNewTask = async (userTask) => {
         // return database.insertTask(userTask, refreshTasks);
+
         return await databaseTasks.insertTask(userTask, refreshTasks);
     };
     // make a database call to retrieve all tasks
     // In refreshItems we are sending the setItems function, which will allow the query to set our local state.
     const refreshTasks = async () => {
         // return database.getTasks(setTasks);
+
         return await databaseTasks.getTasks(setTasks);
     };
 
     const removeTask = async (task_id) => {
         await databaseTasks.removeTask(task_id);
+
         await refreshTasks();
+
         return;
     };
 
     const updateTask = async (task) => {
         await databaseTasks.updateTask(task);
         await refreshTasks();
+        return;
     };
 
     // GJ - 20/10 - Added teh below.
@@ -150,17 +157,23 @@ export const UsersContextProvider = (props) => {
     };
     // END CHORES TO KID
     const getChoresForKid = async (kid_name) => {
-        console.log("getChoresForKid ", kid_name)
-        return await databaseAssignChoresToKid.getChoresByKidName(kid_name, setChoresForKid, setChoresForKidScore, setChoresTotalPoints)
-
-
-    }
+        console.log("getChoresForKid ", kid_name);
+        return await databaseAssignChoresToKid.getChoresByKidName(
+            kid_name,
+            setChoresForKid,
+            setChoresForKidScore,
+            setChoresTotalPoints
+        );
+    };
 
     const updateChoresForKid = async (kid_name, task_id) => {
-        await databaseAssignChoresToKid.updateChoresByKidName(kid_name, task_id);
+        await databaseAssignChoresToKid.updateChoresByKidName(
+            kid_name,
+            task_id
+        );
         await getChoresForKid(kid_name);
-        return
-    }
+        return;
+    };
     //*************************************************************************
 
     //*************************************************************************
@@ -189,7 +202,10 @@ export const UsersContextProvider = (props) => {
         return;
     };
     const getRewardByID = async (id) => {
-        return await databaseRewards.getRewardByID(id, setSelectedRewardDetails);
+        return await databaseRewards.getRewardByID(
+            id,
+            setSelectedRewardDetails
+        );
     };
     // END REWARDS
     //*************************************************************************
@@ -303,7 +319,7 @@ export const UsersContextProvider = (props) => {
         setChoresForKid,
         updateChoresForKid,
         choresForKidScore,
-        choresTotalPoints
+        choresTotalPoints,
     };
     // pass the value in provider and return
     return (

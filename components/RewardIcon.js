@@ -12,12 +12,28 @@ import screens from "../config/screens";
 import AppMaterialIcon from "../components/appMaterialCommunityIcon";
 import colours from "../config/colours";
 
-function RewardIcon({ title, icon, points, style, color, task_id, chores, rewardName, completed }) {
+function RewardIcon({
+    title,
+    icon,
+    points,
+    style,
+    color,
+    task_id,
+    chores,
+    rewardName,
+    completed,
+    reward_id,
+}) {
     const navigation = useNavigation();
     return (
         <TouchableOpacity
             onPress={() =>
-                navigation.navigate(screens.ChildTaskForRewards, { rewardName, chores, completed })
+                navigation.navigate(screens.ChildTaskForRewards, {
+                    rewardName,
+                    chores,
+                    completed,
+                    reward_id,
+                })
             }
         >
             <View style={styles.container}>
@@ -35,8 +51,6 @@ function RewardIcon({ title, icon, points, style, color, task_id, chores, reward
 
 const styles = StyleSheet.create({
     container: {
-
-
         alignItems: "center",
         justifyContent: "center",
 
@@ -49,8 +63,7 @@ const styles = StyleSheet.create({
     text: {
         marginTop: 20,
         height: 40,
-
-    }
+    },
 });
 
 export default RewardIcon;
