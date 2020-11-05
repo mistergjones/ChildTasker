@@ -37,7 +37,7 @@ function AddCategoryScreen({ navigation }) {
                         }
                     />
                     <AppButton
-                        title="Edit Category"
+                        title="Rename Category"
                         onPress={() =>
                             navigation.navigate(screens.EditExistingCategory)
                         }

@@ -37,7 +37,7 @@ const getCategories = (setUserFunc) => {
 // inserst a category into the table
 // we pass in a successFunc that will be called after the insert has happened. In our case, we are passing in the function to refresh the categories from the database. This way we know that our state will reflect what is in the database.
 const insertCategory = (
-    category_name,
+    category,
 
     successFunc
 ) => {
@@ -45,7 +45,11 @@ const insertCategory = (
         (tx) => {
             tx.executeSql(
                 "insert into categories (category_name, category_colour, category_icon) values (?,?,?)",
-                [category_name, "Blue", "School"]
+                [
+                    category.category_name,
+                    category.category_colour,
+                    category.category_icon,
+                ]
             );
         },
         (t, error) => {
@@ -104,7 +108,7 @@ const updateCategory = async (category) => {
                     "update categories set category_name = ?, category_icon =?, category_colour =? where category_id =?",
                     [
                         category.category_name,
-                        category.category_icon,
+                        "school",
                         category.category_colour,
                         category.category_id,
                     ]

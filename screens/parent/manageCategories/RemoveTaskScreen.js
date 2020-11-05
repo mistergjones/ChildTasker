@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import {
     View,
     StyleSheet,
@@ -25,6 +25,9 @@ import CategoryPickerItem from "../../../components/appCategoryPickerItem";
 import AppPicker from "../../../components/appPicker";
 
 import { UsersContext } from "../../../context/UsersContext";
+import { renderOddColumnsNicely } from "../../../helpers/createBlankItem";
+
+import { establishTasksListInObjectFormat } from "../../../helpers/createObjectLists";
 
 export default function RemoveTaskScreen({ navigation }) {
     // need to utilise usersContext to make use of SQL
@@ -45,12 +48,12 @@ export default function RemoveTaskScreen({ navigation }) {
         var tempObject = {};
         tempObject.label = tasks[loopIterator].task_name;
         tempObject.value = tasks[loopIterator].task_id;
-        tempObject.backgroundColor = "blue";
-        tempObject.icon = "school";
+        tempObject.backgroundColor = tasks[loopIterator].task_colour;
+        tempObject.icon = tasks[loopIterator].task_icon;
         taskList.push(tempObject);
     }
 
-    console.log(`The tasks are:`, tasks);
+    //console.log(`The tasks are:`, tasks);
 
     const removeTaskAlert = () =>
         Alert.alert(
@@ -67,6 +70,7 @@ export default function RemoveTaskScreen({ navigation }) {
                     onPress: async () => {
                         console.log(selectedItem.value);
                         await removeTask(selectedItem.value);
+
                         setSelectedItem(null);
                         navigation.navigate(screens.AddCategory);
                     },
@@ -79,8 +83,18 @@ export default function RemoveTaskScreen({ navigation }) {
         setSelectedItem(item);
     };
 
+    useEffect(() => {
+        if (taskList.length % 2 === 0) {
+        } else {
+            // need to create a blank icon object to render nicely on the appPickerITem. This is to make sure that if there is an ODD number of elements to be shown, we add a "silent" ojbect to make it render nicely by 2 columns each row.
+
+            taskList = renderOddColumnsNicely(taskList);
+        }
+    });
+
     return (
-        <SafeAreaView style={styles.container}>
+        <Screen style={styles.container}>
+            {/* <SafeAreaView style={styles.container}> */}
             <ScrollView>
                 <AppHeading title="Remove a task" />
 
@@ -88,7 +102,7 @@ export default function RemoveTaskScreen({ navigation }) {
                     items={taskList}
                     icon="face"
                     name="chore"
-                    numberOfColumns={3}
+                    numberOfColumns={2}
                     PickerItemComponent={CategoryPickerItem}
                     selectedItem={selectedItem}
                     onSelectItem={handleSelectItem}
@@ -106,7 +120,8 @@ export default function RemoveTaskScreen({ navigation }) {
                     onPress={() => navigation.navigate(screens.AddCategory)}
                 />
             </ScrollView>
-        </SafeAreaView>
+            {/* </SafeAreaView> */}
+        </Screen>
     );
 }
 

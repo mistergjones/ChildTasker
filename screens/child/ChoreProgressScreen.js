@@ -1,9 +1,10 @@
 import React, { useContext, useState, useEffect } from "react";
-import { View, StyleSheet, SafeAreaView, Text, ScrollView } from "react-native";
+import { View, StyleSheet, SafeAreaView, ScrollView, Text } from "react-native";
 import AppButton from "../../components/appButton";
 import AppHeading from "../../components/appHeading";
 import screens from "../../config/screens";
 import colours from "../../config/colours";
+import Screen from "../../components/appScreen";
 
 import { Grid, LineChart, XAxis, YAxis } from "react-native-svg-charts";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -14,6 +15,9 @@ import Images from "../../assets/images";
 
 import AuthContext from "../../components/auth/context";
 import { UsersContext } from "../../context/UsersContext";
+
+import PieChartWithLabels from "../../components/PieChartWithLabels";
+import { changeChoresToPieChartDataObject } from "../../helpers/createObjectLists";
 
 function ChoreProgressScreen({ navigation, route }) {
     const usersContext = useContext(UsersContext);
@@ -26,156 +30,105 @@ function ChoreProgressScreen({ navigation, route }) {
     // it seems that the first completed task is never being passed by route.params.
     const { chores } = route.params;
     // const { chores } = usersContext;
+    const { choresForKid } = usersContext;
     // console.log(`Child Dashboard Screen. Child name is: `, user.username);
 
-    // get the latest copy of the kidchores table for the logged in KID. We will then use this in a for loop to update our chart.
-    // Given the depth of the array provided to us, we have to add [0].chores to the array to get exactly what we want.
-    const { choresForKid } = useContext(UsersContext);
+    // set the graphData
+    const [graphData, setGraphData] = useState([]);
 
-    var rewardPoints = 20;
+    // set the completed Tasks
+    var [tasksComplete, setTasksComplete] = useState(0);
+    var [tasksNotComplete, setTasksNotCompplete] = useState(0);
 
-    //console.log(`The chores are: `, chores);
-
-    // loop through chores and establish the data for the pie charts
-    const data = [];
-    // an array for the labels
-    const labelName = [];
-    // an array just for the task points
-    const taskPoints = [];
-    // an array for all rewards. This will also be used to set the HEADING furtherdown below iva
-    const rewardNames = [];
-
-    // variable for counting how many tasks completed and how many remaining
     var completedTasks = 0;
     var notCompletedTasks = 0;
+    // obtain the reward name from teh first object in the array of objects
+    const rewardName = chores[0].reward_name;
 
-    // obtain the data relevant for the logged in user.
-    // Given the depth of the array provided to us, we have to add [0].chores to the array to get exactly what we want.
-    for (var i = 0; i < choresForKid[0].chores.length; i++) {
-        if (choresForKid[0].chores[i].kid_name === user.username) {
-            //console.log(user.username);
-            //console.log(choresForKid[0].chores[i].is_completed);
-            // console.log(choresForKid[0].chores[i].task_points);
+    // estalish empty array and colours for completion
 
-            // push some items into a seperate array
-            labelName.push(choresForKid[0].chores[i].task_name);
-            taskPoints.push(choresForKid[0].chores[i].task_points);
-            rewardNames.push(choresForKid[0].chores[i].reward_name);
+    useEffect(() => {
+        var storeCorrectKidNameRewardIDInformation = [];
+        //console.log("ROUTE PARAMS CHORES INFO IS", chores);
+        //console.log("KID CHORES FOR KID IS: ", choresForKid[0].chores);
+        // ROUTE PARAMS is not passing the updated completd tasks. Therefore need to use 2 datasets.
+        // 1. obtains CHORES PARAMS reward_id. We only need the first item in each one.
+        var chores_reward_id = chores[0].reward_id;
+        var chores_kid_name = chores[0].kid_name;
 
-            let tempObject = {};
-            // to start the numbering at 1 instead of 0 for the keys
-            tempObject.Key = i + 1;
-            tempObject.amount = choresForKid[0].chores[i].task_points;
+        // 2. obtain CHORESFORKID info - the master dataset with all kid chores
+        console.log(chores_reward_id);
+        console.log(chores_kid_name);
+        // console.log("The length", choresForKid[0].chores.length);
+        for (var i = 0; i < choresForKid[0].chores.length; i++) {
+            // now we need to only keep the information from the choreForKid dataset that relates to the passed in data from chores.
+            if (
+                chores_kid_name === choresForKid[0].chores[i].kid_name &&
+                chores_reward_id === choresForKid[0].chores[i].reward_id
+            ) {
+                // store each correct object in an array,
+                storeCorrectKidNameRewardIDInformation.push(
+                    choresForKid[0].chores[i]
+                );
 
-            // determine if the task is completed or not/
-            if (choresForKid[0].chores[i].is_completed === 0) {
-                // assign a light shade of purle
-                tempObject.svg = { fill: "#ecb3ff" };
-                tempObject.is_complete = 0;
-                // update the not completed task counter
-                notCompletedTasks += 1;
-            } else if (choresForKid[0].chores[i].is_completed === 1) {
-                // assign a dark shade of purle
-                tempObject.svg = { fill: "#600080" };
-                tempObject.is_complete = 1;
-                completedTasks += 1;
+                // update the tasks ocmplete coutner
+                if (choresForKid[0].chores[i].is_completed === 1) {
+                    // completedTasks += 1;
+                    setTasksComplete((tasksComplete += 1));
+                } else {
+                    setTasksNotCompplete((tasksNotComplete += 1));
+                }
             }
-
-            data.push(tempObject);
         }
-    }
-    //console.log(`the GRAPH data array is:`, data);
+        console.log("WTF", storeCorrectKidNameRewardIDInformation);
+        // we can simply pass only those items to the helper function to finalise the graph data
+        var gj = changeChoresToPieChartDataObject(
+            storeCorrectKidNameRewardIDInformation
+        );
+        console.log(gj);
+        setGraphData(gj);
+    }, [chores]);
 
-    // set the REWARD heading to the first instance in the array.
-    var rewardName = rewardNames[0];
-
-    const Labels = ({ slices, height, width }) => {
-        return slices.map((slice, index) => {
-            // console.log(slice);
-            const { labelCentroid, pieCentroid, data } = slice;
-
-            // change the icon depending on whether it is completed or not
-
-            if (data.is_complete === 0) {
-                var isTaskCompleted = false;
-            } else {
-                var isTaskCompleted = true;
-            }
-
-            return (
-                <G key={index} x={labelCentroid[0]} y={labelCentroid[1]}>
-                    <Circle r={15} fill={"white"} />
-
-                    <Image
-                        x={-10}
-                        y={-10}
-                        width={20}
-                        height={20}
-                        preserveAspectRatio="xMidYMid slice"
-                        opacity="1"
-                        // href={Images.memes[index + 1]}
-                        // href={Images.questionMark[index + 1]}
-                        href={
-                            isTaskCompleted
-                                ? Images.ticks[index + 1]
-                                : Images.questionMark[index + 1]
-                        }
-                    />
-
-                    {/* <Text>{labelName[index]}</Text> */}
-                </G>
-            );
-        });
-    };
+    // graphData = changeChoresToPieChartDataObject(chores);
 
     return (
-        <SafeAreaView>
-            <ScrollView style={styles.container}>
-                <AppHeading title="Your Progress is:" />
-                <View style={styles.reward}>
-                    <View style={styles.rewardContainer}>
-                        <Text style={styles.currentScore}>Reward:</Text>
-                        <Text style={styles.currentScoreValue}>
-                            {rewardName}
-                        </Text>
-                    </View>
+        <Screen>
+            {/* <SafeAreaView> */}
+            {/* <ScrollView style={styles.container}> */}
+            <AppHeading title="Your Progress is:" />
+            <View style={styles.reward}>
+                <View style={styles.rewardContainer}>
+                    <Text style={styles.currentScore}>Reward:</Text>
+                    <Text style={styles.currentScoreValue}>{rewardName}</Text>
                 </View>
+            </View>
 
-                <View>
-                    <PieChart
-                        key={1}
-                        style={{ height: 400 }}
-                        valueAccessor={({ item }) => item.amount}
-                        data={data}
-                        spacing={0}
-                        outerRadius={"80%"}
-                        key={1}
-                    >
-                        <Labels />
-                    </PieChart>
+            <View>
+                <PieChartWithLabels data={graphData} />
+            </View>
+
+            <View style={styles.score}>
+                <View style={styles.currentScoreContainer}>
+                    <Text style={styles.currentScore}>Tasks Complete</Text>
+                    <Text style={styles.currentScoreValue}>
+                        {tasksComplete}
+                    </Text>
                 </View>
-
-                <View style={styles.score}>
-                    <View style={styles.currentScoreContainer}>
-                        <Text style={styles.currentScore}>Tasks Complete</Text>
-                        <Text style={styles.currentScoreValue}>
-                            {completedTasks}
-                        </Text>
-                    </View>
-                    <View style={styles.currentScoreContainer}>
-                        <Text style={styles.currentScore}>Tasks Left</Text>
-                        <Text style={styles.currentScoreValue}>
-                            {notCompletedTasks}
-                        </Text>
-                    </View>
+                <View style={styles.currentScoreContainer}>
+                    <Text style={styles.currentScore}>Tasks Left</Text>
+                    <Text style={styles.currentScoreValue}>
+                        {tasksNotComplete}
+                    </Text>
                 </View>
+            </View>
 
-                <AppButton
-                    title="Return"
-                    onPress={() => navigation.navigate(screens.ChildDashBoard)}
-                />
-            </ScrollView>
-        </SafeAreaView>
+            <AppButton
+                title="Return"
+                onPress={() => navigation.navigate(screens.ChildDashBoard)}
+            />
+            {/* </ScrollView> */}
+            {/* </SafeAreaView> */}
+        </Screen>
     );
 }
 

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import {
     View,
     StyleSheet,
@@ -26,6 +26,8 @@ import AppPicker from "../../../components/appPicker";
 import { UsersContext } from "../../../context/UsersContext";
 
 import CategoryPickerItem from "../../../components/appCategoryPickerItem";
+import { renderOddColumnsNicely } from "../../../helpers/createBlankItem";
+
 export default function RemoveCategoryScreen({ navigation }) {
     // need to utilise usersContext to make use of SQL
     const usersContext = useContext(UsersContext);
@@ -81,6 +83,15 @@ export default function RemoveCategoryScreen({ navigation }) {
         setSelectedItem(item);
     };
 
+    useEffect(() => {
+        if (categoryList.length % 2 === 0) {
+        } else {
+            // need to create a blank icon object to render nicely on the appPickerITem. This is to make sure that if there is an ODD number of elements to be shown, we add a "silent" ojbect to make it render nicely by 2 columns each row.
+
+            categoryList = renderOddColumnsNicely(categoryList);
+        }
+    });
+
     return (
         <Screen>
             {/* <SafeAreaView style={styles.container}> */}
@@ -91,7 +102,7 @@ export default function RemoveCategoryScreen({ navigation }) {
                     items={categoryList}
                     icon="face"
                     name="chore"
-                    numberOfColumns={3}
+                    numberOfColumns={2}
                     PickerItemComponent={CategoryPickerItem}
                     placeholder="Select Category to Remove"
                     selectedItem={selectedItem}

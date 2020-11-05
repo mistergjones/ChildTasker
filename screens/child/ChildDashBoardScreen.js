@@ -88,6 +88,10 @@ function ChildDashBoardScreen({ navigation }) {
                         <View style={styles.tasks}>
                             {choresForKid.map((chore, index) => {
                                 if (index % 2 === 0) {
+                                    console.log(
+                                        `Inside loop Object Keys: `,
+                                        choresForKid[index].rewardID
+                                    );
                                     let completed = true;
                                     for (
                                         let i = 0;
@@ -110,6 +114,9 @@ function ChildDashBoardScreen({ navigation }) {
                                             chores={chore.chores}
                                             rewardName={chore.rewardName}
                                             color={completed ? "green" : "red"}
+                                            reward_id={
+                                                choresForKid[index].rewardID
+                                            }
                                         />
                                     );
                                 }
@@ -140,6 +147,9 @@ function ChildDashBoardScreen({ navigation }) {
                                             chores={chore.chores}
                                             rewardName={chore.rewardName}
                                             color={completed ? "green" : "red"}
+                                            reward_id={
+                                                choresForKid[index].rewardID
+                                            }
                                         />
                                     );
                                 }

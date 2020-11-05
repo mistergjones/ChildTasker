@@ -9,25 +9,29 @@ const db = SQLite.openDatabase("db.db");
 
 // get all tasks
 // We will pass in a function that can take the users from the query and set the state.
-const getTasks = (setUserFunc) => {
-    db.transaction(
-        (tx) => {
-            tx.executeSql(
-                "select * from tasks",
-                [],
-                (_, { rows: { _array } }) => {
-                    setUserFunc(_array);
-                }
-            );
-        },
-        (t, error) => {
-            console.log("db error load tasks");
-            console.log(error);
-        },
-        (_t, _success) => {
-            console.log("Retrieved tasks");
-        }
-    );
+const getTasks = async (setUserFunc) => {
+    return new Promise(async (resolve, reject) => {
+        db.transaction(
+            (tx) => {
+                tx.executeSql(
+                    "select * from tasks",
+                    [],
+                    (_, { rows: { _array } }) => {
+                        setUserFunc(_array);
+                    }
+                );
+            },
+            (t, error) => {
+                console.log("db error load tasks");
+                console.log(error);
+                reject(error);
+            },
+            (_t, _success) => {
+                console.log("Retrieved tasks");
+                resolve(_success);
+            }
+        );
+    });
 };
 
 /******* get specific tasks given a category id */
@@ -61,7 +65,7 @@ const getSpecficTasks = async (taskID, setUserFunc) => {
 
 // inserst a task into the table
 // we pass in a successFunc that will be called after the insert has happened. In our case, we are passing in the function to refresh the categories from the database. This way we know that our state will reflect what is in the database.
-const insertTask = (userTask, successFunc) => {
+const insertTask = async (userTask, successFunc) => {
     return new Promise(async (resolve, reject) => {
         db.transaction(
             (tx) => {
@@ -80,10 +84,10 @@ const insertTask = (userTask, successFunc) => {
                 console.log("db error INSERT TASK");
                 console.log(error);
             },
-            (_t, _success) => {
-                console.log("TASK insertion was successful");
-                // successFunc();
+            (t, _success) => {
+                //successFunc();
                 resolve(_success);
+                console.log("TASK insertion was successful");
             }
         );
     });
@@ -149,7 +153,7 @@ const removeTask = async (task_id) => {
                 reject(error);
             },
             (_t, _success) => {
-                console.log("removed Task" + _t);
+                console.log("removed Task");
                 resolve(_success);
             }
         );
