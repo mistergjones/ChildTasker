@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { View } from "react-native";
-import { Text, ForeignObject } from "react-native-svg";
+import { Text, ForeignObject, Svg, Rect, Circle } from "react-native-svg";
 import { PieChart } from "react-native-svg-charts";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import AppText from "./appText";
@@ -15,7 +15,7 @@ function PieChartWithLabels({
     return slices.map((slice, index) => {
       const { labelCentroid, pieCentroid, data } = slice;
       return (
-        <View style={{ flex: 1, justifyContent: "center" }}>
+        <View key={data.id + 400} style={{ flex: 1, justifyContent: "center" }}>
           <ForeignObject
             style={{ backgroundColor: "red" }}
             x={pieCentroid[0]}
@@ -28,6 +28,7 @@ function PieChartWithLabels({
               name={data.icon}
               size={30}
               color={iconColor}
+              key={data.id + 200}
             />
           </ForeignObject>
 
@@ -44,39 +45,62 @@ function PieChartWithLabels({
             strokeWidth={0.2}
           >
             {(data.amount, data.taskName)}
-            {index === 0 ? (
-              <>
-                <AppText style={{ color: completedColor, fontWeight: "bold" }}>
-                  Completed
-                </AppText>
-                <AppText
-                  style={{
-                    color: incompleteColor,
-                    fontWeight: "bold",
-                    marginRight: 5,
-                  }}
-                >
-                  Incomplete
-                </AppText>
-              </>
-            ) : (
-              ""
-            )}
           </Text>
         </View>
       );
     });
   };
   return (
-    <PieChart
-      style={{ height: "50%", width: "100%", alignSelf: "center" }}
-      valueAccessor={({ item }) => item.amount}
-      data={data}
-      spacing={0}
-      outerRadius={"90%"}
-    >
-      <Labels />
-    </PieChart>
+    <>
+      <PieChart
+        style={{ height: "50%", width: "100%", alignSelf: "center" }}
+        valueAccessor={({ item }) => item.amount}
+        data={data}
+        spacing={0}
+        outerRadius={"90%"}
+      >
+        <Labels />
+      </PieChart>
+      <View
+        style={{
+          backgroundColor: "#ffffff",
+          marginHorizontal: "6%",
+          borderRadius: 8,
+          flexDirection: "row",
+          justifyContent: "space-evenly",
+          alignSelf: "stretch",
+          height: 30,
+        }}
+      >
+        <AppText style={{ color: "black", fontWeight: "bold" }}>
+          Legend:
+        </AppText>
+        <AppText
+          style={{
+            color: completedColor,
+            fontWeight: "bold",
+            marginLeft: 15,
+          }}
+        >
+          Completed
+        </AppText>
+        <Svg height="24" width="24">
+          <Circle cx="12" cy="12" r="8" fill={completedColor} />
+        </Svg>
+        <AppText
+          style={{
+            color: incompleteColor,
+            fontWeight: "bold",
+            marginLeft: 15,
+          }}
+        >
+          Incomplete
+        </AppText>
+        <Svg height="24" width="24">
+          <Circle cx="12" cy="12" r="8" fill={incompleteColor} />
+        </Svg>
+      </View>
+    </>
   );
 }
 export default PieChartWithLabels;

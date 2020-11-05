@@ -19,7 +19,7 @@ import PieChartWithLabels from "../../../components/PieChartWithLabels";
 function TrackReward({ navigation }) {
   const usersContext = useContext(UsersContext);
   const { kids, rewards, getChoresForKid } = usersContext;
-
+  console.log("kids line 22", kids);
   // KiDS
   const [selectedKid, setSelectedKid] = useState(null);
 
@@ -49,7 +49,6 @@ function TrackReward({ navigation }) {
     // set the rewrads list to only contain rewards that have not been assigned for the child selected
     setRewardList(establishRewardListInObjectFormat(filteredRewards));
     setSelectedReward(null);
-    // console.log(selectedKid);
   };
 
   const getRewardsHaveBeenAssignedToKid = (kidName, rewardsForKid) => {
@@ -117,8 +116,9 @@ function TrackReward({ navigation }) {
         <AppPicker
           items={kidList}
           icon="face"
-          numberOfColumns={3}
+          numberOfColumns="2"
           placeholder="Select Child"
+          PickerItemComponent={CategoryPickerItem}
           onSelectItem={handleSelectKid}
           selectedItem={selectedKid}
           width="90%"
@@ -135,7 +135,9 @@ function TrackReward({ navigation }) {
             width="90%"
           />
         )}
-        {selectedReward && <PieChartWithLabels data={graphData} />}
+        {selectedReward && (
+          <PieChartWithLabels data={graphData} key={graphData[0].id} />
+        )}
         <AppButton
           title="Return"
           onPress={() => navigation.navigate(screens.ManageRewards)}
