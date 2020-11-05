@@ -13,12 +13,12 @@ const getRewards = async (setUserFunc) => {
     db.transaction(
       (tx) => {
         tx.executeSql(
-          "select reward_id,reward_name,reward_points,rewards.icon_id,rewards.reward_icon_name,icons.icon_name from rewards,icons WHERE rewards.icon_id=icons.icon_id",
+          "select reward_id,reward_name,reward_points,rewards.icon_id,rewards.reward_icon_name,icons.icon_name,background_color from rewards,icons WHERE rewards.icon_id=icons.icon_id",
           [],
           (_, { rows: { _array } }) => {
-            _array.map(a => {
-              console.log("reward = " + a.reward_icon_name)
-            })
+            _array.map((a) => {
+              console.log("reward = " + a.reward_icon_name);
+            });
             setUserFunc(_array);
           }
         );
@@ -47,7 +47,12 @@ const insertReward = async (
       (tx) => {
         tx.executeSql(
           "insert into rewards (reward_name,reward_points,icon_id,reward_icon_name) values (?,?,?,?)",
-          [reward.reward_name, reward.reward_points, Number(reward.icon_id), reward.icon_name]
+          [
+            reward.reward_name,
+            reward.reward_points,
+            Number(reward.icon_id),
+            reward.icon_name,
+          ]
         );
       },
       (t, error) => {
@@ -98,7 +103,6 @@ const updateReward = (reward) => {
             reward.icon_id,
             reward.icon_name,
             reward.reward_id,
-
           ]
         );
       },

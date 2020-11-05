@@ -30,12 +30,15 @@ function ViewReward({ navigation }) {
     selectedRewardDetails,
     // selectedRewardDetails,
   } = useContext(UsersContext);
-  // console.log("View Reward", rewards);
+  console.log("View Reward line 33", rewards);
   const [modalVisible, setModalVisible] = useState(false);
 
   return (
     <Screen>
       <AppHeading title="View Reward Category & Points" />
+      <AppText style={{ textAlign: "center" }}>
+        Long press the icon to edit or delete the reward
+      </AppText>
       <FlatList
         style={styles.rewardContainer}
         contentContainerStyle={styles.wrapper}
@@ -65,7 +68,11 @@ function ViewReward({ navigation }) {
               subTitle={item.reward_points}
               // image={item.image}
               icon={item.icon_name}
-              style={{ borderBottom: "#af7b4b", borderWidth: 15 }}
+              color={item.background_color}
+              style={{
+                borderBottom: "#af7b4b",
+                borderWidth: 15,
+              }}
             />
           </TouchableHighlight>
         )}
@@ -87,7 +94,6 @@ function ViewReward({ navigation }) {
                       deleteReward(selectedReward);
                       // console.log("Long pressed deleted", selectedReward);
                       Alert.alert("Deleted");
-                      // setSelectedReward(null);
                       navigation.navigate(screens.ViewReward);
                     }}
                   />
@@ -106,31 +112,7 @@ function ViewReward({ navigation }) {
             </Modal>
           </>
         }
-        ListFooterComponent={
-          <>
-            {/* <View style={styles.tabLinks}>
-<View style={styles.tab}>
-<AppMaterialIcon
-iconName="dice-5"
-iconSize={42}
-iconColor="blue"
-/>
-<AppText>Tab 1</AppText>
-</View>
-<View style={styles.tab}>
-<AppMaterialIcon iconName="table-large" iconSize={42} />
-<AppText>Tab 2</AppText>
-</View>
-</View> */}
-            {/* <View style={{ width: "100%" }}>
-<AppButton
-width="90%"
-title="Return"
-onPress={() => navigation.navigate(screens.ManageRewards)}
-/>
-</View> */}
-          </>
-        }
+        ListFooterComponent={<></>}
       />
       <AppButton
         width="90%"
@@ -154,15 +136,10 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.5,
     shadowRadius: 10,
   },
-  tabLinks: {
-    textAlign: "center",
-    flexDirection: "row",
-    justifyContent: "center",
-  },
-  tab: {
-    margin: 10,
-  },
+
   wrapper: {
+    flex: 1,
+    justifyContent: "space-around",
     alignItems: "center",
   },
 });

@@ -72,14 +72,14 @@ function EditReward({ navigation }) {
         }}
         onSubmit={async (fields, { setFieldError }) => {
           try {
-            console.log(
-              "hit edit reward button",
-              fields.label,
-              fields.point,
-              selectedIcon.icon,
-              selectedIcon.value,
-              selectedReward
-            );
+            // console.log(
+            //   "hit edit reward button",
+            //   fields.label,
+            //   fields.point,
+            //   selectedIcon.icon,
+            //   selectedIcon.value,
+            //   selectedReward
+            // );
             await updateReward({
               reward_name: fields.label,
               reward_points: fields.point,
