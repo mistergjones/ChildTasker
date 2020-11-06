@@ -14,9 +14,9 @@ export default {
     buttonBorder: "#502274",
     buttonBackground: "#A42CD6",
     inputText: "gold",
-    inputErrorMessage: "blue",
-    inputLabel: "orange",
-    inputPlaceholder: "dodgerblue",
+    inputErrorMessage: "tomato",
+    inputLabel: "white",
+    inputPlaceholder: "white",
     inputIcon: "tomato",
     text: "aqua",
 };

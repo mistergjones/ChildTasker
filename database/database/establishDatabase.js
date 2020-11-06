@@ -1250,7 +1250,7 @@ const loadIcons = async () => {
                 );
                 tx.executeSql(
                     "insert into icons (icon_name,background_color,label) values (?,?,?)",
-                    ["theatre", "#2bcbba", "Movies"]
+                    ["theater", "#2bcbba", "Movies"]
                 );
 
                 tx.executeSql(

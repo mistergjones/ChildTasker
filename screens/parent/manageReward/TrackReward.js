@@ -90,6 +90,7 @@ function TrackReward({ navigation }) {
                 const data = changeChoresToPieChartDataObject(
                     kidChoresForReward[i].chores
                 );
+                console.log("TRACK REWARD", data);
                 setGraphData(data);
                 break;
             }
