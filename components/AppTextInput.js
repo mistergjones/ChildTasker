@@ -17,9 +17,26 @@ function AppTextInput({ icon, labelText, error, errorStyle, ...otherProps }) {
                             style={styles.icon}
                         />
                     )}
-                    <TextInput style={styles.textInput} placeholderTextColor={colours.inputPlaceholder}{...otherProps} />
+                    <TextInput
+                        style={styles.textInput}
+                        placeholderTextColor={colours.inputPlaceholder}
+                        {...otherProps}
+                    />
                 </View>
-                {error && <Text style={errorStyle}>{error}</Text>}
+                {error && (
+                    <Text
+                        style={
+                            (errorStyle,
+                            {
+                                fontSize: 18,
+                                fontWeight: "bold",
+                                color: colours.inputErrorMessage,
+                            })
+                        }
+                    >
+                        {error}
+                    </Text>
+                )}
             </View>
         </View>
     );
@@ -36,30 +53,29 @@ const styles = StyleSheet.create({
     },
     label: {
         color: colours.inputLabel,
-
+        fontWeight: "bold",
     },
     text: {
         fontWeight: "bold",
         color: colours.inputText,
-
     },
     textInput: {
         fontSize: 18,
         color: colours.inputText,
         width: "100%",
+        fontWeight: "bold",
     },
     verticalContainer: {
         width: "90%",
         marginVertical: 5,
         borderBottomWidth: 1,
         borderBottomColor: colours.defaultHeadingColour,
-        shadowOpacity: 1
+        shadowOpacity: 1,
     },
     mainContainer: {
         alignItems: "center",
         marginTop: 10,
         // backgroundColor: colours.defaultHeadingCol,
-
     },
 });
 

@@ -113,7 +113,9 @@ function RegisterScreen({ navigation }) {
                             labelText="User Name"
                             icon="account"
                             onChangeText={handleChange("username")}
-                            errorStyle={{ color: colours.inputErrorMessage }}
+                            errorStyle={{
+                                color: colours.inputErrorMessage,
+                            }}
                             error={errors ? errors.username : ""}
                         />
                         <AppTextInput
@@ -122,7 +124,9 @@ function RegisterScreen({ navigation }) {
                             icon="lock"
                             secureTextEntry
                             onChangeText={handleChange("password")}
-                            errorStyle={{ color: colours.inputErrorMessage }}
+                            errorStyle={{
+                                color: colours.inputErrorMessage,
+                            }}
                             error={errors ? errors.password : ""}
                         />
                         <AppTextInput
@@ -131,7 +135,9 @@ function RegisterScreen({ navigation }) {
                             icon="lock"
                             secureTextEntry
                             onChangeText={handleChange("confirmPassword")}
-                            errorStyle={{ color: colours.inputErrorMessage }}
+                            errorStyle={{
+                                color: colours.inputErrorMessage,
+                            }}
                             error={errors ? errors.confirmPassword : ""}
                         />
 
@@ -188,6 +194,7 @@ const styles = StyleSheet.create({
         marginTop: 20,
         marginBottom: 20,
         fontWeight: "bold",
+        textAlign: "justify",
     },
     modal: {
         backgroundColor: colours.defaultHeadingColour,

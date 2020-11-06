@@ -520,7 +520,7 @@ function CreateTaskListForChildScreen({ navigation }) {
                     />
                 )}
                 <AppButton
-                    title="Cancel"
+                    title="Return"
                     onPress={() => navigation.navigate(screens.ParentDashBoard)}
                 />
             </Form>

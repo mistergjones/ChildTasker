@@ -80,12 +80,12 @@ function ChoreProgressScreen({ navigation, route }) {
                 }
             }
         }
-        console.log("WTF", storeCorrectKidNameRewardIDInformation);
+        //console.log("WTF", storeCorrectKidNameRewardIDInformation);
         // we can simply pass only those items to the helper function to finalise the graph data
         var gj = changeChoresToPieChartDataObject(
             storeCorrectKidNameRewardIDInformation
         );
-        console.log(gj);
+        console.log(`HERE WE ARE`, gj);
         setGraphData(gj);
     }, [chores]);
 
@@ -103,9 +103,7 @@ function ChoreProgressScreen({ navigation, route }) {
                 </View>
             </View>
 
-            <View>
-                <PieChartWithLabels data={graphData} />
-            </View>
+            <PieChartWithLabels data={graphData} />
 
             <View style={styles.score}>
                 <View style={styles.currentScoreContainer}>
