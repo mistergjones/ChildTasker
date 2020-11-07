@@ -63,6 +63,9 @@ const styles = StyleSheet.create({
     text: {
         marginTop: 20,
         height: 40,
+        color: colours.white,
+        fontSize: 14,
+        fontWeight: "bold",
     },
 });
 

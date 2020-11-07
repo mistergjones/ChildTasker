@@ -135,9 +135,13 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         backgroundColor: colours.defaultButtonColour,
-        width: "50%",
+        width: "45%",
         borderWidth: 1,
         borderColor: colours.white,
+        borderTopStartRadius: 20,
+        borderTopEndRadius: 20,
+        borderBottomStartRadius: 20,
+        borderBottomEndRadius: 20,
     },
     currentScore: {
         fontSize: 25,
@@ -158,6 +162,7 @@ const styles = StyleSheet.create({
         width: "100%",
     },
     scrollView: {
+        marginTop: 20,
         height: "50%",
         // paddingLeft: 15,
         backgroundColor: colours.buttonBackground,
@@ -167,6 +172,8 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         // borderWidth: 1,
         // borderColor: colours.buttonBorder,
+        borderWidth: 1,
+        borderColor: colours.white,
     },
     task: {
         alignItems: "center",
@@ -175,7 +182,7 @@ const styles = StyleSheet.create({
     score: {
         flexDirection: "row",
         alignItems: "center",
-        justifyContent: "space-between",
+        justifyContent: "space-evenly",
         padding: 15,
     },
 });

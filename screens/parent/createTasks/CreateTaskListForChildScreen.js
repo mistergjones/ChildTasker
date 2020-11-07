@@ -40,6 +40,7 @@ import {
 } from "../../../helpers/createObjectLists";
 
 import { renderOddColumnsNicely } from "../../../helpers/createBlankItem";
+import UserPicker from "../../../components/userPicker";
 
 let runningTasksToAssign = [];
 
@@ -440,7 +441,7 @@ function CreateTaskListForChildScreen({ navigation }) {
                 }}
                 // onSubmit={(values) => console.log(values)}
             >
-                <AppPicker
+                {/* <AppPicker
                     items={kidList}
                     icon="face"
                     PickerItemComponent={CategoryPickerItem}
@@ -449,7 +450,17 @@ function CreateTaskListForChildScreen({ navigation }) {
                     onSelectItem={handleSelectKid}
                     selectedItem={selectedKid}
                     width="90%"
+                /> */}
+                <UserPicker
+                    style={styles.picker}
+                    items={kidList}
+                    icon="account-child"
+                    placeholder="Select Child"
+                    onSelectItem={handleSelectKid}
+                    selectedItem={selectedKid}
+                    numberOfColumns={1}
                 />
+
                 {selectedKid && (
                     <AppPicker
                         items={rewardList}
@@ -570,6 +581,13 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "space-between",
         padding: 15,
+    },
+    picker: {
+        marginBottom: 150,
+        // height: 50,
+        width: "90%",
+        alignSelf: "center",
+        backgroundColor: "transparent",
     },
 });
 

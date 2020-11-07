@@ -18,5 +18,5 @@ export default {
     inputLabel: "white",
     inputPlaceholder: "white",
     inputIcon: "tomato",
-    text: "aqua",
+    text: "white",
 };

@@ -31,6 +31,13 @@ function BottomTabNavigator(props) {
                 activeTintColor: colours.white,
                 inactiveBackgroundColor: colours.light,
                 inactiveTintColor: "grey",
+                labelStyle: {
+                    fontSize: 20,
+                    fontWeight: "bold",
+                },
+                tabStyle: {
+                    fontSize: 50,
+                },
             }}
         >
             {user.isParent && (
