@@ -98,7 +98,7 @@ const getChoresByKidName = (
                                 console.log("chore id = " + chore.reward_id);
                                 console.log(
                                     "rewardsForCild id = " +
-                                        rewardsForChild[x].chores[0].reward_id
+                                    rewardsForChild[x].chores[0].reward_id
                                 );
                                 if (
                                     chore.reward_id ===

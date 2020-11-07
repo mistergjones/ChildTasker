@@ -29,20 +29,22 @@ const updateChildSchema = Yup.object().shape({
 function EditChildScreen({ navigation }) {
     const { kids, updateKid } = useContext(UsersContext);
     const [selectedItem, setSelectedItem] = useState();
-    const [childName, setChildName] = useState()
+    const [childName, setChildName] = useState(null)
     const [newPin, setNewPin] = useState(null);
 
     // the below will change once we have data from teh server/text file
-    console.log("kids", kids);
+    console.log("kids = ", Object.keys(kids[0]));
 
     const kidsData = kids.map((kid) => {
-        return { label: kid.user_name, value: kid.user_id, pin: kid.password, icon: "human-child" };
+        return { label: kid.user_name, value: kid.user_id, pin: kid.password, icon: kid.icon, uri: kid.uri };
     });
 
     console.log("kids data =" + kidsData);
 
     const handleSelectItem = (item) => {
         setSelectedItem(item);
+        console.log("aa = " + item.label)
+        setChildName(item.label)
     };
 
     const handleUpdateKid = async () => {
@@ -68,55 +70,55 @@ function EditChildScreen({ navigation }) {
 
                 />
 
-                {selectedItem && (
-                    <>
-                        <Formik
-                            initialValues={{ childname: selectedItem.label }}
-                            onSubmit={async (fields, { setFieldError }) => {
-                                const kid = {
-                                    userId: selectedItem.value,
-                                    userName: fields.childname,
-                                    password: newPin ? newPin : selectedItem.pin,
-                                };
-                                await updateKid(kid);
-                                navigation.navigate(screens.ParentChildDashBoard);
-                            }}
-                            validationSchema={updateChildSchema}
-                        >
-                            {({ handleChange, handleSubmit, errors }) => (
-                                <>
 
+                {selectedItem && <>
+                    <Formik
+                        initialValues={{ childname: selectedItem.label }}
+                        onSubmit={async (fields, { setFieldError }) => {
+                            console.log("Submit = " + fields.childname)
+                            const kid = {
+                                userId: selectedItem.value,
+                                userName: fields.childname,
+                                password: newPin ? newPin : selectedItem.pin,
+                            };
+                            await updateKid(kid);
+                            navigation.navigate(screens.ParentChildDashBoard);
+                        }}
+                        validationSchema={updateChildSchema}
 
+                    >
+                        {({ handleChange, handleSubmit, errors }) => (
+                            <>
+                                {selectedItem && <AppTextInput labelText="Child name"
+                                    icon="account"
+                                    onChangeText={handleChange("childname")}
+                                    errorStyle={{ color: "white" }}
+                                    error={errors ? errors.childname : ""}
+                                    defaultValue={selectedItem ? selectedItem.label : ""}
+                                />}
 
-                                    <AppTextInput labelText="Child name"
-                                        icon="account" onChangeText={handleChange("childname")}
-                                        errorStyle={{ color: "white" }}
-                                        error={errors ? errors.childname : ""}
-                                        defaultValue={selectedItem.label}
+                                {newPin && <AppLabel labelText={newPin} icon={"account"} />}
+                                {(selectedItem &&
+                                    <AppButton
+                                        title="Generate New Pin"
+                                        onPress={() => {
+                                            const pin = Math.floor(Math.random() * 8999) + 1000;
+                                            setNewPin(String(pin));
+                                        }}
                                     />
-
-                                    {newPin && <AppLabel labelText={newPin} icon={"account"} />}
-                                    {selectedItem && (
-                                        <AppButton
-                                            title="Generate New Pin"
-                                            onPress={() => {
-                                                const pin = Math.floor(Math.random() * 8999) + 1000;
-                                                setNewPin(String(pin));
-                                            }}
-                                        />
-                                    )}
-                                    {selectedItem && <AppButton title="Save and Exit" onPress={handleSubmit} />}
+                                )}
+                                {selectedItem && <AppButton title="Save and Exit" onPress={handleSubmit} />}
 
 
 
-                                </>
+                            </>
 
-                            )}
+                        )}
 
-                        </Formik>
+                    </Formik>
 
-                    </>
-                )}
+                </>}
+
                 <AppButton
                     title="Return"
                     onPress={() =>

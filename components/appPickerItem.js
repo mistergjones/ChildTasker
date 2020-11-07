@@ -8,12 +8,13 @@ let widthStyle = "";
 function PickerItem({ item, onPress, numColumns }) {
     widthStyle = (100 / numColumns).toFixed(0);
     console.log("width style = ", widthStyle);
+    console.log("-- item" + Object.keys(item))
     return (
         <TouchableOpacity style={styles.container} onPress={onPress}>
             <MaterialCommunityIcons
-                name={"account"}
+                name={item.icon}
                 size={40}
-                color={defaultStyles.colors.medium}
+                color={item.color}
                 style={styles.icon}
             />
 

@@ -73,7 +73,7 @@ function UserPicker({
                         numColumns={numberOfColumns}
                         renderItem={({ item }) => (
 
-                            <User iconName={item.icon} username={item.label} color={colours.buttonText} onPress={() => {
+                            <User iconName={item.icon} username={item.label} color={colours.buttonText} uri={item.uri} icon={item.icon} onPress={() => {
                                 setModalVisible(false);
                                 onSelectItem(item);
                             }} />

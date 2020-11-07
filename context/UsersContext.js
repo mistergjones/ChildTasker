@@ -240,7 +240,13 @@ export const UsersContextProvider = (props) => {
     };
     // END ICON
     //*************************************************************************
-
+    //Usres 
+    const addAvatar = async (userId, uri, icon) => {
+        await databaseUsers.addUserAvatar(userId, uri, icon);
+        await refreshUsers();
+        await getKids();
+        return
+    }
     const addNewUser = async (user) => {
         //await database.insertUser(user, refreshUsers);
         try {
@@ -280,9 +286,11 @@ export const UsersContextProvider = (props) => {
 
     const updateKid = async (kid) => {
         //await database.updateKid(kid);
+        console.log("kid = " + kid)
         await databaseUsers.updateKid(kid);
         await getKids();
         await databaseUsers.getUsers(setUsers);
+        return
     };
     // Make the context object:
     const usersContext = {
@@ -308,6 +316,7 @@ export const UsersContextProvider = (props) => {
         getRewardByID,
         selectedRewardDetails,
         setSelectedRewardDetails,
+        addAvatar,
         addNewUser,
         users,
         setUsers,

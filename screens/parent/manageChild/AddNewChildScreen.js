@@ -23,6 +23,7 @@ import { UsersContext } from "../../../context/UsersContext";
 import ParentDashBoardScreen from "../../ParentDashBoardScreen";
 import Screen from "../../../components/appScreen"
 import colours from "../../../config/colours";
+import { set } from "react-native-reanimated";
 
 const loginSchema = Yup.object().shape({
   childname: Yup.string().required().label("Child name"),
@@ -33,6 +34,7 @@ function AddNewChildScreen({ navigation }) {
   );
 
   const [newPin, setNewPin] = useState(null);
+  const [childName, setChildName] = useState(null)
 
   return (
     <Screen>
@@ -71,18 +73,18 @@ function AddNewChildScreen({ navigation }) {
               labelText="Child name"
               icon="account"
               onChangeText={handleChange("childname")}
+
               errorStyle={{ color: colours.inputErrorMessage }}
               error={errors ? errors.childname : ""}
             />
             {newPin && <AppLabel labelText={newPin} />}
-            {
-              <AppButton
-                title="Generate New Pin"
-                onPress={() => {
-                  const pin = Math.floor(Math.random() * 8999) + 1000;
-                  setNewPin(String(pin));
-                }}
-              />
+            {<AppButton
+              title="Generate New Pin"
+              onPress={() => {
+                const pin = Math.floor(Math.random() * 8999) + 1000;
+                setNewPin(String(pin));
+              }}
+            />
             }
             {newPin && <AppButton title="Add" onPress={handleSubmit} />}
 
