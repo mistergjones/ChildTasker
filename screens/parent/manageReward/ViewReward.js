@@ -7,6 +7,7 @@ import {
     Button,
     TouchableHighlight,
     Alert,
+    ScrollView,
 } from "react-native";
 
 import Screen from "../../../components/appScreen";
@@ -39,10 +40,11 @@ function ViewReward({ navigation }) {
             <AppText style={{ textAlign: "center", color: "white" }}>
                 Long press the icon to edit or delete the reward
             </AppText>
+
             <FlatList
                 style={styles.rewardContainer}
-                contentContainerStyle={styles.wrapper}
-                numColumns={"3"}
+                // contentContainerStyle={styles.wrapper}
+                numColumns={"2"}
                 data={rewards}
                 keyExtractor={(reward) => reward.reward_id}
                 ItemSeparatorComponent={() => {
@@ -57,7 +59,7 @@ function ViewReward({ navigation }) {
                 }}
                 renderItem={({ item }) => (
                     <TouchableHighlight
-                        style={{ margin: 5 }}
+                        style={{ padding: 5, width: "50%" }}
                         onLongPress={() => {
                             setSelectedReward(item.reward_id);
                             setModalVisible(!modalVisible);
@@ -76,51 +78,49 @@ function ViewReward({ navigation }) {
                         />
                     </TouchableHighlight>
                 )}
-                ListHeaderComponent={
-                    <>
-                        <Modal visible={modalVisible} animationType="slide">
-                            <Screen>
-                                <AppButton
-                                    title="Close"
-                                    onPress={() => {
-                                        setModalVisible(false);
-                                    }}
-                                />
-                                <View>
-                                    <AppButton
-                                        title="Delete Reward"
-                                        onPress={() => {
-                                            setModalVisible(!modalVisible);
-                                            deleteReward(selectedReward);
-                                            // console.log("Long pressed deleted", selectedReward);
-                                            Alert.alert("Deleted");
-                                            navigation.navigate(
-                                                screens.ViewReward
-                                            );
-                                        }}
-                                    />
-                                    <AppButton
-                                        title="Edit Reward"
-                                        onPress={async () => {
-                                            setModalVisible(!modalVisible);
-                                            // console.log("1", selectedRewardDetails);
-                                            await getRewardByID(selectedReward);
-                                            // console.log("2", selectedRewardDetails);
-                                            navigation.navigate("EditReward");
-                                        }}
-                                    />
-                                </View>
-                            </Screen>
-                        </Modal>
-                    </>
-                }
-                ListFooterComponent={<></>}
+                // ListHeaderComponent={}
+                // ListFooterComponent={<></>}
             />
             <AppButton
                 width="90%"
                 title="Return"
                 onPress={() => navigation.navigate(screens.ManageRewards)}
             />
+
+            <>
+                <Modal visible={modalVisible} animationType="slide">
+                    <Screen>
+                        <AppButton
+                            title="Close"
+                            onPress={() => {
+                                setModalVisible(false);
+                            }}
+                        />
+                        <View>
+                            <AppButton
+                                title="Delete Reward"
+                                onPress={() => {
+                                    setModalVisible(!modalVisible);
+                                    deleteReward(selectedReward);
+                                    // console.log("Long pressed deleted", selectedReward);
+                                    Alert.alert("Deleted");
+                                    navigation.navigate(screens.ViewReward);
+                                }}
+                            />
+                            <AppButton
+                                title="Edit Reward"
+                                onPress={async () => {
+                                    setModalVisible(!modalVisible);
+                                    // console.log("1", selectedRewardDetails);
+                                    await getRewardByID(selectedReward);
+                                    // console.log("2", selectedRewardDetails);
+                                    navigation.navigate("EditReward");
+                                }}
+                            />
+                        </View>
+                    </Screen>
+                </Modal>
+            </>
         </Screen>
     );
 }
@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
 
     wrapper: {
         flex: 1,
-        justifyContent: "space-around",
+        justifyContent: "center",
         alignItems: "center",
     },
 });

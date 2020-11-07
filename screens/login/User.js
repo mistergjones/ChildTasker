@@ -1,39 +1,47 @@
-import React, { useContext } from 'react';
-import { View, StyleSheet, Text, Image } from 'react-native';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { TouchableOpacity } from 'react-native';
-import { useRoute, useNavigation } from '@react-navigation/native';
-import screens from '../../config/screens';
-import AuthContext from '../../components/auth/context';
-import colours from '../../config/colours';
+import React, { useContext } from "react";
+import { View, StyleSheet, Text, Image } from "react-native";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { TouchableOpacity } from "react-native";
+import { useRoute, useNavigation } from "@react-navigation/native";
+import screens from "../../config/screens";
+import AuthContext from "../../components/auth/context";
+import colours from "../../config/colours";
 //import { color } from 'react-native-reanimated';
 
-
-
-
-
 function User({ username, color, iconName, onPress, icon, uri }) {
-    const navigation = useNavigation()
-    const { user, setSwitchUserName, setSwitchUser } = useContext(AuthContext)
+    const navigation = useNavigation();
+    const { user, setSwitchUserName, setSwitchUser } = useContext(AuthContext);
     console.log("icon = " + icon);
-    console.log("uri = " + uri)
+    console.log("uri = " + uri);
     return (
         <TouchableOpacity style={styles.container} onPress={onPress}>
-            { icon ? <View style={styles.view}>
-                <View style={styles.iconview} >
-                    <MaterialCommunityIcons style={styles.icon} name={icon} size={50} color={color} />
+            {icon ? (
+                <View style={styles.view}>
+                    <View style={styles.iconview}>
+                        <MaterialCommunityIcons
+                            style={styles.icon}
+                            name={icon}
+                            size={40}
+                            color={color}
+                        />
+                    </View>
+                    <Text style={styles.text}>{username}</Text>
                 </View>
-                <Text style={styles.text}>{username}</Text>
-            </View> :
-                <View style={styles.view}><View style={styles.iconview}><Image style={{
-                    width: 50,
-                    height: 50,
-                    borderRadius: 25,
-
-                }}
-                    source={{ uri: uri }} />
+            ) : (
+                <View style={styles.view}>
+                    <View style={styles.iconview}>
+                        <Image
+                            style={{
+                                width: 40,
+                                height: 40,
+                                borderRadius: 20,
+                            }}
+                            source={{ uri: uri }}
+                        />
+                    </View>
+                    <Text style={styles.text}>{username}</Text>
                 </View>
-                    <Text style={styles.text}>{username}</Text></View>}
+            )}
         </TouchableOpacity>
     );
 }
@@ -50,9 +58,7 @@ const styles = StyleSheet.create({
         width: "100%",
         borderRadius: 20,
         shadowOpacity: 1,
-        backgroundColor: colours.buttonBackground
-
-
+        backgroundColor: colours.buttonBackground,
     },
     text: {
         alignItems: "center",
@@ -65,7 +71,8 @@ const styles = StyleSheet.create({
     },
     view: {
         flexDirection: "row",
-        // alignItems: "center",
+        alignItems: "center",
+        marginLeft: 10,
         // justifyContent: "center",
         // backgroundColor: "yellow",
         width: "100%",

@@ -41,7 +41,7 @@ function AppPicker({
                         <MaterialCommunityIcons
                             name={icon}
                             size={20}
-                            color={defaultStyles.colors.medium}
+                            color={colours.inputIcon}
                             style={styles.icon}
                         />
                     )}
@@ -54,7 +54,7 @@ function AppPicker({
                     <MaterialCommunityIcons
                         name="chevron-down"
                         size={20}
-                        color={defaultStyles.colors.medium}
+                        color={colours.inputIcon}
                     />
                 </View>
             </TouchableWithoutFeedback>
@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         padding: 15,
         marginVertical: 10,
-        alignSelf: "center"
+        alignSelf: "center",
     },
     icon: {
         marginRight: 10,
@@ -109,7 +109,6 @@ const styles = StyleSheet.create({
     text: {
         flex: 1,
         textAlign: "center",
-
     },
     pickerItem: {
         // flexDirection: "row",

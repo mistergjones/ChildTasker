@@ -67,9 +67,9 @@ function ChildDashBoardScreen({ navigation }) {
     return (
         <Screen>
             <ScrollView style={styles.container}>
-                <AppHeading title="Child Dashboard" />
+                <AppHeading title="Reward Dashboard" />
                 {/* GJ: Added the reward heading */}
-                <View style={styles.reward}>
+                {/* <View style={styles.reward}>
                     <View style={styles.rewardContainer}>
                         <Text style={styles.currentScore}>
                             Reward: {rewardName}
@@ -78,7 +78,7 @@ function ChildDashBoardScreen({ navigation }) {
                             Points: {rewardPoints}
                         </Text>
                     </View>
-                </View>
+                </View> */}
                 <ScrollView
                     style={styles.scrollView}
                     horizontal
@@ -173,10 +173,10 @@ function ChildDashBoardScreen({ navigation }) {
                     </View>
                 </View>
 
-                <AppButton
+                {/* <AppButton
                     title="View Progress"
                     onPress={() => navigation.navigate(screens.ChoreProgress)}
-                />
+                /> */}
 
                 <AppButton
                     title="Edit Profile"
@@ -211,9 +211,13 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         backgroundColor: colours.defaultButtonColour,
-        width: "50%",
+        width: "45%",
         borderWidth: 1,
         borderColor: colours.white,
+        borderTopStartRadius: 20,
+        borderTopEndRadius: 20,
+        borderBottomStartRadius: 20,
+        borderBottomEndRadius: 20,
     },
     currentScore: {
         fontSize: 25,
@@ -233,11 +237,14 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         // borderWidth: 1,
         // borderColor: colours.buttonBorder,
+        borderColor: colours.white,
+        borderWidth: 1,
     },
     score: {
         flexDirection: "row",
         alignItems: "center",
-        justifyContent: "space-between",
+
+        justifyContent: "space-evenly",
         padding: 15,
     },
     tasks: {

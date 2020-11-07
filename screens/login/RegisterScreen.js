@@ -142,6 +142,13 @@ function RegisterScreen({ navigation }) {
                         />
 
                         <AppButton title="Register" onPress={handleSubmit} />
+
+                        <AppButton
+                            title="Return"
+                            onPress={() =>
+                                navigation.navigate(screens.ParentDashBoard)
+                            }
+                        />
                     </>
                 )}
             </Formik>

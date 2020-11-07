@@ -15,6 +15,7 @@ import {
 import AppPicker from "../../../components/appPicker";
 //Added component
 import PieChartWithLabels from "../../../components/PieChartWithLabels";
+import UserPicker from "../../../components/userPicker";
 
 function TrackReward({ navigation }) {
     const usersContext = useContext(UsersContext);
@@ -114,7 +115,7 @@ function TrackReward({ navigation }) {
                     reward_Points: "",
                 }}
             >
-                <AppPicker
+                {/* <AppPicker
                     items={kidList}
                     icon="face"
                     numberOfColumns="2"
@@ -123,7 +124,17 @@ function TrackReward({ navigation }) {
                     onSelectItem={handleSelectKid}
                     selectedItem={selectedKid}
                     width="90%"
+                /> */}
+                <UserPicker
+                    style={styles.picker}
+                    items={kidList}
+                    icon="account-child"
+                    placeholder="Select Child"
+                    onSelectItem={handleSelectKid}
+                    selectedItem={selectedKid}
+                    numberOfColumns={1}
                 />
+
                 {selectedKid && (
                     <AppPicker
                         items={rewardList}
