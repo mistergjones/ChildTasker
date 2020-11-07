@@ -117,7 +117,7 @@ const createTablesDatabaseAsync = async () => {
                     "create table if not exists rewards (reward_id integer primary key autoincrement not null, reward_name TEXT not null, reward_points INTEGER,icon_id INTEGER, reward_icon_name TEXT not null, FOREIGN KEY (icon_id) REFERENCES icons (icon_id))"
                 );
                 tx.executeSql(
-                    "create table if not exists users (user_id integer primary key autoincrement not null, user_name TEXT not null, password TEXT not null, is_parent integer)"
+                    `create table if not exists users (user_id integer primary key autoincrement not null, user_name TEXT not null, password TEXT not null, is_parent integer, uri Text Default null, icon Text Default "account" null)`
                 );
                 //table for storing icons for categories; created by Shailesh
                 tx.executeSql(

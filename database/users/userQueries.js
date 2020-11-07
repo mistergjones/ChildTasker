@@ -8,6 +8,7 @@ import { array } from "yup";
 const db = SQLite.openDatabase("db.db");
 
 const getUsers = async (setUserFunc) => {
+    console.log("+++++get users")
     return new Promise(async (resolve, reject) => {
         db.transaction(
             (tx) => {
@@ -15,6 +16,7 @@ const getUsers = async (setUserFunc) => {
                     "select * from users",
                     [],
                     (_, { rows: { _array } }) => {
+                        _array.map(a => console.log("uri for " + a.user_name + " is " + a.uri))
                         console.log("_array" + _array.length);
                         setUserFunc(_array);
                     }
@@ -110,6 +112,31 @@ const updateKid = async (kid) => {
     });
 };
 
+const addUserAvatar = async (userId, uri, icon) => {
+    console.log("user = ", userId + " uri = " + uri + "icon = " + icon);
+    return new Promise(async (resolve, reject) => {
+        db.transaction(
+            (tx) => {
+                tx.executeSql(
+                    "update users set uri = ? , icon = ? where user_id = ?",
+                    [uri, icon, userId]
+
+                );
+            },
+            (t, error) => {
+                console.log("db error set avatar");
+                console.log(error);
+                reject(error);
+            },
+            (_t, _success) => {
+                console.log("Updated user avatar");
+                resolve(_success);
+            }
+        );
+    });
+};
+
+
 const newUser = async (userName) => {
     console.log("username in newUser" + userName)
     return new Promise(async (resolve, reject) => {
@@ -177,4 +204,5 @@ export const databaseUsers = {
     getKids,
     removeKid,
     updateKid,
+    addUserAvatar,
 };

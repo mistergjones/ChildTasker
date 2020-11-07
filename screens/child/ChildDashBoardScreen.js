@@ -51,6 +51,7 @@ function ChildDashBoardScreen({ navigation }) {
     // We will use the username as a placeholder for querying the chores table to retreive that specific's child data
 
     console.log(`Child Dashboard Screen. Child name is: `, user.username);
+    console.log(`Child Dashboard Screen. uri: `, user.uri);
     choresForKid.map((chore) => {
         //console.log("c = ", chore.chores)
     });

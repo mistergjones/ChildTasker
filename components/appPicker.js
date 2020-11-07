@@ -26,7 +26,8 @@ function AppPicker({
     placeholder,
     selectedItem,
     width = "100%",
-    marginLeft = 12,
+    marginLeft = 0,
+    onPickerPress,
 }) {
     // console.log("Placeholder", placeholder);
     // console.log("selectedItem", selectedItem);
@@ -77,6 +78,7 @@ function AppPicker({
                                 onPress={() => {
                                     setModalVisible(false);
                                     onSelectItem(item);
+                                    onPickerPress ? onPickerPress() : "";
                                 }}
                             />
                         )}
@@ -94,6 +96,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         padding: 15,
         marginVertical: 10,
+        alignSelf: "center"
     },
     icon: {
         marginRight: 10,
@@ -105,6 +108,8 @@ const styles = StyleSheet.create({
     },
     text: {
         flex: 1,
+        textAlign: "center",
+
     },
     pickerItem: {
         // flexDirection: "row",
