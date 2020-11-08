@@ -42,8 +42,6 @@ function EditReward({ navigation }) {
     value: selectedRewardDetails ? selectedRewardDetails[0].icon_id : "",
     icon: selectedRewardDetails ? selectedRewardDetails[0].icon : "",
   });
-  console.log({ selectedReward });
-  console.log({ selectedRewardDetails });
 
   let placeHolder;
   let iconData = [];
@@ -57,7 +55,6 @@ function EditReward({ navigation }) {
   });
 
   const handleSelectedIcon = (item) => {
-    console.log("ITEM", item);
     setSelectedIcon(item);
   };
 
@@ -117,7 +114,7 @@ function EditReward({ navigation }) {
             <AppPicker
               items={iconData}
               name="icon"
-              numberOfColumns={3}
+              numberOfColumns={2}
               PickerItemComponent={CategoryPickerItem}
               placeholder={selectedIcon.label}
               width="90%"
@@ -126,7 +123,7 @@ function EditReward({ navigation }) {
               selectedItem={selectedIcon}
               defaultValue={selectedIcon}
             />
-            <AppButton title="Edit Reward" onPress={handleSubmit} />
+            <AppButton title="EDIT REWARD" onPress={handleSubmit} />
           </>
         )}
       </Formik>

@@ -1,5 +1,5 @@
-import React, { useContext } from "react";
-import { View, StyleSheet } from "react-native";
+import React, { useContext, useState } from "react";
+import { View, StyleSheet, Alert } from "react-native";
 import * as Yup from "yup";
 
 import AppButton from "../../../components/appButton";
@@ -17,19 +17,22 @@ import AppMaterialIcon from "../../../components/appMaterialCommunityIcon";
 import screens from "../../../config/screens";
 import { UsersContext } from "../../../context/UsersContext.js";
 import { Formik } from "formik";
+import AppPicker from "../../../components/appPicker";
+import AppTextInput from "../../../components/AppTextInput";
 
 const validationSchema = Yup.object().shape({
   label: Yup.string().required().min(1).label("label"),
   point: Yup.number().required().min(1).max(10000).label("point"),
-  icon: Yup.string().required(),
-  // category: Yup.object().required().nullable().label("Category"),
+  // icon: Yup.string().required(),
 });
 
 function AddReward({ navigation }) {
   const usersContext = useContext(UsersContext);
   const { icons } = usersContext;
   const { addNewReward } = useContext(UsersContext);
-  console.log({ addNewReward });
+  const [label, setLabel] = useState();
+  const [point, setPoint] = useState();
+  const [selectedIcon, setSelectedIcon] = useState();
 
   let categories = [];
   icons.map((i) => {
@@ -40,7 +43,18 @@ function AddReward({ navigation }) {
     tempObj.value = i.icon_id;
     categories.push(tempObj);
   });
-  // console.log(categories);
+
+  const handleNewLabel = async (item) => {
+    console.log("item line 48", item);
+    await setLabel(item);
+  };
+  const handleNewPoint = async (item) => {
+    await setPoint(item);
+  };
+  const handleSelectIcon = async (item) => {
+    await setSelectedIcon(item);
+  };
+
   return (
     <Screen style={styles.container}>
       <AppHeading title="Add Reward Form" />
@@ -48,17 +62,24 @@ function AddReward({ navigation }) {
         initialValues={{
           label: "",
           point: "",
-          icon: "",
+          icon: selectedIcon,
         }}
         onSubmit={async (fields, { setFieldError }) => {
-          // console.log("reached here");
-          console.log("fields" + fields.label + fields.point + fields.icon.icon + fields.icon.label + fields.icon.value);
+          console.log("reached here");
+          console.log(
+            "fields" +
+              fields.label +
+              fields.point +
+              selectedIcon.icon +
+              selectedIcon.label +
+              selectedIcon.value
+          );
           try {
             await addNewReward({
               reward_name: fields.label,
-              reward_points: fields.point,
-              icon_id: fields.icon.value,
-              icon_name: fields.icon.icon
+              reward_points: Number(fields.point),
+              icon_id: Number(selectedIcon.value),
+              icon_name: selectedIcon.icon,
             });
             navigation.navigate("ViewReward");
           } catch (error) {
@@ -69,32 +90,38 @@ function AddReward({ navigation }) {
       >
         {({ handleChange, handleSubmit, errors }) => (
           <>
-            <FormField
+            <AppTextInput
+              placeholder="New Reward Name"
+              labelText="Reward Name"
               icon="pen"
-              maxLength={255}
-              name="label"
-              placeholder="Label"
+              onChangeText={handleChange("label")}
+              error={errors ? errors.label : ""}
             />
-            <FormField
-              keyboardType="numeric"
-              maxLength={8}
-              name="point"
-              placeholder="Point"
-              width={120}
+            <AppTextInput
+              placeholder="Points for the Reward"
+              labelText="Reward Points"
               icon="lock"
+              onChangeText={handleChange("point")}
+              error={errors ? errors.point : ""}
             />
-            <Picker
+            <AppPicker
               items={categories}
               name="icon"
-              numberOfColumns={3}
-              PickerItemComponent={CategoryPickerItem}
-              placeholder="Icon"
-              width="90%"
               icon="lock"
+              placeholder="Select Reward Icon"
+              numberOfColumns="2"
+              PickerItemComponent={CategoryPickerItem}
+              onSelectItem={handleSelectIcon}
+              selectedItem={selectedIcon}
+              width="90%"
             />
-
-            {/* <SubmitButton title="ADD REWARD" /> */}
-            <AppButton title="ADD REWARD" onPress={handleSubmit} />
+            {selectedIcon && (
+              <AppButton
+                isDisabled={selectedIcon ? false : true}
+                title="ADD REWARD"
+                onPress={handleSubmit}
+              />
+            )}
           </>
         )}
       </Formik>
