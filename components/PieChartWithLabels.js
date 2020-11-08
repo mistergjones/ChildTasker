@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View } from "react-native";
+import { View, ScrollView } from "react-native";
 import { Text, ForeignObject, Svg, Rect, Circle, G } from "react-native-svg";
 import { PieChart } from "react-native-svg-charts";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -18,7 +18,7 @@ function PieChartWithLabels({
         <G key={index} style={{ flex: 1, justifyContent: "center" }}>
           <ForeignObject
             style={{ backgroundColor: "red" }}
-            x={pieCentroid[0] + 3}
+            x={pieCentroid[0] - 10}
             y={pieCentroid[1] - 10}
             width={500}
             height={500}
@@ -30,7 +30,7 @@ function PieChartWithLabels({
             />
           </ForeignObject>
 
-          <Text
+          {/* <Text
             x={pieCentroid[0]}
             y={pieCentroid[1]}
             fill={"white"}
@@ -42,13 +42,13 @@ function PieChartWithLabels({
             strokeWidth={0.2}
           >
             {index + 1}
-          </Text>
+          </Text> */}
         </G>
       );
     });
   };
   return (
-    <>
+    <ScrollView style={{ marginTop: 15 }}>
       <View
         style={{
           backgroundColor: "#ffffff",
@@ -89,7 +89,7 @@ function PieChartWithLabels({
         </Svg>
       </View>
       <PieChart
-        style={{ height: "42%", width: "100%", alignSelf: "center" }}
+        style={{ height: "60%", width: "100%", alignSelf: "center" }}
         valueAccessor={({ item }) => item.amount}
         data={data}
         spacing={0}
@@ -101,24 +101,30 @@ function PieChartWithLabels({
         style={{
           justifyContent: "center",
           alignSelf: "center",
-          marginTop: 100,
+          marginTop: 30,
         }}
       >
         {data.map((datum, index) => {
           return (
-            <AppText
-              key={index}
-              style={{
-                color: "white",
-                fontWeight: "bold",
-
-                marginLeft: 25,
-              }}
-            >{`${index + 1} => ${datum.taskName}`}</AppText>
+            <View key={index} style={{ flexDirection: "row" }}>
+              <MaterialCommunityIcons
+                name={datum.icon}
+                size={30}
+                color={iconColor}
+              />
+              <AppText
+                key={index}
+                style={{
+                  color: "white",
+                  fontWeight: "bold",
+                  // marginLeft: 25,
+                }}
+              >{` = ${datum.taskName}`}</AppText>
+            </View>
           );
         })}
       </View>
-    </>
+    </ScrollView>
   );
 }
 export default PieChartWithLabels;

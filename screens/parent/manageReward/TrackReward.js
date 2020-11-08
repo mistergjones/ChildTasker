@@ -102,48 +102,46 @@ function TrackReward({ navigation }) {
   return (
     <Screen>
       <AppHeading title="Track Reward" />
-      <ScrollView style={{ marginTop: 15 }}>
-        <Form
-          initialValues={{
-            category_id: "",
-            category_name: "",
-            task_id: "",
-            task_name: "",
-            task_points: "",
-            kid_id: "",
-            kid_name: "",
-            reward_id: "",
-            reward_name: "",
-            reward_Points: "",
-          }}
-        >
-          <UserPicker
-            style={styles.picker}
-            items={kidList}
-            icon="account-child"
-            placeholder="Select Child"
-            onSelectItem={handleSelectKid}
-            selectedItem={selectedKid}
-            numberOfColumns={1}
-          />
+      <Form
+        initialValues={{
+          category_id: "",
+          category_name: "",
+          task_id: "",
+          task_name: "",
+          task_points: "",
+          kid_id: "",
+          kid_name: "",
+          reward_id: "",
+          reward_name: "",
+          reward_Points: "",
+        }}
+      >
+        <UserPicker
+          style={styles.picker}
+          items={kidList}
+          icon="account-child"
+          placeholder="Select Child"
+          onSelectItem={handleSelectKid}
+          selectedItem={selectedKid}
+          numberOfColumns={1}
+        />
 
-          {selectedKid && (
-            <AppPicker
-              items={rewardList}
-              icon={selectedReward ? selectedReward.icon : "trophy"}
-              placeholder="Select Reward"
-              numberOfColumns="1"
-              PickerItemComponent={CategoryPickerItem}
-              onSelectItem={handleSelectReward}
-              selectedItem={selectedReward}
-              width="90%"
-            />
-          )}
-          {selectedReward && (
-            <PieChartWithLabels data={graphData} key={graphData[0].id} />
-          )}
-        </Form>
-      </ScrollView>
+        {selectedKid && (
+          <AppPicker
+            items={rewardList}
+            icon={selectedReward ? selectedReward.icon : "trophy"}
+            placeholder="Select Reward"
+            numberOfColumns="1"
+            PickerItemComponent={CategoryPickerItem}
+            onSelectItem={handleSelectReward}
+            selectedItem={selectedReward}
+            width="90%"
+          />
+        )}
+        {selectedReward && (
+          <PieChartWithLabels data={graphData} key={graphData[0].id} />
+        )}
+      </Form>
       <AppButton
         title="Return"
         onPress={() => navigation.navigate(screens.ManageRewards)}
