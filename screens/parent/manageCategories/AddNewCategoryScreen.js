@@ -32,6 +32,10 @@ import {
     establishIconListInObjectFormat,
 } from "../../../helpers/createObjectLists";
 
+const categorySchema = Yup.object().shape({
+    category_name: Yup.string().required().label("Category name"),
+});
+
 function AddNewCategoryScreen({ navigation }) {
     // need to utilise usersContext to make use of SQL
     const usersContext = useContext(UsersContext);
@@ -54,10 +58,6 @@ function AddNewCategoryScreen({ navigation }) {
     const { icons } = usersContext;
     //console.log(`Icons are: `, icons);
     // set state to obtain value for the Text Input
-
-    const categorySchema = Yup.object().shape({
-        category_name: Yup.string().required().label("Category name"),
-    });
 
     // need to build the icon list ready for the drop down box
     var iconList = establishIconListInObjectFormat(icons);
@@ -190,8 +190,8 @@ function AddNewCategoryScreen({ navigation }) {
                             icon="account"
                             onChangeText={handleChange("category_name")}
                             // value={textInputValue}
-                            // errorStyle={{ color: "red" }}
-                            // error={errors ? errors.category_name : ""}
+                            errorStyle={{ color: "red" }}
+                            error={errors ? errors.category_name : ""}
                         />
 
                         <AppPicker

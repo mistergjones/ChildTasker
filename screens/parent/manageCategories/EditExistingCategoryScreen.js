@@ -96,6 +96,8 @@ export default function EditExistingCategoryScreen({ navigation }) {
     // Validation Schema
     const categorySchema = Yup.object().shape({
         category_name: Yup.string().required().label("Category name"),
+        category_name: Yup.string().min(1).required().label("Category name"),
+
         // category_colour: Yup.string().required().label("category Colour"),
         // category_icon: Yup.string().required().label("category Icon"),
     });
@@ -125,7 +127,7 @@ export default function EditExistingCategoryScreen({ navigation }) {
                                 "WE are inside the try await edit existing",
                                 fields
                             );
-                            console.log("Finished updating task");
+                            console.log("Finished updating Category");
 
                             navigation.navigate(screens.AddCategory);
                         } catch (error) {
@@ -151,13 +153,17 @@ export default function EditExistingCategoryScreen({ navigation }) {
                                 width="90%"
                             />
 
-                            <AppTextInput
-                                placeholder="Rename Category"
-                                labelText="New Category Name"
-                                // labelText="Category"
-                                icon="account"
-                                onChangeText={handleChange("category_name")}
-                            />
+                            {selectedItem && (
+                                <AppTextInput
+                                    placeholder="Rename Category"
+                                    labelText="New Category Name"
+                                    // labelText="Category"
+                                    icon="account"
+                                    onChangeText={handleChange("category_name")}
+                                    errorStyle={{ color: "red" }}
+                                    error={errors ? errors.category_name : ""}
+                                />
+                            )}
 
                             <AppButton
                                 title="Save Changes"
