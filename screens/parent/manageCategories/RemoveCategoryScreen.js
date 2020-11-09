@@ -51,8 +51,8 @@ export default function RemoveCategoryScreen({ navigation }) {
         var tempObject = {};
         tempObject.label = categories[loopIterator].category_name;
         tempObject.value = categories[loopIterator].category_id;
-        tempObject.backgroundColor = "blue";
-        tempObject.icon = "school";
+        tempObject.backgroundColor = categories[loopIterator].category_colour;
+        tempObject.icon = categories[loopIterator].category_icon;
         categoryList.push(tempObject);
     }
 

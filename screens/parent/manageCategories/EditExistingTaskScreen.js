@@ -65,8 +65,8 @@ export default function EditExistingTaskScreen({ navigation }) {
 
     // Validation Schema
     const taskSchema = Yup.object().shape({
-        task_name: Yup.string().required().label("Task name"),
-        // task_points: Yup.number().required().label("Task Points"),
+        task_name: Yup.string().min(2).required().label("Task name"),
+        task_points: Yup.number().required().label("Task Points"),
         // task_colour: Yup.string().required().label("Task Colour"),
         // task_icon: Yup.string().required().label("Task Icon"),
     });
@@ -141,39 +141,37 @@ export default function EditExistingTaskScreen({ navigation }) {
                                 justifyContent="center"
                                 width="90%"
                             />
-                            <AppTextInput
-                                placeholder="Rename Task here"
-                                labelText="Rename Task:"
-                                // labelText="Task"
-                                icon="account"
-                                onChangeText={handleChange("task_name")}
-                            />
+                            {selectedTask && (
+                                <AppTextInput
+                                    placeholder="Rename Task here"
+                                    labelText="Rename Task:"
+                                    // labelText="Task"
+                                    icon="account"
+                                    onChangeText={handleChange("task_name")}
+                                    errorStyle={{ color: "red" }}
+                                    error={errors ? errors.task_name : ""}
+                                />
+                            )}
 
-                            <AppTextInput
-                                placeholder="Update Points Here"
-                                labelText="Update Points:"
-                                type="number"
-                                // labelText="Task"
-                                icon="account"
-                                onChangeText={handleChange("task_points")}
-                            />
-                            {/* <AppTextInput
-                            placeholder="Update colour Here"
-                            // labelText="Task"
-                            icon="account"
-                            onChangeText={handleChange("task_colour")}
-                        />
-                        <AppTextInput
-                            placeholder="Update Icon Here"
-                            // labelText="Task"
-                            icon="account"
-                            onChangeText={handleChange("task_icon")}
-                        /> */}
+                            {selectedTask && (
+                                <AppTextInput
+                                    placeholder="Update Points Here"
+                                    labelText="Update Points:"
+                                    type="number"
+                                    // labelText="Task"
+                                    icon="account"
+                                    onChangeText={handleChange("task_points")}
+                                    errorStyle={{ color: "red" }}
+                                    error={errors ? errors.task_points : ""}
+                                />
+                            )}
 
-                            <AppButton
-                                title="Save Changes"
-                                onPress={handleSubmit}
-                            />
+                            {selectedTask && (
+                                <AppButton
+                                    title="Save Changes"
+                                    onPress={handleSubmit}
+                                />
+                            )}
 
                             <AppButton
                                 title="Return"

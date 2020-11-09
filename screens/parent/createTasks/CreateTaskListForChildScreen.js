@@ -293,22 +293,23 @@ function CreateTaskListForChildScreen({ navigation }) {
         }
     }, [rewardList]);
 
+    // Given we are now using <userPicker> in this screen and not <appPicker>, the below code is redundtant.
     // this effect will amke sure to add a "blank" reward object so that it renders nicely for 2 columns.
-    useEffect(() => {
-        if (kidList.length % 2 != 0) {
-            console.log("Not even");
+    // useEffect(() => {
+    //     if (kidList.length % 2 != 0) {
+    //         console.log("Not even");
 
-            var tempObject = {
-                backgroundColor: "blue",
-                icon:
-                    "usedToEnsureThatColumnsAreNeatlyAllignedIfThereisAnOddNumber",
-                label: "whatever",
-                points: 9999,
-                value: 9999,
-            };
-            kidList.push(tempObject);
-        }
-    }, [kidList]);
+    //         var tempObject = {
+    //             backgroundColor: "blue",
+    //             icon:
+    //                 "usedToEnsureThatColumnsAreNeatlyAllignedIfThereisAnOddNumber",
+    //             label: "whatever",
+    //             points: 9999,
+    //             value: 9999,
+    //         };
+    //         kidList.push(tempObject);
+    //     }
+    // }, [kidList]);
 
     // this function is submit the required fields to the database. TABLE: kidchores
     const handleSubmitChangesToDatabase = async () => {
@@ -524,7 +525,7 @@ function CreateTaskListForChildScreen({ navigation }) {
                         onPress={handleResetDropDownAndContinue}
                     />
                 )}
-                {saveAllChangesButtonEnabled && (
+                {selectedKid && saveAllChangesButtonEnabled && (
                     <AppButton
                         title="Save All Changes"
                         onPress={handleSubmitChangesToDatabase}

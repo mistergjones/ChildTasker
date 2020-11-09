@@ -74,14 +74,6 @@ export default function AddNewTaskScreen({ navigation }) {
     var categoryList = [];
     categoryList = establishCategoryTasksListInObjectFormat(categories);
 
-    const taskSchema = Yup.object().shape({
-        task_name: Yup.string().required().label("Task name"),
-        task_colour: Yup.string().required().label("Task Colour"),
-        task_icon: Yup.string().required().label("Task Icon"),
-        task_points: Yup.number().required().label("Task Points"),
-        category_id: Yup.number().required().label("Category ID"),
-    });
-
     // this function is to set the status of icon
     const handleSelectIconItem = (item) => {
         setSelectedIconItem(item);
@@ -162,23 +154,23 @@ export default function AddNewTaskScreen({ navigation }) {
         setNewPoints(item);
     };
 
-    const handleAddNewTask = async () => {
-        const infoToAdd = {
-            task_name: newTaskName,
-            task_points: Number(newPoints),
-            task_icon: selectedIconItem.icon,
-            task_colour: selectedColourItem.backgroundColor,
-            category_id: selectedCategoryItem.value,
-        };
-        console.log(infoToAdd);
-        try {
-            await addNewTask(infoToAdd);
-            console.log("WE are inside the try await Add New Tasks");
-            navigation.navigate(screens.AddCategory);
-        } catch (error) {
-            console.log("There as an error inserting a NEW TASK");
-        }
-    };
+    // const handleAddNewTask = async () => {
+    //     const infoToAdd = {
+    //         task_name: newTaskName,
+    //         task_points: Number(newPoints),
+    //         task_icon: selectedIconItem.icon,
+    //         task_colour: selectedColourItem.backgroundColor,
+    //         category_id: selectedCategoryItem.value,
+    //     };
+    //     console.log(infoToAdd);
+    //     try {
+    //         await addNewTask(infoToAdd);
+    //         console.log("WE are inside the try await Add New Tasks");
+    //         navigation.navigate(screens.AddCategory);
+    //     } catch (error) {
+    //         console.log("There as an error inserting a NEW TASK");
+    //     }
+    // };
 
     useEffect(() => {
         if (categoryList.length % 2 === 0) {
@@ -196,97 +188,129 @@ export default function AddNewTaskScreen({ navigation }) {
         }
     });
 
+    const taskSchema = Yup.object().shape({
+        task_name: Yup.string().required().label("Task name"),
+        task_points: Yup.number().required().label("Task Points"),
+    });
+
     return (
         <Screen>
             {/* <SafeAreaView style={styles.container}> */}
             <ScrollView>
                 <AppHeading title="Add New Task" />
 
-                <Form
+                <Formik
                     initialValues={{
                         task_name: "",
                         task_colour: "",
                         task_icon: "",
                         task_points: "",
-                        category_id: null,
+                        // category_id: null,
                     }}
-                    onSubmit={(values) => console.log(values)}
-                >
-                    <AppTextInput
-                        placeholder="Type New Task"
-                        labelText="New task name:"
-                        // name="task-name"
-                        icon="account"
-                        onChangeText={handleNewTaskName}
-                    />
+                    onSubmit={async (fields, { setFieldError }) => {
+                        try {
+                            await addNewTask({
+                                task_name: fields.task_name,
+                                task_points: fields.task_points,
+                                task_colour: selectedColourItem.backgroundColor,
+                                task_icon: selectedIconItem.icon,
+                            });
+                            console.log(
+                                "WE are inside the try await ADD NEW TASK",
+                                fields
+                            );
+                            console.log("Finished INSERTING TASK");
 
-                    <AppTextInput
-                        placeholder="Task Points"
-                        labelText="Task points:"
-                        name="task_points"
-                        type="number"
-                        // labelText="Points"
-                        icon="account"
-                        onChangeText={handleNewPoints}
-                    />
-
-                    <AppPicker
-                        items={iconList}
-                        icon="face"
-                        labelText="Icon Theme:"
-                        numberOfColumns={2}
-                        PickerItemComponent={CategoryPickerItem}
-                        selectedItem={selectedIconItem}
-                        onSelectItem={handleSelectIconItem}
-                        placeholder="Select an Icon"
-                        justifyContent="center"
-                        width="90%"
-                    />
-
-                    {selectedIconItem && (
-                        <AppPicker
-                            items={selectedColor}
-                            icon="face"
-                            labelText="Icon Theme:"
-                            numberOfColumns={2}
-                            PickerItemComponent={CategoryPickerItem}
-                            selectedItem={selectedColourItem}
-                            onSelectItem={handleSelectColourItem}
-                            placeholder="Select a background colour"
-                            justifyContent="center"
-                            width="90%"
-                        />
-                    )}
-
-                    {selectedColourItem && (
-                        <AppPicker
-                            items={categoryList}
-                            icon="face"
-                            labelText="Icon Theme:"
-                            numberOfColumns={2}
-                            PickerItemComponent={CategoryPickerItem}
-                            selectedItem={selectedCategoryItem}
-                            onSelectItem={handleSelectCategoryItem}
-                            placeholder="Assign task to category..."
-                            justifyContent="center"
-                            width="90%"
-                        />
-                    )}
-
-                    {selectedColourItem && (
-                        <AppButton
-                            title="Save Changes"
-                            onPress={handleAddNewTask}
-                        />
-                    )}
-
-                    <AppButton
-                        title="Return"
-                        onPress={() =>
-                            navigation.navigate(screens.ParentDashBoard)
+                            navigation.navigate(screens.AddCategory);
+                        } catch (error) {
+                            console.log("ADD NEW TASK eRROR  = ", error);
                         }
-                    />
-                </Form>
+                    }}
+                    validationSchema={taskSchema}
+                >
+                    {({ handleChange, handleSubmit, errors }) => (
+                        <>
+                            <AppTextInput
+                                placeholder="Type New Task"
+                                labelText="New task name:"
+                                // name="task-name"
+                                icon="account"
+                                onChangeText={handleChange("task_name")}
+                                errorStyle={{ color: "red" }}
+                                error={errors ? errors.task_name : ""}
+                            />
+
+                            <AppTextInput
+                                placeholder="Task Points"
+                                labelText="Task points:"
+                                name="task_points"
+                                type="number"
+                                // labelText="Points"
+                                icon="account"
+                                onChangeText={handleChange("task_points")}
+                                errorStyle={{ color: "red" }}
+                                error={errors ? errors.task_points : ""}
+                            />
+
+                            <AppPicker
+                                items={iconList}
+                                icon="face"
+                                labelText="Icon Theme:"
+                                numberOfColumns={2}
+                                PickerItemComponent={CategoryPickerItem}
+                                selectedItem={selectedIconItem}
+                                onSelectItem={handleSelectIconItem}
+                                placeholder="Select an Icon"
+                                justifyContent="center"
+                                width="90%"
+                            />
+
+                            {selectedIconItem && (
+                                <AppPicker
+                                    items={selectedColor}
+                                    icon="face"
+                                    labelText="Icon Theme:"
+                                    numberOfColumns={2}
+                                    PickerItemComponent={CategoryPickerItem}
+                                    selectedItem={selectedColourItem}
+                                    onSelectItem={handleSelectColourItem}
+                                    placeholder="Select a background colour"
+                                    justifyContent="center"
+                                    width="90%"
+                                />
+                            )}
+
+                            {selectedColourItem && (
+                                <AppPicker
+                                    items={categoryList}
+                                    icon="face"
+                                    labelText="Icon Theme:"
+                                    numberOfColumns={2}
+                                    PickerItemComponent={CategoryPickerItem}
+                                    selectedItem={selectedCategoryItem}
+                                    onSelectItem={handleSelectCategoryItem}
+                                    placeholder="Assign task to category..."
+                                    justifyContent="center"
+                                    width="90%"
+                                />
+                            )}
+
+                            {selectedCategoryItem && (
+                                <AppButton
+                                    title="Save Changes"
+                                    onPress={handleSubmit}
+                                />
+                            )}
+
+                            <AppButton
+                                title="Return"
+                                onPress={() =>
+                                    navigation.navigate(screens.ParentDashBoard)
+                                }
+                            />
+                        </>
+                    )}
+                </Formik>
             </ScrollView>
             {/* </SafeAreaView> */}
         </Screen>
@@ -302,114 +326,3 @@ const styles = StyleSheet.create({
         alignSelf: "center",
     },
 });
-
-// return (
-//         <SafeAreaView style={styles.container}>
-//             <AppHeading title="Add New Task" />
-//             <AppPicker
-//                 items={iconList}
-//                 icon="face"
-//                 numberOfColumns={3}
-//                 PickerItemComponent={CategoryPickerItem}
-//                 placeholder="Select Category"
-//             />
-//             <Formik
-//                 initialValues={{
-//                     task_name: "",
-//                     task_colour: "",
-//                     task_icon: "",
-//                     task_points: "",
-//                     category_id: null,
-//                 }}
-//                 onSubmit={async (fields, { setFieldError }) => {
-//                     try {
-//                         await addNewTask({
-//                             task_name: fields.task_name,
-//                             task_colour: fields.task_colour,
-//                             task_icon: fields.task_icon,
-//                             task_points: fields.task_points,
-//                             category_id: fields.category_id,
-//                         });
-//                         console.log(fields);
-//                         console.log("finisedh");
-
-//                         navigation.navigate(screens.ParentDashBoard);
-//                     } catch (error) {
-//                         console.log("error = ", error);
-//                     }
-//                 }}
-//                 validationSchema={taskSchema}
-//             >
-//                 {({ handleChange, handleSubmit, errors }) => (
-//                     <>
-//                         <AppTextInput
-//                             placeholder="Type New Task"
-//                             labelText="New task name:"
-//                             name="task-name"
-//                             icon="account"
-//                             onChangeText={handleChange("task_name")}
-//                         />
-
-//                         <AppTextInput
-//                             placeholder="Task Colour"
-//                             labelText="Background colour:"
-//                             name="task-colour"
-//                             // labelText="Points"
-//                             icon="account"
-//                             onChangeText={handleChange("task_colour")}
-//                         />
-
-//                         <AppTextInput
-//                             placeholder="Task Icon"
-//                             labelText="Icon name:"
-//                             name="task-icon"
-//                             // labelText="Points"
-//                             icon="account"
-//                             onChangeText={handleChange("task_icon")}
-//                         />
-
-//                         <AppTextInput
-//                             placeholder="Task Points"
-//                             labelText="Task points:"
-//                             name="task_points"
-//                             // labelText="Points"
-//                             icon="account"
-//                             onChangeText={handleChange("task_points")}
-//                         />
-
-//                         <AppTextInput
-//                             placeholder="Add to which Category?"
-//                             labelText="Assign to category:"
-//                             name="category_id"
-//                             // labelText="Points"
-//                             icon="account"
-//                             onChangeText={handleChange("category_id")}
-//                         />
-
-//                         <AppButton
-//                             title="Save Changes"
-//                             onPress={handleSubmit}
-//                         />
-
-//                         <AppButton
-//                             title="Return"
-//                             onPress={() =>
-//                                 navigation.navigate(screens.ParentDashBoard)
-//                             }
-//                         />
-//                     </>
-//                 )}
-//             </Formik>
-//         </SafeAreaView>
-//     );
-// }
-
-// const styles = StyleSheet.create({
-//     container: {},
-//     picker: {
-//         marginBottom: 150,
-//         height: 50,
-//         width: 150,
-//         alignSelf: "center",
-//     },
-// });
