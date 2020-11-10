@@ -20,11 +20,13 @@ function ChoreStatusScreen({ navigation, route }) {
     } = useContext(UsersContext);
     const [choreCompleted, setChoreCompleted] = useState(false);
 
+
+    // chore_id instaed of task_id
     const handleCompleted = async () => {
-        console.log("route params = " + route.params.chores.length);
+
         await updateChoresForKid(
             choresForKid[0].chores[0].kid_name,
-            route.params.task_id
+            route.params.chore_id
         );
         navigation.navigate(screens.ChoreProgress, {
             chores: route.params.chores,
@@ -47,7 +49,7 @@ function ChoreStatusScreen({ navigation, route }) {
                         onSubmit={(values) => console.log(values)}
                     >
                         <View style={styles.switch}>
-                            <Text>Completed</Text>
+                            <Text style={styles.text}>Completed</Text>
                             <Switch
                                 value={choreCompleted}
                                 onChange={() =>
@@ -58,7 +60,7 @@ function ChoreStatusScreen({ navigation, route }) {
                                 }}
                                 thumbColor={"#dfe6ed"}
                             />
-                            <Text>{choreCompleted ? "Yes" : "No"}</Text>
+                            <Text style={styles.text}>{choreCompleted ? "Yes" : "No"}</Text>
                         </View>
 
                         {choreCompleted && (
@@ -89,8 +91,9 @@ const styles = StyleSheet.create({
     bodyContent: {
         justifyContent: "center",
         alignItems: "center",
-        width: "100%",
+        width: "90%",
         height: "50%",
+        alignSelf: "center"
     },
     bodyForm: {
         justifyContent: "center",
@@ -102,13 +105,17 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         width: "100%",
-        justifyContent: "space-between",
+        justifyContent: "space-evenly",
     },
     footer: {
         flex: 0.5,
         justifyContent: "center",
         alignItems: "center",
     },
+    text: {
+        color: colours.white,
+        fontSize: 24
+    }
 });
 
 export default ChoreStatusScreen;

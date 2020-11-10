@@ -8,7 +8,8 @@ import {
   Platform,
   TouchableOpacity,
   Text,
-  Modal
+  Modal,
+  ScrollView
 } from "react-native";
 import AppButton from "../../components/appButton";
 import AppHeading from "../../components/appHeading";
@@ -105,92 +106,94 @@ function EditProfileScreen({ navigation }) {
   };
   return (
     <Screen style={{ height: "100%" }}>
-      <AppHeading title="Edit Profile" />
-      <Text style={{ alignSelf: "center" }}>{nickName}</Text>
-      <TouchableOpacity onPress={() => {
-        setModalVisible(true)
-      }}>
-        <View
-          style={{
-            height: 200,
-            width: 200,
-            alignItems: "center",
-            justifyContent: "center",
-            borderWidth: 1,
-            borderRadius: 100,
-            alignSelf: "center",
-            backgroundColor: colours.buttonBackground
-          }}
-        >
-          {image ? <Image
-            source={{ uri: image }}
+      <ScrollView>
+        <AppHeading title="Edit Profile" />
+        <Text style={{ alignSelf: "center", color: colours.white, fontSize: 24, marginBottom: 30 }}>{nickName}</Text>
+        <TouchableOpacity onPress={() => {
+          setModalVisible(true)
+        }}>
+          <View
             style={{
-              width: 200,
               height: 200,
+              width: 200,
+              alignItems: "center",
+              justifyContent: "center",
+              borderWidth: 1,
               borderRadius: 100,
+              alignSelf: "center",
+              backgroundColor: colours.buttonBackground
             }}
-          /> : <>
-              {selectedItem ? <MaterialCommunityIcons name={selectedItem.icon} size={200} color={"white"} />
-                : <MaterialCommunityIcons name={"account"} size={200} color={"white"} />
-              }
-            </>}
+          >
+            {image ? <Image
+              source={{ uri: image }}
+              style={{
+                width: 200,
+                height: 200,
+                borderRadius: 100,
+              }}
+            /> : <>
+                {selectedItem ? <MaterialCommunityIcons name={selectedItem.icon} size={200} color={"white"} />
+                  : <MaterialCommunityIcons name={"account"} size={200} color={"white"} />
+                }
+              </>}
 
-        </View>
-        <Text style={{ alignSelf: "center" }}>Click to select image or icon</Text>
-      </TouchableOpacity>
+          </View>
+          <Text style={{ alignSelf: "center", color: colours.white, fontSize: 24, marginTop: 30, marginBottom: 30 }}>Click to select image or icon</Text>
+        </TouchableOpacity>
 
-      <AppTextInput
+        {/* <AppTextInput
         placeholder="Nickname"
         icon="human"
         labelText="Nickname"
         onChangeText={(text) => setNickName(text)}
         defaultValue={nickName}
-      />
-      {(image || selectedItem) && <AppButton
-        title="Save"
-        onPress={handleSave}
-      />}
-      <AppButton
-        title="Return"
-        onPress={() => navigation.navigate(screens.ChildDashBoard)}
-      />
+      /> */}
+        {(image || selectedItem) && <AppButton
+          title="Save"
+          onPress={handleSave}
+        />}
+        <AppButton
+          title="Return"
+          onPress={() => navigation.navigate(screens.ChildDashBoard)}
+        />
 
-      <Modal visible={modalVisible} animationType="slide">
-        <Screen>
-          <AppButton
-            title="Close"
-            onPress={() => {
-              setIsIcon(false)
-              setModalVisible(false)
-            }}
-
-          />
-          {
+        <Modal visible={modalVisible} animationType="slide">
+          <Screen>
             <AppButton
-              title="image"
-              onPress={async () => {
-
-                await pickImage()
-
+              title="Close"
+              onPress={() => {
+                setIsIcon(false)
+                setModalVisible(false)
               }}
-            />}
-          {
+
+            />
+            {
+              <AppButton
+                title="select image"
+                onPress={async () => {
+
+                  await pickImage()
+
+                }}
+              />}
+            {
 
 
 
-            <AppPicker
-              items={iconData}
-              icon={selectedItem ? selectedItem.icon : "account"}
-              PickerItemComponent={PickerItem}
-              placeholder="Select Icon"
-              onSelectItem={handleSelectItem}
-              selectedItem={selectedItem}
-              numberOfColumns={2}
-              width={"90%"}
-              onPickerPress={handlePickerPress}
-            />}
-        </Screen>
-      </Modal>
+              <AppPicker
+                items={iconData}
+                icon={selectedItem ? selectedItem.icon : "account"}
+                PickerItemComponent={PickerItem}
+                placeholder="Select Icon"
+                onSelectItem={handleSelectItem}
+                selectedItem={selectedItem}
+                numberOfColumns={2}
+                width={"90%"}
+                onPickerPress={handlePickerPress}
+              />}
+          </Screen>
+        </Modal>
+      </ScrollView>
     </Screen>
 
   );
