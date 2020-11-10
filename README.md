@@ -9,9 +9,9 @@ This project will be developed using Agile.
 ## Team Members
 
 This is a team project and team members are:
-Glen Jones
-Peter Hristakos
-Shailesh Karki
+Glen Jones <insert github link>
+Peter Hristakos <insert github link>
+Shailesh Karki <insert github link>
 
 ## Functional Requirements
 
@@ -34,6 +34,8 @@ Shailesh Karki
 -   React Native
 -   Expo (for both IOS/Android)
 -   SQLite
+-   Yup
+-   Formik
 
 ## Deliverables
 
