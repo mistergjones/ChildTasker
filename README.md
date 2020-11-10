@@ -1,43 +1,90 @@
-# Child Tasker Application
+## Table of contents
 
-This is an application which will help parents assign tasks to their children in an easy-to-use fun manner. It will help develop the child's understanding in being rewarded only when tasks are completed.
+-   [General info](#general-info)
+-   [Download](#download)
+-   [ChildTasker Link](#ChlidTasker-link)
+-   [Key Functions](#key-functions)
+-   [To Do or Future Items](#Future-Items)
+-   [Screenshots](#screenshots)
+-   [In-depth Features of Child Tasker](#in-depth-features-of-Child-Tasker)
+-   [Challenges](#challenges)
+-   [Technologies Used](#technologies-used)
+-   [Approach Taken](#approach-taken)
 
-## Project Developemnt Methodology
+## General info
 
-This project will be developed using Agile.
+This application to demonstrate both client side and Server side technologies to encapsulate the following key ideas:
 
-## Team Members
+-   an application to source a RESTFUL api and store job adverts in a database.
+-   Jobs will focus on IT/Software Devloper roles.
+-   a user to register/login and view jobs.
+-   a user to save jobs that they will apply for
+-   a user to see all saved jobs, track what they have applied for.
 
-This is a team project and team members are:
-Glen Jones <insert github link>
-Peter Hristakos <insert github link>
-Shailesh Karki <insert github link>
+## Download
 
-## Functional Requirements
+Download via:
 
--   Parents to create rewards and assign different tasks for their child's completion.
--   Parents to track their child's progress.
--   Children to be able to log in and update tasks when completed.
--   Parents to login and create child accounts and add other parents.
+-   https://github.com/mistergjones/ChildTasker.git
 
-## Non Functional Requirements
+## Key Functions
 
--   Easy-to-use
--   Effective colour pallete.
--   Privacy
--   Data Security
--   Responsive
--   Performance
+-   A parent can register a child / children in this application, establish rewards and assign tasks to their child for completion.
+-   A child can login on the device and complete their assigned tasks.
+-   Once achieved, the child can them claim the assigned reward.
+-   A Parent can also registger their spouse/partner on the same device and manage their children's login details.
 
-## Technologies used
+## Future-Items
 
--   React Native
--   Expo (for both IOS/Android)
--   SQLite
--   Yup
--   Formik
+The following possible features could be included in other iterations:
 
-## Deliverables
+-
 
--   Working website
--   User Manual
+## Screenshots
+
+![Example screenshot](screenshot1.png)
+![Example screenshot](screenshot2.png)
+![Example screenshot](screenshot3.png)
+
+## In-depth Features of Child Tasker
+
+-   put some thing here
+
+## Challenges
+
+-   put something here
+
+## Approach Taken
+
+Given this was a group delivered, we treated it like an Agile project:
+
+-   Developed an initial Scope document that included an overall scope, a product feature breakdown and indicative database design.
+-   Twice daily stand-up sessions occured to agree on features to be developed next along with supporting each other.
+-   Frequent commits and rebasing of the code occured to ensure all project members had the latest build.
+
+## Technologies Used
+
+Project is created with:
+
+Frontend:
+
+1. React Native
+
+Database:
+
+1. SQLite
+
+3rd Party:
+
+1. Formik
+2. Yup
+3. Expo
+
+Released on:
+
+1. Google Play Store (Android)
+2. Apple Store (IOS)
+
+Version Control:
+
+1. Git
