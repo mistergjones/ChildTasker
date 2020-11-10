@@ -6,6 +6,7 @@ import {
     Modal,
     Button,
     FlatList,
+    Image
 } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
@@ -32,30 +33,43 @@ function UserPicker({
     console.log("selectedItem", selectedItem);
     const [modalVisible, setModalVisible] = useState(false);
 
-    console.log("What is the items?", items);
+    console.log("What is the items?", items.length);
 
     return (
         <>
             <View style={styles.screen}>
                 <TouchableWithoutFeedback onPress={() => setModalVisible(true)}>
                     <View style={[styles.container]}>
-                        {icon && (
+                        {(selectedItem && items[0].icon) ? (
                             <MaterialCommunityIcons
-                                name={icon}
+                                name={items[0].icon}
                                 size={20}
                                 color={colours.inputIcon}
                                 style={styles.icon}
                             />
-                        )}
+                        ) : selectedItem ? <Image
+                            style={{
+                                width: 30,
+                                height: 30,
+                                borderRadius: 15,
+
+                            }}
+                            source={{ uri: items[0].uri }}
+                        /> : <MaterialCommunityIcons
+                                    name={"account"}
+                                    size={20}
+                                    color={colours.inputIcon}
+                                    style={styles.icon}
+                                />}
                         {selectedItem ? (
                             <Text style={styles.text}>
                                 {selectedItem.label}
                             </Text>
                         ) : (
-                            <Text style={styles.placeholder}>
-                                {placeholder}
-                            </Text>
-                        )}
+                                <Text style={styles.placeholder}>
+                                    {placeholder}
+                                </Text>
+                            )}
 
                         <MaterialCommunityIcons
                             name="chevron-down"

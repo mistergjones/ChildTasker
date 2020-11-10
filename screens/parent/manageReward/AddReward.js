@@ -68,11 +68,11 @@ function AddReward({ navigation }) {
           console.log("reached here");
           console.log(
             "fields" +
-              fields.label +
-              fields.point +
-              selectedIcon.icon +
-              selectedIcon.label +
-              selectedIcon.value
+            fields.label +
+            fields.point +
+            selectedIcon.icon +
+            selectedIcon.label +
+            selectedIcon.value
           );
           try {
             await addNewReward({
@@ -93,21 +93,21 @@ function AddReward({ navigation }) {
             <AppTextInput
               placeholder="New Reward Name"
               labelText="Reward Name"
-              icon="pen"
+              icon="trophy"
               onChangeText={handleChange("label")}
               error={errors ? errors.label : ""}
             />
             <AppTextInput
               placeholder="Points for the Reward"
               labelText="Reward Points"
-              icon="lock"
+              icon="numeric-1-circle-outline"
               onChangeText={handleChange("point")}
               error={errors ? errors.point : ""}
             />
             <AppPicker
               items={categories}
               name="icon"
-              icon="lock"
+              icon="star-circle"
               placeholder="Select Reward Icon"
               numberOfColumns="2"
               PickerItemComponent={CategoryPickerItem}

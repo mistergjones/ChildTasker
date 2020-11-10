@@ -234,7 +234,7 @@ export default function AddNewTaskScreen({ navigation }) {
                                 placeholder="Type New Task"
                                 labelText="New task name:"
                                 // name="task-name"
-                                icon="account"
+                                icon="script"
                                 onChangeText={handleChange("task_name")}
                                 errorStyle={{ color: "red" }}
                                 error={errors ? errors.task_name : ""}
@@ -246,7 +246,7 @@ export default function AddNewTaskScreen({ navigation }) {
                                 name="task_points"
                                 type="number"
                                 // labelText="Points"
-                                icon="account"
+                                icon="numeric-1-circle-outline"
                                 onChangeText={handleChange("task_points")}
                                 errorStyle={{ color: "red" }}
                                 error={errors ? errors.task_points : ""}
@@ -254,7 +254,7 @@ export default function AddNewTaskScreen({ navigation }) {
 
                             <AppPicker
                                 items={iconList}
-                                icon="face"
+                                icon="star-circle"
                                 labelText="Icon Theme:"
                                 numberOfColumns={2}
                                 PickerItemComponent={CategoryPickerItem}
@@ -268,7 +268,7 @@ export default function AddNewTaskScreen({ navigation }) {
                             {selectedIconItem && (
                                 <AppPicker
                                     items={selectedColor}
-                                    icon="face"
+                                    icon="star-circle"
                                     labelText="Icon Theme:"
                                     numberOfColumns={2}
                                     PickerItemComponent={CategoryPickerItem}
@@ -283,7 +283,7 @@ export default function AddNewTaskScreen({ navigation }) {
                             {selectedColourItem && (
                                 <AppPicker
                                     items={categoryList}
-                                    icon="face"
+                                    icon="book-open-outline"
                                     labelText="Icon Theme:"
                                     numberOfColumns={2}
                                     PickerItemComponent={CategoryPickerItem}

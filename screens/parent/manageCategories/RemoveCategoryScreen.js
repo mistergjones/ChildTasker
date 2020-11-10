@@ -100,7 +100,7 @@ export default function RemoveCategoryScreen({ navigation }) {
 
                 <AppPicker
                     items={categoryList}
-                    icon="face"
+                    icon="book-open-outline"
                     name="chore"
                     numberOfColumns={2}
                     PickerItemComponent={CategoryPickerItem}

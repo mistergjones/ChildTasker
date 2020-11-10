@@ -80,7 +80,7 @@ function ChildDashBoardScreen({ navigation }) {
                     </View>
                 </View> */}
                 <ScrollView
-                    style={styles.scrollView}
+                    style={[styles.scrollView, { borderWidth: choresForKid.length > 0 ? 1 : 0 }]}
                     horizontal
                     persistentScrollbar
                     alwaysBounce={false}
@@ -184,7 +184,7 @@ function ChildDashBoardScreen({ navigation }) {
                 />
                 <AppButton title="Logout" onPress={() => setUser(null)} />
             </ScrollView>
-        </Screen>
+        </Screen >
     );
 }
 
@@ -238,7 +238,7 @@ const styles = StyleSheet.create({
         // borderWidth: 1,
         // borderColor: colours.buttonBorder,
         borderColor: colours.white,
-        borderWidth: 1,
+        // borderWidth: 1,
     },
     score: {
         flexDirection: "row",

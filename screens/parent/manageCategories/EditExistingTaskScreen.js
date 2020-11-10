@@ -132,7 +132,7 @@ export default function EditExistingTaskScreen({ navigation }) {
                         <>
                             <AppPicker
                                 items={taskList}
-                                icon="face"
+                                icon="script"
                                 numberOfColumns={2}
                                 PickerItemComponent={CategoryPickerItem}
                                 placeholder="Select Task to Edit"
@@ -146,7 +146,7 @@ export default function EditExistingTaskScreen({ navigation }) {
                                     placeholder="Rename Task here"
                                     labelText="Rename Task:"
                                     // labelText="Task"
-                                    icon="account"
+                                    icon="script"
                                     onChangeText={handleChange("task_name")}
                                     errorStyle={{ color: "red" }}
                                     error={errors ? errors.task_name : ""}
@@ -157,9 +157,9 @@ export default function EditExistingTaskScreen({ navigation }) {
                                 <AppTextInput
                                     placeholder="Update Points Here"
                                     labelText="Update Points:"
-                                    type="number"
+                                    type=""
                                     // labelText="Task"
-                                    icon="account"
+                                    icon="numeric-1-circle-outline"
                                     onChangeText={handleChange("task_points")}
                                     errorStyle={{ color: "red" }}
                                     error={errors ? errors.task_points : ""}
