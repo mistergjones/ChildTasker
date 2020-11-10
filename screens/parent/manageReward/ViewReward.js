@@ -99,13 +99,30 @@ function ViewReward({ navigation }) {
             <View>
               <AppButton
                 title="Delete Reward"
-                onPress={() => {
-                  setModalVisible(!modalVisible);
-                  deleteReward(selectedReward);
-                  // console.log("Long pressed deleted", selectedReward);
-                  Alert.alert("Deleted");
-                  navigation.navigate(screens.ViewReward);
-                }}
+                onPress={() =>
+                  Alert.alert(
+                    "Remove Reward",
+                    "Click Ok to remove reward",
+                    [
+                      {
+                        text: "Cancel",
+                        onPress: () => console.log("Cancel Pressed"),
+                        style: "cancel",
+                      },
+                      {
+                        text: "OK",
+                        onPress: async () => {
+                          setModalVisible(!modalVisible);
+                          deleteReward(selectedReward);
+                          // console.log("Long pressed deleted", selectedReward);
+                          // Alert.alert("Deleted");
+                          navigation.navigate(screens.ViewReward);
+                        },
+                      },
+                    ],
+                    { cancelable: false }
+                  )
+                }
               />
               <AppButton
                 title="Edit Reward"
