@@ -22,6 +22,7 @@ function TaskIcon({
     task_id,
     chores,
     completed,
+    chore_id
 }) {
     const navigation = useNavigation();
     console.log("task icon chores length = " + chores.length);
@@ -35,6 +36,7 @@ function TaskIcon({
                         points,
                         task_id,
                         chores,
+                        chore_id
                     });
                 }
             }}

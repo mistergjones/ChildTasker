@@ -26,86 +26,90 @@ function ChildTasksForReward({ navigation, route }) {
     }, []);
     return (
         <Screen>
-            <AppHeading title="Tasks For Reward" />
-            <View style={styles.reward}>
-                <View style={styles.rewardContainer}>
-                    <Text style={styles.currentScore}>
-                        Reward: {rewardName}
-                    </Text>
-                    <Text style={styles.currentScoreValue}>
-                        Points: {chores[0].reward_points}
-                    </Text>
-                </View>
-            </View>
-            <ScrollView
-                style={styles.scrollView}
-                horizontal
-                persistentScrollbar
-                alwaysBounce={false}
-            >
-                <View>
-                    <View style={styles.tasks}>
-                        {chores.map((chore, index) => {
-                            if (index % 2 === 0) {
-                                return (
-                                    <TaskIcon
-                                        style={styles.task}
-                                        key={index}
-                                        title={chore.task_name}
-                                        icon={chore.icon_name}
-                                        points={chore.task_points}
-                                        color={
-                                            chore.is_completed === 1
-                                                ? "green"
-                                                : "red"
-                                        }
-                                        task_id={chore.task_id}
-                                        chores={chores}
-                                        completed={chore.is_completed}
-                                    />
-                                );
-                            }
-                        })}
-                    </View>
-                    <View style={styles.tasks}>
-                        {chores.map((chore, index) => {
-                            if (index % 2 !== 0) {
-                                return (
-                                    <TaskIcon
-                                        style={styles.task}
-                                        key={index}
-                                        title={chore.task_name}
-                                        icon={chore.icon_name}
-                                        points={chore.task_points}
-                                        color={
-                                            chore.is_completed === 1
-                                                ? "green"
-                                                : "red"
-                                        }
-                                        task_id={chore.task_id}
-                                        chores={chores}
-                                        completed={chore.is_completed}
-                                    />
-                                );
-                            }
-                        })}
+            <ScrollView>
+                <AppHeading title="Tasks For Reward" />
+                <View style={styles.reward}>
+                    <View style={styles.rewardContainer}>
+                        <Text style={styles.currentScore}>
+                            Reward: {rewardName}
+                        </Text>
+                        <Text style={styles.currentScoreValue}>
+                            Points: {chores[0].reward_points}
+                        </Text>
                     </View>
                 </View>
+                <ScrollView
+                    style={styles.scrollView}
+                    horizontal
+                    persistentScrollbar
+                    alwaysBounce={false}
+                >
+                    <View>
+                        <View style={styles.tasks}>
+                            {chores.map((chore, index) => {
+                                if (index % 2 === 0) {
+                                    return (
+                                        <TaskIcon
+                                            style={styles.task}
+                                            key={index}
+                                            title={chore.task_name}
+                                            icon={chore.icon_name}
+                                            points={chore.task_points}
+                                            color={
+                                                chore.is_completed === 1
+                                                    ? "green"
+                                                    : "red"
+                                            }
+                                            task_id={chore.task_id}
+                                            chore_id={chore.chore_id}
+                                            chores={chores}
+                                            completed={chore.is_completed}
+                                        />
+                                    );
+                                }
+                            })}
+                        </View>
+                        <View style={styles.tasks}>
+                            {chores.map((chore, index) => {
+                                if (index % 2 !== 0) {
+                                    return (
+                                        <TaskIcon
+                                            style={styles.task}
+                                            key={index}
+                                            title={chore.task_name}
+                                            icon={chore.icon_name}
+                                            points={chore.task_points}
+                                            color={
+                                                chore.is_completed === 1
+                                                    ? "green"
+                                                    : "red"
+                                            }
+                                            task_id={chore.task_id}
+                                            chore_id={chore.chore_id}
+                                            chores={chores}
+                                            completed={chore.is_completed}
+                                        />
+                                    );
+                                }
+                            })}
+                        </View>
+                    </View>
+                </ScrollView>
+                <View style={styles.score}>
+                    <View style={styles.currentScoreContainer}>
+                        <Text style={styles.currentScore}>Score</Text>
+                        <Text style={styles.currentScoreValue}>{score}</Text>
+                    </View>
+                    <View style={styles.currentScoreContainer}>
+                        <Text style={styles.currentScore}>Remaining</Text>
+                        <Text style={styles.currentScoreValue}>{available}</Text>
+                    </View>
+                </View>
+                <AppButton
+                    title="Return"
+                    onPress={() => navigation.navigate(screens.ChildDashBoard)}
+                />
             </ScrollView>
-            <View style={styles.score}>
-                <View style={styles.currentScoreContainer}>
-                    <Text style={styles.currentScore}>Score</Text>
-                    <Text style={styles.currentScoreValue}>{score}</Text>
-                </View>
-                <View style={styles.currentScoreContainer}>
-                    <Text style={styles.currentScore}>Remaining</Text>
-                    <Text style={styles.currentScoreValue}>{available}</Text>
-                </View>
-            </View>
-            <AppButton
-                title="Return"
-                onPress={() => navigation.navigate(screens.ChildDashBoard)}
-            />
         </Screen>
     );
 }

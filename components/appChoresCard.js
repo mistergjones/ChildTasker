@@ -17,8 +17,8 @@ function appChoresCard({ title, icon, subTitle }) {
       <View style={styles.imageContainer}>
         <AppMaterialCommunityIcon
           iconName={icon}
-          iconSize={42}
-          iconColor={colours.defaultButtonColour}
+          iconSize={100}
+          iconColor={colours.white}
         />
       </View>
       <View style={styles.detailsContainer}>
@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
   card: {
     borderRadius: 5,
     // backgroundColor: colors.white,
-    backgroundColor: "#dfe6ed",
+    backgroundColor: colours.defaultButtonColour,
     marginTop: 20,
     marginBottom: 20,
     overflow: "hidden",
@@ -42,6 +42,8 @@ const styles = StyleSheet.create({
     height: "100%",
     alignItems: "center",
     justifyContent: "center",
+    borderRadius: 20,
+
   },
   detailsContainer: {
     flex: 1,
@@ -53,8 +55,9 @@ const styles = StyleSheet.create({
     // height: 125,
   },
   subTitle: {
-    color: colors.black,
+    color: colors.white,
     fontWeight: "bold",
+    fontSize: 24
   },
   imageContainer: {
     marginLeft: 75,
@@ -62,6 +65,8 @@ const styles = StyleSheet.create({
   },
   title: {
     fontWeight: "bold",
+    color: colours.white,
+    fontSize: 24
   },
 });
 

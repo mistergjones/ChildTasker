@@ -112,11 +112,11 @@ function ChoreProgressScreen({ navigation, route }) {
 
       <View style={styles.score}>
         <View style={styles.currentScoreContainer}>
-          <Text style={styles.currentScore}>Tasks Complete</Text>
+          <Text style={styles.currentScore}>Completed</Text>
           <Text style={styles.currentScoreValue}>{tasksComplete}</Text>
         </View>
         <View style={styles.currentScoreContainer}>
-          <Text style={styles.currentScore}>Tasks Left</Text>
+          <Text style={styles.currentScore}>Remaining</Text>
           <Text style={styles.currentScoreValue}>{tasksNotComplete}</Text>
         </View>
       </View>
@@ -157,13 +157,14 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: colours.defaultButtonColour,
-    width: "50%",
+    width: "45%",
     borderWidth: 1,
     borderColor: colours.white,
     borderTopStartRadius: 20,
     borderTopEndRadius: 20,
     borderBottomStartRadius: 20,
     borderBottomEndRadius: 20,
+    padding: 10
   },
   currentScore: {
     fontSize: 25,
@@ -176,7 +177,8 @@ const styles = StyleSheet.create({
   score: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between",
+
+    justifyContent: "space-evenly",
     padding: 15,
   },
   tasks: {

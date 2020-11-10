@@ -35,16 +35,18 @@ const getChores = (setUserFunc) => {
     });
 };
 
+// change task_id to chore_id
+
 // GET CHORES VY CHILD NAME: the below just simply retrieves all chores for a specific child
-const updateChoresByKidName = (kid_name, task_id) => {
-    console.log("kid_name = " + kid_name + " task_id = " + task_id);
+const updateChoresByKidName = (kid_name, chore_id) => {
+    console.log("kid_name = " + kid_name + " task_id = " + chore_id);
     return new Promise(async (resolve, reject) => {
         let array = [];
         db.transaction(
             (tx) => {
                 tx.executeSql(
-                    "update kidchores set is_completed = 1 where kid_name = ? and task_id = ?",
-                    [kid_name, task_id]
+                    "update kidchores set is_completed = 1 where kid_name = ? and chore_id = ?",
+                    [kid_name, chore_id]
                 );
             },
             (t, error) => {
@@ -183,6 +185,7 @@ const insertChoresToKid = (kidChores, successFunc) => {
                         kidChores.is_completed,
                         kidChores.icon_name,
                         kidChores.reward_icon_name,
+
                     ]
                 );
             },

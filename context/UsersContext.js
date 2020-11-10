@@ -51,7 +51,7 @@ export const UsersContextProvider = (props) => {
 
     //Icon
     const [icons, setIcons] = useState();
-    const loadDataFromDB = async () => {};
+    const loadDataFromDB = async () => { };
     // We have a useEffect call to instantiate the users list from the database. We only call this function on the first render
     useEffect(() => {
         console.log("***** User Context ****");
@@ -177,10 +177,10 @@ export const UsersContextProvider = (props) => {
         );
     };
 
-    const updateChoresForKid = async (kid_name, task_id) => {
+    const updateChoresForKid = async (kid_name, chore_id) => {
         await databaseAssignChoresToKid.updateChoresByKidName(
             kid_name,
-            task_id
+            chore_id
         );
         await getChoresForKid(kid_name);
         return;

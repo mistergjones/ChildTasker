@@ -440,7 +440,7 @@ function CreateTaskListForChildScreen({ navigation }) {
                     reward_name: "",
                     reward_Points: "",
                 }}
-                // onSubmit={(values) => console.log(values)}
+            // onSubmit={(values) => console.log(values)}
             >
                 {/* <AppPicker
                     items={kidList}
@@ -553,7 +553,7 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         backgroundColor: colours.defaultButtonColour,
-        width: "50%",
+        width: "45%",
         borderWidth: 1,
         borderColor: colours.white,
         borderTopStartRadius: 20,
