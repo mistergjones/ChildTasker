@@ -100,7 +100,7 @@ export default function RemoveTaskScreen({ navigation }) {
 
                 <AppPicker
                     items={taskList}
-                    icon="face"
+                    icon="script"
                     name="chore"
                     numberOfColumns={2}
                     PickerItemComponent={CategoryPickerItem}

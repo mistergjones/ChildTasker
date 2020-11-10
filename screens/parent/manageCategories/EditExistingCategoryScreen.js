@@ -143,7 +143,7 @@ export default function EditExistingCategoryScreen({ navigation }) {
                         <>
                             <AppPicker
                                 items={categoryList}
-                                icon="face"
+                                icon="book-open-outline"
                                 numberOfColumns={2}
                                 PickerItemComponent={CategoryPickerItem}
                                 placeholder="Select Category"
@@ -158,7 +158,7 @@ export default function EditExistingCategoryScreen({ navigation }) {
                                     placeholder="Rename Category"
                                     labelText="New Category Name"
                                     // labelText="Category"
-                                    icon="account"
+                                    icon="book-open-outline"
                                     onChangeText={handleChange("category_name")}
                                     errorStyle={{ color: "red" }}
                                     error={errors ? errors.category_name : ""}

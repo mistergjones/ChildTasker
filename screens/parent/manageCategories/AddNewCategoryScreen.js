@@ -152,7 +152,7 @@ function AddNewCategoryScreen({ navigation }) {
 
                     console.log(
                         "We are adding the following Category_name: " +
-                            fields.category_name
+                        fields.category_name
                     );
                     console.log(
                         "We are adding teh following icon: :",
@@ -187,7 +187,7 @@ function AddNewCategoryScreen({ navigation }) {
                             type="text"
                             name="category"
                             // labelText="Category"
-                            icon="account"
+                            icon="book-open-outline"
                             onChangeText={handleChange("category_name")}
                             // value={textInputValue}
                             errorStyle={{ color: "red" }}
@@ -196,7 +196,7 @@ function AddNewCategoryScreen({ navigation }) {
 
                         <AppPicker
                             items={iconList}
-                            icon="face"
+                            icon="star-circle"
                             numberOfColumns={2}
                             PickerItemComponent={CategoryPickerItem}
                             labelText="Select Category Icon"
@@ -209,7 +209,7 @@ function AddNewCategoryScreen({ navigation }) {
                         {selectedIcon && (
                             <AppPicker
                                 items={selectedColor}
-                                icon="face"
+                                icon="star-circle"
                                 numberOfColumns={2}
                                 PickerItemComponent={CategoryPickerItem}
                                 labelText="Select Icon Background Colour"

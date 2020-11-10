@@ -95,7 +95,7 @@ function EditReward({ navigation }) {
           <>
             <AppTextInput
               labelText="Reward Name"
-              icon="pen"
+              icon="trophy"
               onChangeText={handleChange("label")}
               errorStyle={{ color: "white" }}
               error={errors ? errors.label : ""}
@@ -104,7 +104,7 @@ function EditReward({ navigation }) {
 
             <AppTextInput
               labelText="Reward Points"
-              icon="lock"
+              icon="numeric-1-circle-outline"
               onChangeText={handleChange("point")}
               errorStyle={{ color: "white" }}
               error={errors ? errors.point : ""}

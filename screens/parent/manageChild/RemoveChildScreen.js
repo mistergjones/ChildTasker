@@ -31,7 +31,7 @@ function RemoveChildScreen({ navigation }) {
         return {
             label: kid.user_name,
             value: kid.user_id,
-            icon: "human-child",
+            icon: kid.icon, uri: kid.uri
         };
     });
 
