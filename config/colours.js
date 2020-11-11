@@ -20,4 +20,6 @@ export default {
   inputIcon: "tomato",
   text: "white",
   dropdownLabel: "tomato",
+  pieChartCompletedColor: "green",
+  pieChartInCompletedColor: "#A42CD6",
 };

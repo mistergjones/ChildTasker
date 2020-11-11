@@ -98,7 +98,7 @@ function EditReward({ navigation }) {
               icon="trophy"
               onChangeText={handleChange("label")}
               errorStyle={{ color: "white" }}
-              error={errors ? errors.label : ""}
+              error={errors ? "reward name is required field" : ""}
               defaultValue={rewardName}
             />
 
@@ -109,6 +109,7 @@ function EditReward({ navigation }) {
               errorStyle={{ color: "white" }}
               error={errors ? errors.point : ""}
               defaultValue={point.toString()}
+              keyboardType="number-pad"
             />
 
             <AppPicker
@@ -123,7 +124,7 @@ function EditReward({ navigation }) {
               selectedItem={selectedIcon}
               defaultValue={selectedIcon}
             />
-            <AppButton title="EDIT REWARD" onPress={handleSubmit} />
+            <AppButton title="SAVE" onPress={handleSubmit} />
           </>
         )}
       </Formik>

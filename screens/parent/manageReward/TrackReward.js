@@ -54,7 +54,7 @@ function TrackReward({ navigation }) {
   };
 
   const getRewardsHaveBeenAssignedToKid = (kidName, rewardsForKid) => {
-    console.log("rewardsForKid = ", Object.keys(rewardsForKid[0]));
+    // console.log("rewardsForKid = ", Object.keys(rewardsForKid[0]));
 
     let filteredRewards = [];
     let filteredChores = [];

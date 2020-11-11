@@ -68,11 +68,11 @@ function AddReward({ navigation }) {
           console.log("reached here");
           console.log(
             "fields" +
-            fields.label +
-            fields.point +
-            selectedIcon.icon +
-            selectedIcon.label +
-            selectedIcon.value
+              fields.label +
+              fields.point +
+              selectedIcon.icon +
+              selectedIcon.label +
+              selectedIcon.value
           );
           try {
             await addNewReward({
@@ -91,15 +91,16 @@ function AddReward({ navigation }) {
         {({ handleChange, handleSubmit, errors }) => (
           <>
             <AppTextInput
-              placeholder="New Reward Name"
+              placeholder="Type Reward Name"
               labelText="Reward Name"
               icon="trophy"
               onChangeText={handleChange("label")}
-              error={errors ? errors.label : ""}
+              error={errors ? "reward name is required field" : ""}
             />
             <AppTextInput
-              placeholder="Points for the Reward"
+              placeholder="Type Reward Points"
               labelText="Reward Points"
+              keyboardType="number-pad"
               icon="numeric-1-circle-outline"
               onChangeText={handleChange("point")}
               error={errors ? errors.point : ""}
@@ -118,7 +119,7 @@ function AddReward({ navigation }) {
             {selectedIcon && (
               <AppButton
                 isDisabled={selectedIcon ? false : true}
-                title="ADD REWARD"
+                title="SAVE"
                 onPress={handleSubmit}
               />
             )}

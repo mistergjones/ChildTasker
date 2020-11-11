@@ -21,7 +21,7 @@ import { database } from "../../../components/database";
 import AppLabel from "../../../components/appLabel";
 import { UsersContext } from "../../../context/UsersContext";
 import ParentDashBoardScreen from "../../ParentDashBoardScreen";
-import Screen from "../../../components/appScreen"
+import Screen from "../../../components/appScreen";
 import colours from "../../../config/colours";
 import { set } from "react-native-reanimated";
 
@@ -34,7 +34,7 @@ function AddNewChildScreen({ navigation }) {
   );
 
   const [newPin, setNewPin] = useState(null);
-  const [childName, setChildName] = useState(null)
+  const [childName, setChildName] = useState(null);
 
   return (
     <Screen>
@@ -73,20 +73,20 @@ function AddNewChildScreen({ navigation }) {
               labelText="Child name"
               icon="account"
               onChangeText={handleChange("childname")}
-
               errorStyle={{ color: colours.inputErrorMessage }}
               error={errors ? errors.childname : ""}
             />
             {newPin && <AppLabel labelText={newPin} />}
-            {<AppButton
-              title="Generate New Pin"
-              onPress={() => {
-                const pin = Math.floor(Math.random() * 8999) + 1000;
-                setNewPin(String(pin));
-              }}
-            />
+            {
+              <AppButton
+                title="Generate New Pin"
+                onPress={() => {
+                  const pin = Math.floor(Math.random() * 8999) + 1000;
+                  setNewPin(String(pin));
+                }}
+              />
             }
-            {newPin && <AppButton title="Add" onPress={handleSubmit} />}
+            {newPin && <AppButton title="SAVE" onPress={handleSubmit} />}
 
             <AppButton
               title="Return"

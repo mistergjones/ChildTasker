@@ -98,7 +98,7 @@ function ViewReward({ navigation }) {
             />
             <View>
               <AppButton
-                title="Delete Reward"
+                title="REMOVE"
                 onPress={() =>
                   Alert.alert(
                     "Remove Reward",

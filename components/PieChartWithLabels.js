@@ -4,12 +4,13 @@ import { Text, ForeignObject, Svg, Rect, Circle, G } from "react-native-svg";
 import { PieChart } from "react-native-svg-charts";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import AppText from "./appText";
+import Color from "../config/colours";
 
 function PieChartWithLabels({
   data,
-  completedColor = "#A42CD6",
-  incompleteColor = "#859C27",
-  iconColor = "white",
+  completedColor = Color.pieChartCompletedColor,
+  incompleteColor = Color.pieChartInCompletedColor,
+  iconColor = Color.inputPlaceholder,
 }) {
   const Labels = ({ slices, height, width }) => {
     return slices.map((slice, index) => {
