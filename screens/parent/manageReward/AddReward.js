@@ -22,7 +22,10 @@ import AppTextInput from "../../../components/AppTextInput";
 
 const validationSchema = Yup.object().shape({
   label: Yup.string().required().min(1).label("Reward Name"),
-  point: Yup.number().required().label("Reward Points").typeError("Reward Points must be a number"),
+  point: Yup.number()
+    .required()
+    .label("Reward Points")
+    .typeError("Reward Points must be a number"),
   // icon: Yup.string().required(),
 });
 
@@ -95,7 +98,7 @@ function AddReward({ navigation }) {
               labelText="Reward Name"
               icon="trophy"
               onChangeText={handleChange("label")}
-              error={errors ? "reward name is required field" : ""}
+              error={errors ? errors.label : ""}
             />
             <AppTextInput
               placeholder="Type Reward Points"
