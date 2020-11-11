@@ -34,33 +34,33 @@ function UserPicker({
     const [modalVisible, setModalVisible] = useState(false);
 
     console.log("What is the items?", items.length);
-
+    console.log("selected item", selectedItem)
     return (
         <>
             <View style={styles.screen}>
                 <TouchableWithoutFeedback onPress={() => setModalVisible(true)}>
                     <View style={[styles.container]}>
-                        {(selectedItem && items[0].icon) ? (
+                        {(selectedItem) ? selectedItem.icon ? (
                             <MaterialCommunityIcons
-                                name={items[0].icon}
+                                name={selectedItem.icon}
                                 size={20}
                                 color={colours.inputIcon}
                                 style={styles.icon}
                             />
-                        ) : selectedItem ? <Image
-                            style={{
-                                width: 30,
-                                height: 30,
-                                borderRadius: 15,
+                        ) : <Image
+                                style={{
+                                    width: 30,
+                                    height: 30,
+                                    borderRadius: 15,
 
-                            }}
-                            source={{ uri: items[0].uri }}
-                        /> : <MaterialCommunityIcons
-                                    name={"account"}
-                                    size={20}
-                                    color={colours.inputIcon}
-                                    style={styles.icon}
-                                />}
+                                }}
+                                source={{ uri: selectedItem.uri }}
+                            /> : <MaterialCommunityIcons
+                                name={"account"}
+                                size={20}
+                                color={colours.inputIcon}
+                                style={styles.icon}
+                            />}
                         {selectedItem ? (
                             <Text style={styles.text}>
                                 {selectedItem.label}

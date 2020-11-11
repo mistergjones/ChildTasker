@@ -21,8 +21,8 @@ import AppPicker from "../../../components/appPicker";
 import AppTextInput from "../../../components/AppTextInput";
 
 const validationSchema = Yup.object().shape({
-  label: Yup.string().required().min(1).label("label"),
-  point: Yup.number().required().min(1).max(10000).label("point"),
+  label: Yup.string().required().min(1).label("Reward Name"),
+  point: Yup.number().required().label("Reward Points").typeError("Reward Points must be a number"),
   // icon: Yup.string().required(),
 });
 

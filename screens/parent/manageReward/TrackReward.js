@@ -131,7 +131,7 @@ function TrackReward({ navigation }) {
             items={rewardList}
             icon={selectedReward ? selectedReward.icon : "trophy"}
             placeholder="Select Reward"
-            numberOfColumns="1"
+            numberOfColumns={1}
             PickerItemComponent={CategoryPickerItem}
             onSelectItem={handleSelectReward}
             selectedItem={selectedReward}
