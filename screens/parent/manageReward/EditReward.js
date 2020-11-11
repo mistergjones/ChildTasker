@@ -19,7 +19,10 @@ import AppPicker from "../../../components/appPicker";
 
 const validationSchema = Yup.object().shape({
   label: Yup.string().required().min(1).label("Reward Name"),
-  point: Yup.number().required().label("Reward Points").typeError("Reward Points must be a number"),
+  point: Yup.number()
+    .required()
+    .label("Reward Points")
+    .typeError("Reward Points must be a number"),
   icon: Yup.string().required(),
 });
 
@@ -98,7 +101,7 @@ function EditReward({ navigation }) {
               icon="trophy"
               onChangeText={handleChange("label")}
               errorStyle={{ color: "white" }}
-              error={errors ? "reward name is required field" : ""}
+              error={errors ? errors.label : ""}
               defaultValue={rewardName}
             />
 
