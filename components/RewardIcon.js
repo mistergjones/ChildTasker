@@ -38,11 +38,15 @@ function RewardIcon({
         >
             <View style={styles.container}>
                 <Text style={styles.text}>{title}</Text>
-                <AppMaterialIcon
-                    iconName={icon}
-                    iconSize={60}
-                    iconColor={color}
-                />
+                <View style={{ backgroundColor: colours.white, borderRadius: 30 }}>
+
+                    <AppMaterialIcon
+
+                        iconName={icon}
+                        iconSize={60}
+                        iconColor={color}
+                    />
+                </View>
                 <Text style={styles.text}>{points}</Text>
             </View>
         </TouchableOpacity>
@@ -59,6 +63,7 @@ const styles = StyleSheet.create({
         padding: 10,
         // borderWidth: 1,
         // borderColor: "black"
+
     },
     text: {
         marginTop: 20,

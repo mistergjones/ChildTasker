@@ -176,6 +176,7 @@ export const UsersContextProvider = (props) => {
             setChoresTotalPoints
         );
     };
+    // changed task_id to chore_id
 
     const updateChoresForKid = async (kid_name, chore_id) => {
         await databaseAssignChoresToKid.updateChoresByKidName(

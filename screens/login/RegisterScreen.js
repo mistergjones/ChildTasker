@@ -75,6 +75,8 @@ function RegisterScreen({ navigation }) {
                                 "confirmPassword",
                                 "passwords do not match"
                             );
+
+                            return;
                         }
 
                         // Check if username already exists
