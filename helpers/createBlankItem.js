@@ -8,10 +8,10 @@ export const renderOddColumnsNicely = (itemList) => {
         label: "",
         value: 999,
     };
-    // console.log(tempObject);
+    // // console.log(tempObject);
     itemList.push(tempObject);
-    // console.log(`################# RENDER ODD COLUMSN NICELY`);
-    // console.log(itemList);
+    // // console.log(`################# RENDER ODD COLUMSN NICELY`);
+    // // console.log(itemList);
 
     return itemList;
 };

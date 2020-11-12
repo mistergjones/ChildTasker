@@ -11,11 +11,11 @@ function ChildTasksForReward({ navigation, route }) {
     const { chores, rewardName, reward_id } = route.params;
     const [score, setScore] = useState(0);
     const [available, setAvailable] = useState(0);
-    console.log("chores length" + chores.length);
+    // console.log("chores length" + chores.length);
     useEffect(() => {
         let score = 0;
         let available = 0;
-        console.log(`The reward id is:`, reward_id);
+        // console.log(`The reward id is:`, reward_id);
         chores.map((chore) => {
             chore.is_completed === 1
                 ? (score += chore.task_points)
@@ -102,7 +102,9 @@ function ChildTasksForReward({ navigation, route }) {
                     </View>
                     <View style={styles.currentScoreContainer}>
                         <Text style={styles.currentScore}>Remaining</Text>
-                        <Text style={styles.currentScoreValue}>{available}</Text>
+                        <Text style={styles.currentScoreValue}>
+                            {available}
+                        </Text>
                     </View>
                 </View>
                 <AppButton

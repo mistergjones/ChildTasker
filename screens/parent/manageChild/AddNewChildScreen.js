@@ -26,77 +26,84 @@ import colours from "../../../config/colours";
 import { set } from "react-native-reanimated";
 
 const loginSchema = Yup.object().shape({
-  childname: Yup.string().required().label("Child name"),
+    childname: Yup.string().required().label("Child name"),
 });
 function AddNewChildScreen({ navigation }) {
-  const { addNewUser, users, setUsers, checkIfNewUser } = useContext(
-    UsersContext
-  );
+    const { addNewUser, users, setUsers, checkIfNewUser } = useContext(
+        UsersContext
+    );
 
-  const [newPin, setNewPin] = useState(null);
-  const [childName, setChildName] = useState(null);
+    const [newPin, setNewPin] = useState(null);
+    const [childName, setChildName] = useState(null);
 
-  return (
-    <Screen>
-      <AppHeading title="Add Child" />
-      <Formik
-        initialValues={{ childname: "" }}
-        onSubmit={async (fields, { setFieldError }) => {
-          // Check if username already exists
-          console.log(1);
-          const isNewUser = await checkIfNewUser(fields.childname);
+    return (
+        <Screen>
+            <AppHeading title="Add Child" />
+            <Formik
+                initialValues={{ childname: "" }}
+                onSubmit={async (fields, { setFieldError }) => {
+                    // Check if username already exists
+                    // console.log(1);
+                    const isNewUser = await checkIfNewUser(fields.childname);
 
-          // add user to db
-          console.log("new user", isNewUser);
-          if (isNewUser) {
-            try {
-              await addNewUser({
-                username: fields.childname,
-                isParent: false,
-                password: newPin,
-              });
+                    // add user to db
+                    // console.log("new user", isNewUser);
+                    if (isNewUser) {
+                        try {
+                            await addNewUser({
+                                username: fields.childname,
+                                isParent: false,
+                                password: newPin,
+                            });
 
-              navigation.navigate(screens.ParentChildDashBoard);
-            } catch (error) {
-              console.log("error = ", error);
-            }
-          } else {
-            setFieldError("childname", "username already exists");
-          }
-        }}
-        validationSchema={loginSchema}
-      >
-        {({ handleChange, handleSubmit, errors }) => (
-          <>
-            <AppTextInput
-              placeholder="Child name"
-              labelText="Child name"
-              icon="account"
-              onChangeText={handleChange("childname")}
-              errorStyle={{ color: colours.inputErrorMessage }}
-              error={errors ? errors.childname : ""}
-            />
-            {newPin && <AppLabel labelText={newPin} />}
-            {
-              <AppButton
-                title="Generate New Pin"
-                onPress={() => {
-                  const pin = Math.floor(Math.random() * 8999) + 1000;
-                  setNewPin(String(pin));
+                            navigation.navigate(screens.ParentChildDashBoard);
+                        } catch (error) {
+                            // console.log("error = ", error);
+                        }
+                    } else {
+                        setFieldError("childname", "username already exists");
+                    }
                 }}
-              />
-            }
-            {newPin && <AppButton title="SAVE" onPress={handleSubmit} />}
+                validationSchema={loginSchema}
+            >
+                {({ handleChange, handleSubmit, errors }) => (
+                    <>
+                        <AppTextInput
+                            placeholder="Child name"
+                            labelText="Child name"
+                            icon="account"
+                            onChangeText={handleChange("childname")}
+                            errorStyle={{ color: colours.inputErrorMessage }}
+                            error={errors ? errors.childname : ""}
+                        />
+                        {newPin && <AppLabel labelText={newPin} />}
+                        {
+                            <AppButton
+                                title="Generate New Pin"
+                                onPress={() => {
+                                    const pin =
+                                        Math.floor(Math.random() * 8999) + 1000;
+                                    setNewPin(String(pin));
+                                }}
+                            />
+                        }
+                        {newPin && (
+                            <AppButton title="SAVE" onPress={handleSubmit} />
+                        )}
 
-            <AppButton
-              title="Return"
-              onPress={() => navigation.navigate(screens.ParentChildDashBoard)}
-            />
-          </>
-        )}
-      </Formik>
-    </Screen>
-  );
+                        <AppButton
+                            title="Return"
+                            onPress={() =>
+                                navigation.navigate(
+                                    screens.ParentChildDashBoard
+                                )
+                            }
+                        />
+                    </>
+                )}
+            </Formik>
+        </Screen>
+    );
 }
 // return (
 //   <View style={styles.container}>
@@ -160,12 +167,12 @@ function AddNewChildScreen({ navigation }) {
 // }
 
 const styles = StyleSheet.create({
-  container: {},
-  rowAlignment: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-  },
+    container: {},
+    rowAlignment: {
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center",
+    },
 });
 
 export default AddNewChildScreen;

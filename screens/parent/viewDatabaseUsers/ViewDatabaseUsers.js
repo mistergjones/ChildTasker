@@ -102,8 +102,8 @@ export default function UserListScreen({ navigation }) {
         itemList.push(tempObject);
     }
 
-    // console.log("LIST OF ITEM NAMES");
-    // console.log(itemList);
+    // // console.log("LIST OF ITEM NAMES");
+    // // console.log(itemList);
 
     //************************************ */
     // Categories
@@ -123,13 +123,13 @@ export default function UserListScreen({ navigation }) {
         categoryList.push(tempObject);
     }
 
-    // console.log("LIST OF CATEGORY NAMES");
-    // console.log(categoryList);
+    // // console.log("LIST OF CATEGORY NAMES");
+    // // console.log(categoryList);
 
     // needed as SPECIFICS from teh set state was not geting updated immediately.
     useEffect(() => {
-        console.log("USE EFFECT IS IN THE HOUSE");
-        console.log("USE EFFECT", specifics);
+        // console.log("USE EFFECT IS IN THE HOUSE");
+        // console.log("USE EFFECT", specifics);
         var pickableTasksForThatChosenCategory = {};
 
         // on first render it is probabaly undefined
@@ -143,10 +143,10 @@ export default function UserListScreen({ navigation }) {
                 return a;
             });
         } else {
-            console.log("WE ARE IN THE ELSE STATEMNT");
+            // console.log("WE ARE IN THE ELSE STATEMNT");
         }
 
-        // console.log("TEMP OBJECT: ", pickableTasksForThatChosenCategory);
+        // // console.log("TEMP OBJECT: ", pickableTasksForThatChosenCategory);
         // update the state. i.e. ensure to only provide the tasks applicable to the category.
         setPickableTasks(pickableTasksForThatChosenCategory);
     }, [specifics]);
@@ -175,7 +175,9 @@ export default function UserListScreen({ navigation }) {
                     description: "",
                     category: null,
                 }}
-                onSubmit={(values) => console.log(values)}
+                onSubmit={(values) => {
+                    // console.log(values)
+                }}
             >
                 <AppPicker
                     items={itemList}

@@ -100,7 +100,9 @@ function CreateTaskListForChildScreen({ navigation }) {
     const [isInitialScreenLoaded, setIsInitialScreenLoaded] = useState(true);
 
     // used to set the number of columns to show in the AppPicker components that will vary the width % accordingly.
-    const [numberOfCategoryColumns, setNumberOfCategoryColumns] = useState(null);
+    const [numberOfCategoryColumns, setNumberOfCategoryColumns] = useState(
+        null
+    );
     const [numberOfRewardColumns, setNumberOfRewardColumns] = useState(null);
 
     const [
@@ -175,28 +177,34 @@ function CreateTaskListForChildScreen({ navigation }) {
     useEffect(() => {
         // convert rewarads from objects into an array of objects
         // etRewardList(establishRewardListInObjectFormat(rewards));
-        // console.log("rewards", rewards[0]);
+        // // console.log("rewards", rewards[0]);
 
         var pickableTasksForThatChosenCategory = {};
 
         // on first render it is probabaly undefined
         if (specifics != undefined || specifics != null) {
-            pickableTasksForThatChosenCategory = specifics.map((theResult, index) => {
-                let tempObject = {};
-                tempObject.label =
-                    theResult.task_name + " (" + theResult.task_points + ")";
-                tempObject.value = theResult.task_id;
-                tempObject.points = theResult.task_points;
-                tempObject.backgroundColor = theResult.task_colour;
-                tempObject.icon = theResult.task_icon;
-                return tempObject;
-            });
+            pickableTasksForThatChosenCategory = specifics.map(
+                (theResult, index) => {
+                    let tempObject = {};
+                    tempObject.label =
+                        theResult.task_name +
+                        " (" +
+                        theResult.task_points +
+                        ")";
+                    tempObject.value = theResult.task_id;
+                    tempObject.points = theResult.task_points;
+                    tempObject.backgroundColor = theResult.task_colour;
+                    tempObject.icon = theResult.task_icon;
+                    return tempObject;
+                }
+            );
 
             // To assist with showing 2 columns on the pickable tasks, if the length %2 != 0, we will simply add a "blank"
             if (pickableTasksForThatChosenCategory.length % 2 != 0) {
                 let g = {
                     backgroundColor: "_",
-                    icon: "usedToEnsureThatColumnsAreNeatlyAllignedIfThereisAnOddNumber",
+                    icon:
+                        "usedToEnsureThatColumnsAreNeatlyAllignedIfThereisAnOddNumber",
                     label: "",
                     points: 999,
                     value: 999,
@@ -205,13 +213,13 @@ function CreateTaskListForChildScreen({ navigation }) {
                 pickableTasksForThatChosenCategory.push(g);
             }
         } else {
-            console.log(
-                "Initial loading of specific tasks is undefined until a user selects a category. WE ARE IN CreateTaskListForChild --> useEffect()"
-            );
+            // console.log(
+            //     "Initial loading of specific tasks is undefined until a user selects a category. WE ARE IN CreateTaskListForChild --> useEffect()"
+            // );
         }
-        // console.log(specifics.length);
+        // // console.log(specifics.length);
 
-        // console.log("TEMP OBJECT: ", pickableTasksForThatChosenCategory);
+        // // console.log("TEMP OBJECT: ", pickableTasksForThatChosenCategory);
         // update the state. i.e. ensure to only provide the tasks applicable to the category.
         setPickableTasks(pickableTasksForThatChosenCategory);
     }, [specifics]);
@@ -234,7 +242,7 @@ function CreateTaskListForChildScreen({ navigation }) {
 
     // this function is to set the status of only the kids mapped to kids
     const handleSelectReward = async (item) => {
-        //console.log("item ****" + item.icon);
+        //// console.log("item ****" + item.icon);
         setSelectedReward(item);
         setSelectedRewardPoints(item.points);
         setSelectedCategory(null);
@@ -271,11 +279,12 @@ function CreateTaskListForChildScreen({ navigation }) {
     // this effect will amke sure to add a "blank" reward object so that it renders nicely for 2 columns.
     useEffect(() => {
         if (rewardList.length % 2 != 0) {
-            console.log("Not even");
+            // console.log("Not even");
 
             var tempObject = {
                 backgroundColor: "blue",
-                icon: "usedToEnsureThatColumnsAreNeatlyAllignedIfThereisAnOddNumber",
+                icon:
+                    "usedToEnsureThatColumnsAreNeatlyAllignedIfThereisAnOddNumber",
                 label: "whatever",
                 points: 100,
                 value: 1,
@@ -288,7 +297,7 @@ function CreateTaskListForChildScreen({ navigation }) {
     // this effect will amke sure to add a "blank" reward object so that it renders nicely for 2 columns.
     // useEffect(() => {
     //     if (kidList.length % 2 != 0) {
-    //         console.log("Not even");
+    //         // console.log("Not even");
 
     //         var tempObject = {
     //             backgroundColor: "blue",
@@ -315,18 +324,24 @@ function CreateTaskListForChildScreen({ navigation }) {
                 ) {
                     // break each "record" into an object before database insertion
                     const items = {
-                        category_id: runningTasksToAssign[loopIterator].category_id,
-                        category_name: runningTasksToAssign[loopIterator].category_name,
+                        category_id:
+                            runningTasksToAssign[loopIterator].category_id,
+                        category_name:
+                            runningTasksToAssign[loopIterator].category_name,
                         task_id: runningTasksToAssign[loopIterator].task_id,
                         task_name: runningTasksToAssign[loopIterator].task_name,
-                        task_points: runningTasksToAssign[loopIterator].task_points,
+                        task_points:
+                            runningTasksToAssign[loopIterator].task_points,
                         kid_id: runningTasksToAssign[loopIterator].kid_id,
                         kid_name: runningTasksToAssign[loopIterator].kid_name,
                         reward_id: runningTasksToAssign[loopIterator].reward_id,
-                        reward_name: runningTasksToAssign[loopIterator].reward_name,
-                        reward_points: runningTasksToAssign[loopIterator].reward_points,
+                        reward_name:
+                            runningTasksToAssign[loopIterator].reward_name,
+                        reward_points:
+                            runningTasksToAssign[loopIterator].reward_points,
                         icon_name: runningTasksToAssign[loopIterator].icon_name,
-                        is_completed: runningTasksToAssign[loopIterator].is_completed,
+                        is_completed:
+                            runningTasksToAssign[loopIterator].is_completed,
                         reward_icon_name:
                             runningTasksToAssign[loopIterator].reward_icon_name,
                     };
@@ -348,7 +363,9 @@ function CreateTaskListForChildScreen({ navigation }) {
                     [
                         {
                             text: "Close",
-                            onPress: () => console.log("Cancel Pressed"),
+                            onPress: () => {
+                                // console.log("Cancel Pressed")
+                            },
                             style: "cancel",
                         },
                     ],
@@ -356,12 +373,12 @@ function CreateTaskListForChildScreen({ navigation }) {
                 );
             }
         } catch (error) {
-            console.log("The error inserting kids to chorse is", error);
+            // console.log("The error inserting kids to chorse is", error);
         }
     };
 
     const handleResetDropDownAndContinue = () => {
-        //console.log("We are in:  handleResetDropDownAndContinue()");
+        //// console.log("We are in:  handleResetDropDownAndContinue()");
 
         // set the is initalScreenLoaded to false so the TASKS TOTAL box acutatlly shows the points
         setIsInitialScreenLoaded(false);
@@ -383,11 +400,11 @@ function CreateTaskListForChildScreen({ navigation }) {
             reward_icon_name: selectedReward.icon,
         };
 
-        // console.log(`Selected Task icon is`, selectedTask);
-        // console.log(`Items is:`, items);
+        // // console.log(`Selected Task icon is`, selectedTask);
+        // // console.log(`Items is:`, items);
 
         runningTasksToAssign.push(items);
-        //console.log(runningTasksToAssign);
+        //// console.log(runningTasksToAssign);
 
         // calculate the total task points added
         setTotalTaskPoints(totalTaskPoints + selectedTaskPoints);
@@ -425,7 +442,7 @@ function CreateTaskListForChildScreen({ navigation }) {
                     reward_name: "",
                     reward_Points: "",
                 }}
-            // onSubmit={(values) => console.log(values)}
+                // onSubmit={(values) => // console.log(values)}
             >
                 {/* <AppPicker
                     items={kidList}
@@ -487,13 +504,17 @@ function CreateTaskListForChildScreen({ navigation }) {
                 {selectedKid && selectedReward && (
                     <View style={styles.score}>
                         <View style={styles.currentRewardTaskContainer}>
-                            <Text style={styles.currentRewardTaskScore}>Reward Total:</Text>
+                            <Text style={styles.currentRewardTaskScore}>
+                                Reward Total:
+                            </Text>
                             <Text style={styles.currentRewardTaskValue}>
                                 {selectedReward.points}
                             </Text>
                         </View>
                         <View style={styles.currentRewardTaskContainer}>
-                            <Text style={styles.currentRewardTaskScore}>Tasks Total:</Text>
+                            <Text style={styles.currentRewardTaskScore}>
+                                Tasks Total:
+                            </Text>
                             <Text style={styles.currentRewardTaskValue}>
                                 {isInitialScreenLoaded ? "0" : totalTaskPoints}
                             </Text>
@@ -507,7 +528,10 @@ function CreateTaskListForChildScreen({ navigation }) {
                     />
                 )}
                 {selectedKid && saveAllChangesButtonEnabled && (
-                    <AppButton title="Save" onPress={handleSubmitChangesToDatabase} />
+                    <AppButton
+                        title="Save"
+                        onPress={handleSubmitChangesToDatabase}
+                    />
                 )}
                 <AppButton
                     title="Return"

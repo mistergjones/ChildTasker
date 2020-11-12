@@ -20,10 +20,8 @@ function ChoreStatusScreen({ navigation, route }) {
     } = useContext(UsersContext);
     const [choreCompleted, setChoreCompleted] = useState(false);
 
-
     // chore_id instaed of task_id
     const handleCompleted = async () => {
-
         await updateChoresForKid(
             choresForKid[0].chores[0].kid_name,
             route.params.chore_id
@@ -46,7 +44,9 @@ function ChoreStatusScreen({ navigation, route }) {
                 <View style={styles.bodyForm}>
                     <Form
                         initialValues={{ completed: false }}
-                        onSubmit={(values) => console.log(values)}
+                        onSubmit={(values) => {
+                            // console.log(values);
+                        }}
                     >
                         <View style={styles.switch}>
                             <Text style={styles.text}>Completed</Text>
@@ -60,7 +60,9 @@ function ChoreStatusScreen({ navigation, route }) {
                                 }}
                                 thumbColor={"#dfe6ed"}
                             />
-                            <Text style={styles.text}>{choreCompleted ? "Yes" : "No"}</Text>
+                            <Text style={styles.text}>
+                                {choreCompleted ? "Yes" : "No"}
+                            </Text>
                         </View>
 
                         {choreCompleted && (
@@ -93,7 +95,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         width: "90%",
         height: "50%",
-        alignSelf: "center"
+        alignSelf: "center",
     },
     bodyForm: {
         justifyContent: "center",
@@ -114,8 +116,8 @@ const styles = StyleSheet.create({
     },
     text: {
         color: colours.white,
-        fontSize: 24
-    }
+        fontSize: 24,
+    },
 });
 
 export default ChoreStatusScreen;

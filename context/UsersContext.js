@@ -51,10 +51,10 @@ export const UsersContextProvider = (props) => {
 
     //Icon
     const [icons, setIcons] = useState();
-    const loadDataFromDB = async () => { };
+    const loadDataFromDB = async () => {};
     // We have a useEffect call to instantiate the users list from the database. We only call this function on the first render
     useEffect(() => {
-        console.log("***** User Context ****");
+        // console.log("***** User Context ****");
         refreshItems();
         refreshCategories();
         refreshTasks();
@@ -73,11 +73,11 @@ export const UsersContextProvider = (props) => {
     // make a database call to get the users
     // In refreshItems we are sending the setItems function, which will allow the query to set our local state.
     const refreshItems = async () => {
-        console.log("Refresh items is  being execurted");
+        // console.log("Refresh items is  being execurted");
         // return database.getItems(setItems);
         const result = await databaseItems.getItems(setItems);
 
-        console.log("Refresh items is  being EXECUTRED");
+        // console.log("Refresh items is  being EXECUTRED");
         return result;
     };
     //*************************************************************************
@@ -120,7 +120,7 @@ export const UsersContextProvider = (props) => {
             await getTasks();
             return;
         } catch (error) {
-            console.log("error inserting task = " + error);
+            // console.log("error inserting task = " + error);
         }
     };
 
@@ -132,7 +132,7 @@ export const UsersContextProvider = (props) => {
     // In refreshItems we are sending the setItems function, which will allow the query to set our local state.
     const refreshTasks = async () => {
         // return database.getTasks(setTasks);
-        console.log("DOES THIS EVER WORK - refresh TASKS");
+        // console.log("DOES THIS EVER WORK - refresh TASKS");
         return await databaseTasks.getTasks(setTasks);
     };
 
@@ -168,7 +168,7 @@ export const UsersContextProvider = (props) => {
     };
     // END CHORES TO KID
     const getChoresForKid = async (kid_name) => {
-        console.log("getChoresForKid ", kid_name);
+        // console.log("getChoresForKid ", kid_name);
         return await databaseAssignChoresToKid.getChoresByKidName(
             kid_name,
             setChoresForKid,
@@ -198,7 +198,7 @@ export const UsersContextProvider = (props) => {
     // In refreshAwards we are sending the setRewards function, which will allow the query to set our local state.
     const refreshRewards = async () => {
         //return database.getRewards(setRewards);
-        console.log("reached refresh reward");
+        // console.log("reached refresh reward");
         return await databaseRewards.getRewards(setRewards);
     };
     const updateReward = async (reward) => {
@@ -225,7 +225,7 @@ export const UsersContextProvider = (props) => {
     //*************************************************************************
     // START GET SPECIFIC TASK
     const getSpecificTasksGlen = async (taskID) => {
-        console.log("getSpecificTasksGlen IS BEING RUN");
+        // console.log("getSpecificTasksGlen IS BEING RUN");
         // return await database.getSpecficTasks(taskID, setSpecificTasks);
         return await databaseTasks.getSpecficTasks(taskID, setSpecificTasks);
     };
@@ -241,13 +241,13 @@ export const UsersContextProvider = (props) => {
     };
     // END ICON
     //*************************************************************************
-    //Usres 
+    //Usres
     const addAvatar = async (userId, uri, icon) => {
         await databaseUsers.addUserAvatar(userId, uri, icon);
         await refreshUsers();
         await getKids();
-        return
-    }
+        return;
+    };
     const addNewUser = async (user) => {
         //await database.insertUser(user, refreshUsers);
         try {
@@ -255,7 +255,7 @@ export const UsersContextProvider = (props) => {
             await getKids();
             return;
         } catch (error) {
-            console.log("error add new user = " + error);
+            // console.log("error add new user = " + error);
         }
     };
 
@@ -265,10 +265,10 @@ export const UsersContextProvider = (props) => {
     };
 
     const checkIfNewUser = async (userName) => {
-        console.log("Check if new user");
+        // console.log("Check if new user");
         //const result = await database.newUser(userName);
         const result = await databaseUsers.newUser(userName);
-        console.log("result = ", result);
+        // console.log("result = ", result);
         return result;
     };
 
@@ -287,11 +287,11 @@ export const UsersContextProvider = (props) => {
 
     const updateKid = async (kid) => {
         //await database.updateKid(kid);
-        console.log("kid = " + kid)
+        // console.log("kid = " + kid)
         await databaseUsers.updateKid(kid);
         await getKids();
         await databaseUsers.getUsers(setUsers);
-        return
+        return;
     };
     // Make the context object:
     const usersContext = {

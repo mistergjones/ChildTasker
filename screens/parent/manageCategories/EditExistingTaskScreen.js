@@ -66,7 +66,10 @@ export default function EditExistingTaskScreen({ navigation }) {
     // Validation Schema
     const taskSchema = Yup.object().shape({
         task_name: Yup.string().min(2).required().label("Task name"),
-        task_points: Yup.number().required().label("Task Points").typeError("Task Points must be a number"),
+        task_points: Yup.number()
+            .required()
+            .label("Task Points")
+            .typeError("Task Points must be a number"),
         // task_colour: Yup.string().required().label("Task Colour"),
         // task_icon: Yup.string().required().label("Task Icon"),
     });
@@ -94,14 +97,14 @@ export default function EditExistingTaskScreen({ navigation }) {
                         category_id: "",
                     }}
                     onSubmit={async (fields, { setFieldError }) => {
-                        console.log(
-                            selectedTask.value,
-                            fields.task_name,
-                            selectedTask.backgroundColor,
-                            selectedTask.icon,
-                            fields.task_points,
-                            selectedTask.category_id
-                        );
+                        // console.log(
+                        //     selectedTask.value,
+                        //     fields.task_name,
+                        //     selectedTask.backgroundColor,
+                        //     selectedTask.icon,
+                        //     fields.task_points,
+                        //     selectedTask.category_id
+                        // );
                         try {
                             await updateTask({
                                 task_id: Number(selectedTask.value),
@@ -112,15 +115,15 @@ export default function EditExistingTaskScreen({ navigation }) {
                                 category_id: Number(selectedTask.category_id),
                             });
 
-                            console.log("WE are inside the try await edit existing", fields);
-                            console.log("Finished updating task");
+                            // console.log("WE are inside the try await edit existing", fields);
+                            // console.log("Finished updating task");
 
                             navigation.navigate(screens.AddCategory);
                         } catch (error) {
-                            console.log(
-                                "Edit Existing Task screen with update error = ",
-                                error
-                            );
+                            // console.log(
+                            //     "Edit Existing Task screen with update error = ",
+                            //     error
+                            // );
                         }
                     }}
                     validationSchema={taskSchema}
@@ -165,12 +168,17 @@ export default function EditExistingTaskScreen({ navigation }) {
                             )}
 
                             {selectedTask && (
-                                <AppButton title="Save" onPress={handleSubmit} />
+                                <AppButton
+                                    title="Save"
+                                    onPress={handleSubmit}
+                                />
                             )}
 
                             <AppButton
                                 title="Return"
-                                onPress={() => navigation.navigate(screens.AddCategory)}
+                                onPress={() =>
+                                    navigation.navigate(screens.AddCategory)
+                                }
                             />
                         </>
                     )}
