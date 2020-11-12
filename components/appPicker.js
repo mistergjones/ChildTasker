@@ -29,10 +29,10 @@ function AppPicker({
     marginLeft = 0,
     onPickerPress,
 }) {
-    // console.log("Placeholder", placeholder);
-    // console.log("selectedItem", selectedItem);
+    // // console.log("Placeholder", placeholder);
+    // // console.log("selectedItem", selectedItem);
     const [modalVisible, setModalVisible] = useState(false);
-    // console.log("selected item keys = ", Object.keys(selectedItem))
+    // // console.log("selected item keys = ", Object.keys(selectedItem))
     return (
         <SafeAreaView>
             <TouchableWithoutFeedback onPress={() => setModalVisible(true)}>
@@ -41,15 +41,19 @@ function AppPicker({
                         <MaterialCommunityIcons
                             name={selectedItem ? selectedItem.icon : icon}
                             size={20}
-                            color={selectedItem ? selectedItem.backgroundColor : colours.inputIcon}
+                            color={
+                                selectedItem
+                                    ? selectedItem.backgroundColor
+                                    : colours.inputIcon
+                            }
                             style={styles.icon}
                         />
                     )}
                     {selectedItem ? (
                         <Text style={styles.text}>{selectedItem.label}</Text>
                     ) : (
-                            <Text style={styles.placeholder}>{placeholder}</Text>
-                        )}
+                        <Text style={styles.placeholder}>{placeholder}</Text>
+                    )}
 
                     <MaterialCommunityIcons
                         name="chevron-down"
@@ -105,7 +109,7 @@ const styles = StyleSheet.create({
         color: defaultStyles.colors.medium,
         flex: 1,
         fontWeight: "bold",
-        textAlign: "center"
+        textAlign: "center",
     },
     text: {
         flex: 1,

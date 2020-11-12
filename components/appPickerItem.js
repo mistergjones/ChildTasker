@@ -7,8 +7,8 @@ import defaultStyles from "../config/styles";
 let widthStyle = "";
 function PickerItem({ item, onPress, numColumns }) {
     widthStyle = (100 / numColumns).toFixed(0);
-    console.log("width style = ", widthStyle);
-    console.log("-- item" + Object.keys(item))
+    // console.log("width style = ", widthStyle);
+    // console.log("-- item" + Object.keys(item))
     return (
         <TouchableOpacity style={styles.container} onPress={onPress}>
             <MaterialCommunityIcons

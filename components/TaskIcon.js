@@ -22,10 +22,10 @@ function TaskIcon({
     task_id,
     chores,
     completed,
-    chore_id
+    chore_id,
 }) {
     const navigation = useNavigation();
-    console.log("task icon chores length = " + chores.length);
+    // console.log("task icon chores length = " + chores.length);
     return (
         <TouchableOpacity
             onPress={() => {
@@ -36,14 +36,16 @@ function TaskIcon({
                         points,
                         task_id,
                         chores,
-                        chore_id
+                        chore_id,
                     });
                 }
             }}
         >
             <View style={styles.container}>
                 <Text style={styles.text}>{title}</Text>
-                <View style={{ backgroundColor: colours.white, borderRadius: 30 }}>
+                <View
+                    style={{ backgroundColor: colours.white, borderRadius: 30 }}
+                >
                     <AppMaterialIcon
                         iconName={icon}
                         iconSize={60}
@@ -52,7 +54,7 @@ function TaskIcon({
                 </View>
                 <Text style={styles.text}>{points}</Text>
             </View>
-        </TouchableOpacity >
+        </TouchableOpacity>
     );
 }
 

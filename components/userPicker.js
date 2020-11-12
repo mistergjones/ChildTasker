@@ -6,7 +6,7 @@ import {
     Modal,
     Button,
     FlatList,
-    Image
+    Image,
 } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
@@ -29,47 +29,52 @@ function UserPicker({
     //width = "100%",
     marginLeft = 12,
 }) {
-    console.log("Placeholder", placeholder);
-    console.log("selectedItem", selectedItem);
+    // console.log("Placeholder", placeholder);
+    // console.log("selectedItem", selectedItem);
     const [modalVisible, setModalVisible] = useState(false);
 
-    console.log("What is the items?", items.length);
-    console.log("selected item", selectedItem)
+    // console.log("What is the items?", items.length);
+    // console.log("selected item", selectedItem)
     return (
         <>
             <View style={styles.screen}>
                 <TouchableWithoutFeedback onPress={() => setModalVisible(true)}>
                     <View style={[styles.container]}>
-                        {(selectedItem) ? selectedItem.icon ? (
+                        {selectedItem ? (
+                            selectedItem.icon ? (
+                                <MaterialCommunityIcons
+                                    name={selectedItem.icon}
+                                    size={20}
+                                    color={colours.inputIcon}
+                                    style={styles.icon}
+                                />
+                            ) : (
+                                <Image
+                                    style={{
+                                        width: 30,
+                                        height: 30,
+                                        borderRadius: 15,
+                                    }}
+                                    source={{ uri: selectedItem.uri }}
+                                />
+                            )
+                        ) : (
                             <MaterialCommunityIcons
-                                name={selectedItem.icon}
-                                size={20}
-                                color={colours.inputIcon}
-                                style={styles.icon}
-                            />
-                        ) : <Image
-                                style={{
-                                    width: 30,
-                                    height: 30,
-                                    borderRadius: 15,
-
-                                }}
-                                source={{ uri: selectedItem.uri }}
-                            /> : <MaterialCommunityIcons
                                 name={"account"}
                                 size={20}
                                 color={colours.inputIcon}
                                 style={styles.icon}
-                            />}
+                            />
+                        )}
                         {selectedItem ? (
                             <Text style={styles.text}>
                                 {selectedItem.label}
                             </Text>
                         ) : (
-                                <Text style={styles.placeholder}>
-                                    {placeholder}
-                                </Text>
-                            )}
+                            <Text style={styles.placeholder}>
+                                {placeholder}
+                            </Text>
+                        )}
 
                         <MaterialCommunityIcons
                             name="chevron-down"

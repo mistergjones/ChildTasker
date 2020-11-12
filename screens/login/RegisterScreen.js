@@ -25,7 +25,6 @@ import Screen from "../../components/appScreen";
 import colours from "../../config/colours";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-
 const loginSchema = Yup.object().shape({
     username: Yup.string().required().label("Username"),
     password: Yup.string().required().min(4).label("Password"),
@@ -67,8 +66,8 @@ function RegisterScreen({ navigation }) {
                     }}
                     onSubmit={async (fields, { setFieldError }) => {
                         // Check if passwords match
-                        console.log("pass", fields.password);
-                        console.log("cpass", fields.confirmPassword);
+                        // console.log("pass", fields.password);
+                        // console.log("cpass", fields.confirmPassword);
                         if (fields.password !== fields.confirmPassword) {
                             setFieldError("password", "passwords do not match");
                             setFieldError(
@@ -95,18 +94,23 @@ function RegisterScreen({ navigation }) {
                                 //setUser({ username: fields.username, isParent: true });
 
                                 if (firstLoad) {
-                                    console.log("register firstload");
+                                    // console.log("register firstload");
                                     setFirstLoad(false);
                                     setUser(null);
                                     navigation.navigate(screens.Login);
                                 } else {
-                                    navigation.navigate(screens.ParentDashBoard);
+                                    navigation.navigate(
+                                        screens.ParentDashBoard
+                                    );
                                 }
                             } catch (error) {
-                                console.log("error = ", error);
+                                // console.log("error = ", error);
                             }
                         } else {
-                            setFieldError("username", "username already exists");
+                            setFieldError(
+                                "username",
+                                "username already exists"
+                            );
                         }
                     }}
                     validationSchema={loginSchema}
@@ -146,14 +150,21 @@ function RegisterScreen({ navigation }) {
                                 error={errors ? errors.confirmPassword : ""}
                             />
 
-                            <AppButton title="Register" onPress={handleSubmit} />
+                            <AppButton
+                                title="Register"
+                                onPress={handleSubmit}
+                            />
 
-                            {!firstLoad && <AppButton
-                                title="Return"
-                                onPress={() =>
-                                    navigation.navigate(screens.ParentDashBoard)
-                                }
-                            />}
+                            {!firstLoad && (
+                                <AppButton
+                                    title="Return"
+                                    onPress={() =>
+                                        navigation.navigate(
+                                            screens.ParentDashBoard
+                                        )
+                                    }
+                                />
+                            )}
                         </>
                     )}
                 </Formik>
@@ -168,17 +179,20 @@ function RegisterScreen({ navigation }) {
                             <View style={styles.container}>
                                 <Text style={styles.textHeading}>
                                     Welcome to Child Tasker.
-                            </Text>
+                                </Text>
                                 <Text style={styles.textParagraph}>
-                                    This app is designed to make the job of managing
-                                    and tracking the tasks required in the household
-                                    in an easy as well as fun manner.
-                            </Text>
+                                    This app is designed to make the job of
+                                    managing and tracking the tasks required in
+                                    the household in an easy as well as fun
+                                    manner.
+                                </Text>
                                 {/* <MaterialCommunityIcons name="bike" size={100} color={colours.defaultButtonColour} /> */}
                                 <AppButton
                                     title="Continue"
                                     onPress={() => setModalVisible(false)}
-                                    style={{ color: colours.defaultButtonColour }}
+                                    style={{
+                                        color: colours.defaultButtonColour,
+                                    }}
                                 />
                             </View>
                         </ImageBackground>

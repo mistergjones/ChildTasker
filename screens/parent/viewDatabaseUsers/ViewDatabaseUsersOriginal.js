@@ -150,13 +150,15 @@ function viewDatabaseUsers({ navigation }) {
                         "select * from items",
                         [],
                         (_, { rows }) => setScores(rows._array),
-                        () => console.log("error fetching")
+                        () => {
+                            // console.log("error fetching")
+                        }
                     );
 
                     var sqlResults = scores;
-                    console.log("Teh SQL resulres are: ", sqlResults);
+                    // console.log("Teh SQL resulres are: ", sqlResults);
                 });
-                console.log("CREATE TABLE HAS RAN AGAIN?");
+                // console.log("CREATE TABLE HAS RAN AGAIN?");
 
                 // establish an array that will hold the objects so we can pass to the appPicker
                 var categories = [];
@@ -171,7 +173,7 @@ function viewDatabaseUsers({ navigation }) {
                     tempObject.value = sqlResults[loopIterator].id;
                     categories.push(tempObject);
                 }
-                //console.log(categories);
+                //// console.log(categories);
                 setCategories(categories);
             } catch (error) {}
         };
@@ -184,14 +186,16 @@ function viewDatabaseUsers({ navigation }) {
                 "select * from items",
                 [],
                 (_, { rows }) => setScores(rows._array),
-                () => console.log("error fetching")
+                () => {
+                    // console.log("error fetching")
+                }
             );
         });
-        // console.log(scores["_array"][1].value);
-        // console.log(scores["_array"]);
+        // // console.log(scores["_array"][1].value);
+        // // console.log(scores["_array"]);
 
         var sqlResults = scores;
-        console.log(sqlResults);
+        // console.log(sqlResults);
 
         // establish an array that will hold the objects so we can pass to the appPicker
         var categories = [];
@@ -206,7 +210,7 @@ function viewDatabaseUsers({ navigation }) {
             tempObject.value = sqlResults[loopIterator].id;
             categories.push(tempObject);
         }
-        //console.log(categories);
+        //// console.log(categories);
         setCategories(categories);
     };
 
@@ -221,9 +225,9 @@ function viewDatabaseUsers({ navigation }) {
                 tx.executeSql("insert into items (done, value) values (0, ?)", [
                     text,
                 ]);
-                tx.executeSql("select * from items", [], (_, { rows }) =>
-                    console.log(JSON.stringify(rows))
-                );
+                tx.executeSql("select * from items", [], (_, { rows }) => {
+                    // console.log(JSON.stringify(rows))
+                });
             },
             null,
             forceUpdate
@@ -302,7 +306,7 @@ function viewDatabaseUsers({ navigation }) {
 
 function useForceUpdate() {
     const [value, setValue] = useState(0);
-    // console.log(value);
+    // // console.log(value);
     return [() => setValue(value + 1), value];
 }
 

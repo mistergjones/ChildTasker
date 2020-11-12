@@ -50,11 +50,11 @@ function ChildDashBoardScreen({ navigation }) {
     // GJ: the below obtains who is logged in on the child screen.
     // We will use the username as a placeholder for querying the chores table to retreive that specific's child data
 
-    console.log(`Child Dashboard Screen. Child name is: `, user.username);
-    console.log(`Child Dashboard Screen. uri: `, user.uri);
-    choresForKid.map((chore) => {
-        //console.log("c = ", chore.chores)
-    });
+    // console.log(`Child Dashboard Screen. Child name is: `, user.username);
+    // console.log(`Child Dashboard Screen. uri: `, user.uri);
+    // choresForKid.map((chore) => {
+    //     console.log("c = ", chore.chores)
+    // });
     const loadChoresForKid = async () => {
         await getChoresForKid(user.username);
     };
@@ -80,7 +80,10 @@ function ChildDashBoardScreen({ navigation }) {
                     </View>
                 </View> */}
                 <ScrollView
-                    style={[styles.scrollView, { borderWidth: choresForKid.length > 0 ? 1 : 0 }]}
+                    style={[
+                        styles.scrollView,
+                        { borderWidth: choresForKid.length > 0 ? 1 : 0 },
+                    ]}
                     horizontal
                     persistentScrollbar
                     alwaysBounce={false}
@@ -89,10 +92,10 @@ function ChildDashBoardScreen({ navigation }) {
                         <View style={styles.tasks}>
                             {choresForKid.map((chore, index) => {
                                 if (index % 2 === 0) {
-                                    console.log(
-                                        `Inside loop Object Keys: `,
-                                        choresForKid[index].rewardID
-                                    );
+                                    // console.log(
+                                    //     `Inside loop Object Keys: `,
+                                    //     choresForKid[index].rewardID
+                                    // );
                                     let completed = true;
                                     for (
                                         let i = 0;
@@ -184,7 +187,7 @@ function ChildDashBoardScreen({ navigation }) {
                 />
                 <AppButton title="Logout" onPress={() => setUser(null)} />
             </ScrollView>
-        </Screen >
+        </Screen>
     );
 }
 

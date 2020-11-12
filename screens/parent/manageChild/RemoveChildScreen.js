@@ -25,17 +25,18 @@ function RemoveChildScreen({ navigation }) {
     const { kids, removeKid } = useContext(UsersContext);
     const [selectedItem, setSelectedItem] = useState();
 
-    console.log("kids", kids);
+    // console.log("kids", kids);
 
     const kidsData = kids.map((kid) => {
         return {
             label: kid.user_name,
             value: kid.user_id,
-            icon: kid.icon, uri: kid.uri
+            icon: kid.icon,
+            uri: kid.uri,
         };
     });
 
-    console.log("kids data =" + kidsData);
+    // console.log("kids data =" + kidsData);
 
     const removeKidAlert = () =>
         Alert.alert(
@@ -44,13 +45,15 @@ function RemoveChildScreen({ navigation }) {
             [
                 {
                     text: "Cancel",
-                    onPress: () => console.log("Cancel Pressed"),
+                    onPress: () => {
+                        // console.log("Cancel Pressed")
+                    },
                     style: "cancel",
                 },
                 {
                     text: "OK",
                     onPress: async () => {
-                        console.log(selectedItem.value);
+                        // console.log(selectedItem.value);
                         await removeKid(selectedItem.value);
                         setSelectedItem(null);
                         navigation.navigate(screens.ParentChildDashBoard);

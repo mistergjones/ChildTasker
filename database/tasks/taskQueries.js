@@ -22,12 +22,12 @@ const getTasks = async (setUserFunc) => {
                 );
             },
             (t, error) => {
-                console.log("db error load tasks");
-                console.log(error);
+                // console.log("db error load tasks");
+                // console.log(error);
                 reject(error);
             },
             (_t, _success) => {
-                console.log("Retrieved tasks");
+                // console.log("Retrieved tasks");
                 resolve(_success);
             }
         );
@@ -36,7 +36,7 @@ const getTasks = async (setUserFunc) => {
 
 /******* get specific tasks given a category id */
 const getSpecficTasks = async (taskID, setUserFunc) => {
-    console.log("TASK ID IS: ", taskID);
+    // console.log("TASK ID IS: ", taskID);
     return new Promise(async (resolve, reject) => {
         db.transaction(
             (tx) => {
@@ -45,17 +45,17 @@ const getSpecficTasks = async (taskID, setUserFunc) => {
                     [taskID],
                     (_, { rows: { _array } }) => {
                         setUserFunc(_array);
-                        //console.log(_array);
+                        //// console.log(_array);
                     }
                 );
             },
             (t, error) => {
-                console.log("db error in try to obtain getSpecific Tasks");
-                console.log(error);
+                // console.log("db error in try to obtain getSpecific Tasks");
+                // console.log(error);
                 reject(error);
             },
             (_t, _success) => {
-                console.log("Retrieved Specific Tasks");
+                // console.log("Retrieved Specific Tasks");
 
                 resolve(_success);
             }
@@ -81,13 +81,13 @@ const insertTask = async (userTask, successFunc) => {
                 );
             },
             (t, error) => {
-                console.log("db error INSERT TASK");
-                console.log(error);
+                // console.log("db error INSERT TASK");
+                // console.log(error);
             },
             (t, _success) => {
                 //successFunc();
                 resolve(_success);
-                console.log("TASK insertion was successful");
+                // console.log("TASK insertion was successful");
             }
         );
     });
@@ -95,7 +95,7 @@ const insertTask = async (userTask, successFunc) => {
 
 // update task
 const updateTask = async (task) => {
-    // console.log(
+    // // console.log(
     //     "Task = ",
     //     task.task_id,
     //     task.task_name,
@@ -121,12 +121,12 @@ const updateTask = async (task) => {
                 );
             },
             (t, error) => {
-                console.log("db error update tasks");
-                console.log(`The error in updateTask is:`, error);
+                // console.log("db error update tasks");
+                // console.log(`The error in updateTask is:`, error);
                 reject(error);
             },
             (_t, _success) => {
-                console.log("updated task");
+                // console.log("updated task");
                 resolve(_success);
             }
         );
@@ -134,7 +134,7 @@ const updateTask = async (task) => {
 };
 
 const removeTask = async (task_id) => {
-    console.log("Task ID is:  = ", task_id);
+    // console.log("Task ID is:  = ", task_id);
     return new Promise(async (resolve, reject) => {
         db.transaction(
             (tx) => {
@@ -142,18 +142,18 @@ const removeTask = async (task_id) => {
                     "delete from tasks where task_id = ?",
                     [task_id],
                     (_, { rows: { _array } }) => {
-                        console.log("_array" + _array.length);
+                        // console.log("_array" + _array.length);
                         // setUserFunc(_array);
                     }
                 );
             },
             (t, error) => {
-                console.log("db error in remove Tasks");
-                console.log(error);
+                // console.log("db error in remove Tasks");
+                // console.log(error);
                 reject(error);
             },
             (_t, _success) => {
-                console.log("removed Task");
+                // console.log("removed Task");
                 resolve(_success);
             }
         );

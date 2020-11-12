@@ -23,12 +23,12 @@ const getChores = (setUserFunc) => {
                 );
             },
             (t, error) => {
-                console.log("db error load KIDCHORES");
-                console.log(error);
+                // console.log("db error load KIDCHORES");
+                // console.log(error);
                 reject(error);
             },
             (_t, _success) => {
-                console.log("Retrieved KIDCHORES");
+                // console.log("Retrieved KIDCHORES");
                 resolve(_success);
             }
         );
@@ -39,7 +39,7 @@ const getChores = (setUserFunc) => {
 
 // GET CHORES VY CHILD NAME: the below just simply retrieves all chores for a specific child
 const updateChoresByKidName = (kid_name, chore_id) => {
-    console.log("kid_name = " + kid_name + " task_id = " + chore_id);
+    // console.log("kid_name = " + kid_name + " task_id = " + chore_id);
     return new Promise(async (resolve, reject) => {
         let array = [];
         db.transaction(
@@ -50,12 +50,12 @@ const updateChoresByKidName = (kid_name, chore_id) => {
                 );
             },
             (t, error) => {
-                console.log("db error in updateing KIDCHORES");
-                console.log(error);
+                // console.log("db error in updateing KIDCHORES");
+                // console.log(error);
                 reject(error);
             },
             (_t, _success) => {
-                console.log("updated KIDCHORES by kid name");
+                // console.log("updated KIDCHORES by kid name");
                 resolve(array);
             }
         );
@@ -80,7 +80,7 @@ const getChoresByKidName = (
                     [kid_name],
                     (_, { rows: { _array } }) => {
                         array = _array;
-                        console.log("length = " + array.length);
+                        // console.log("length = " + array.length);
                         //choresForRewards.push([array[0]]);
 
                         if (array.length > 0) {
@@ -93,15 +93,15 @@ const getChoresByKidName = (
                         }
                         for (let i = 1; i < array.length; i++) {
                             let chore = array[i];
-                            console.log("reward name " + chore.reward_id);
+                            // console.log("reward name " + chore.reward_id);
 
                             let noMatch = true;
                             for (let x = 0; x < rewardsForChild.length; x++) {
-                                console.log("chore id = " + chore.reward_id);
-                                console.log(
-                                    "rewardsForCild id = " +
-                                    rewardsForChild[x].chores[0].reward_id
-                                );
+                                // console.log("chore id = " + chore.reward_id);
+                                // console.log(
+                                //     "rewardsForCild id = " +
+                                //     rewardsForChild[x].chores[0].reward_id
+                                // );
                                 if (
                                     chore.reward_id ===
                                     rewardsForChild[x].chores[0].reward_id
@@ -113,7 +113,7 @@ const getChoresByKidName = (
                             }
 
                             if (noMatch) {
-                                console.log("no match ");
+                                // console.log("no match ");
                                 choresForRewards.push([chore]);
                                 rewardsForChild.push({
                                     rewardName: chore.reward_name,
@@ -124,15 +124,15 @@ const getChoresByKidName = (
                             }
                         }
 
-                        rewardsForChild.map((reward) =>
-                            console.log(reward.rewardName)
-                        );
+                        // rewardsForChild.map((reward) =>
+                        //     console.log(reward.rewardName)
+                        // );
                         let score = 0;
                         let availablePoints = 0;
                         array.map((chore) => {
                             if (chore.is_completed === 1) {
                                 score += chore.task_points;
-                                console.log("score = " + score);
+                                // console.log("score = " + score);
                             } else {
                                 availablePoints += chore.task_points;
                             }
@@ -140,20 +140,20 @@ const getChoresByKidName = (
                         setScore(score);
                         setAvailablePoints(availablePoints);
                         setUserFunc(rewardsForChild);
-                        console.log(
-                            "chores for rewards lenght = ",
-                            rewardsForChild.length
-                        );
+                        // console.log(
+                        //     "chores for rewards lenght = ",
+                        //     rewardsForChild.length
+                        // );
                     }
                 );
             },
             (t, error) => {
-                console.log("db error in retrieving KIDCHORES");
-                console.log(error);
+                // console.log("db error in retrieving KIDCHORES");
+                // console.log(error);
                 reject(error);
             },
             (_t, _success) => {
-                console.log("Retrieved KIDCHORES by kid name");
+                // console.log("Retrieved KIDCHORES by kid name");
 
                 resolve(rewardsForChild);
             }
@@ -168,7 +168,7 @@ const insertChoresToKid = (kidChores, successFunc) => {
     return new Promise(async (resolve, reject) => {
         db.transaction(
             (tx) => {
-                console.log(`The kid chores are: `, kidChores);
+                // console.log(`The kid chores are: `, kidChores);
                 tx.executeSql(
                     "insert into kidchores (category_id, category_name, task_id, task_name, task_points, kid_id, kid_name, reward_id, reward_name, reward_points, is_completed, icon_name, reward_icon_name) values (?,?,?,?,?,?,?,?,?,?,?,?,?)",
                     [
@@ -185,17 +185,16 @@ const insertChoresToKid = (kidChores, successFunc) => {
                         kidChores.is_completed,
                         kidChores.icon_name,
                         kidChores.reward_icon_name,
-
                     ]
                 );
             },
             (t, error) => {
-                console.log("db error INSERT CHORES FOR KID");
-                console.log(error);
+                // console.log("db error INSERT CHORES FOR KID");
+                // console.log(error);
                 reject(error);
             },
             (t, success) => {
-                console.log("CHORE insertion for kid was successful");
+                // console.log("CHORE insertion for kid was successful");
                 successFunc();
                 resolve(success);
             }

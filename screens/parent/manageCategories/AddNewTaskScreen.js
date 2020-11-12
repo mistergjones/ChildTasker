@@ -62,13 +62,13 @@ export default function AddNewTaskScreen({ navigation }) {
     const [selectedColor, setSelectedColor] = useState();
 
     // show the tasks jsut to make sure they are retrieved
-    // console.log(tasks);
+    // // console.log(tasks);
 
     // need to establish a list of icons to be made available to the user
     let iconList = [];
     iconList = establishIconListInObjectFormat(icons);
 
-    // console.log(iconList);
+    // // console.log(iconList);
 
     // needt to establish a list of Categories to made available to the user
     var categoryList = [];
@@ -162,13 +162,13 @@ export default function AddNewTaskScreen({ navigation }) {
     //         task_colour: selectedColourItem.backgroundColor,
     //         category_id: selectedCategoryItem.value,
     //     };
-    //     console.log(infoToAdd);
+    //     // console.log(infoToAdd);
     //     try {
     //         await addNewTask(infoToAdd);
-    //         console.log("WE are inside the try await Add New Tasks");
+    //         // console.log("WE are inside the try await Add New Tasks");
     //         navigation.navigate(screens.AddCategory);
     //     } catch (error) {
-    //         console.log("There as an error inserting a NEW TASK");
+    //         // console.log("There as an error inserting a NEW TASK");
     //     }
     // };
 
@@ -190,7 +190,10 @@ export default function AddNewTaskScreen({ navigation }) {
 
     const taskSchema = Yup.object().shape({
         task_name: Yup.string().required().label("Task name"),
-        task_points: Yup.number().required().label("Task Points").typeError("Task Points must be a number"),
+        task_points: Yup.number()
+            .required()
+            .label("Task Points")
+            .typeError("Task Points must be a number"),
     });
 
     return (
@@ -215,12 +218,12 @@ export default function AddNewTaskScreen({ navigation }) {
                                 task_colour: selectedColourItem.backgroundColor,
                                 task_icon: selectedIconItem.icon,
                             });
-                            console.log("WE are inside the try await ADD NEW TASK", fields);
-                            console.log("Finished INSERTING TASK");
+                            // console.log("WE are inside the try await ADD NEW TASK", fields);
+                            // console.log("Finished INSERTING TASK");
 
                             navigation.navigate(screens.AddCategory);
                         } catch (error) {
-                            console.log("ADD NEW TASK eRROR  = ", error);
+                            // console.log("ADD NEW TASK eRROR  = ", error);
                         }
                     }}
                     validationSchema={taskSchema}
@@ -294,12 +297,17 @@ export default function AddNewTaskScreen({ navigation }) {
                             )}
 
                             {selectedCategoryItem && (
-                                <AppButton title="Save" onPress={handleSubmit} />
+                                <AppButton
+                                    title="Save"
+                                    onPress={handleSubmit}
+                                />
                             )}
 
                             <AppButton
                                 title="Return"
-                                onPress={() => navigation.navigate(screens.AddCategory)}
+                                onPress={() =>
+                                    navigation.navigate(screens.AddCategory)
+                                }
                             />
                         </>
                     )}

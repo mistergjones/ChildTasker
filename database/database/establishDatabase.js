@@ -15,11 +15,11 @@ const dropDatabaseTablesAsync = async () => {
                 "drop table items",
                 [],
                 (_, result) => {
-                    console.log("Drop table items");
+                    // console.log("Drop table items");
                     resolve(result);
                 },
                 (_, error) => {
-                    console.log("error dropping items table");
+                    // console.log("error dropping items table");
                     reject(error);
                 }
             );
@@ -27,11 +27,11 @@ const dropDatabaseTablesAsync = async () => {
                 "drop table categories",
                 [],
                 (_, result) => {
-                    console.log("Drop table categories");
+                    // console.log("Drop table categories");
                     resolve(result);
                 },
                 (_, error) => {
-                    console.log("error dropping categories table");
+                    // console.log("error dropping categories table");
                     reject(error);
                 }
             );
@@ -39,11 +39,11 @@ const dropDatabaseTablesAsync = async () => {
                 "drop table tasks",
                 [],
                 (_, result) => {
-                    console.log("Drop table tasks");
+                    // console.log("Drop table tasks");
                     resolve(result);
                 },
                 (_, error) => {
-                    console.log("error dropping tasks table");
+                    // console.log("error dropping tasks table");
                     reject(error);
                 }
             );
@@ -51,11 +51,11 @@ const dropDatabaseTablesAsync = async () => {
                 "drop table rewards",
                 [],
                 (_, result) => {
-                    console.log("Drop table rewards");
+                    // console.log("Drop table rewards");
                     resolve(result);
                 },
                 (_, error) => {
-                    console.log("error dropping rewards table");
+                    // console.log("error dropping rewards table");
                     reject(error);
                 }
             );
@@ -64,11 +64,11 @@ const dropDatabaseTablesAsync = async () => {
                 "drop table users",
                 [],
                 (_, result) => {
-                    console.log("Drop table users");
+                    // console.log("Drop table users");
                     resolve(result);
                 },
                 (_, error) => {
-                    console.log("error dropping users");
+                    // console.log("error dropping users");
                     reject(error);
                 }
             );
@@ -76,11 +76,11 @@ const dropDatabaseTablesAsync = async () => {
                 "drop table icons",
                 [],
                 (_, result) => {
-                    console.log("Drop table icons");
+                    // console.log("Drop table icons");
                     resolve(result);
                 },
                 (_, error) => {
-                    console.log("error dropping icons");
+                    // console.log("error dropping icons");
                     reject(error);
                 }
             );
@@ -91,7 +91,7 @@ const dropDatabaseTablesAsync = async () => {
                     resolve(result);
                 },
                 (_, error) => {
-                    console.log("error dropping KIDCHORES table");
+                    // console.log("error dropping KIDCHORES table");
                     reject(error);
                 }
             );
@@ -133,12 +133,12 @@ const createTablesDatabaseAsync = async () => {
             },
             // the error and success functions are called when the transaction is complete. We use the promise resolve and reject functions here.
             (_, error) => {
-                console.log("db error creating tables");
-                console.log(error);
+                // console.log("db error creating tables");
+                // console.log(error);
                 reject(error);
             },
             (_, success) => {
-                console.log("db success creating tables");
+                // console.log("db success creating tables");
                 resolve(success);
             }
         );
@@ -163,12 +163,12 @@ const loadUsers = async () => {
                 );
             },
             (t, error) => {
-                console.log("db error on INSERT USERS");
-                console.log(error);
+                // console.log("db error on INSERT USERS");
+                // console.log(error);
                 resolve();
             },
             (t, success) => {
-                console.log("db - Successfully pre-loaded the USERS table with data");
+                // console.log("db - Successfully pre-loaded the USERS table with data");
                 resolve(success);
             }
         );
@@ -400,14 +400,14 @@ const loadKidChores = async () => {
                 );
             },
             (t, error) => {
-                console.log("db error on INSERT KID CHORES");
-                console.log(error);
+                // console.log("db error on INSERT KID CHORES");
+                // console.log(error);
                 resolve();
             },
             (t, success) => {
-                console.log(
-                    "db - Successfully pre-loaded the KID CHORES table with data"
-                );
+                // console.log(
+                //     "db - Successfully pre-loaded the KID CHORES table with data"
+                // );
                 resolve(success);
             }
         );
@@ -447,12 +447,12 @@ const loadItems = async () => {
                 ]);
             },
             (t, error) => {
-                console.log("db error insert Item");
-                console.log(error);
+                // console.log("db error insert Item");
+                // console.log(error);
                 resolve();
             },
             (t, success) => {
-                console.log("db - Successfully pre-loaded the ITEMS table with data");
+                // console.log("db - Successfully pre-loaded the ITEMS table with data");
                 resolve(success);
             }
         );
@@ -501,14 +501,14 @@ const loadCategories = async () => {
                 );
             },
             (t, error) => {
-                console.log("db error on INSERT CATEGORIES");
-                console.log(error);
+                // console.log("db error on INSERT CATEGORIES");
+                // console.log(error);
                 resolve();
             },
             (t, success) => {
-                console.log(
-                    "db - Successfully pre-loaded the CATEGORIES table with data"
-                );
+                // console.log(
+                //     "db - Successfully pre-loaded the CATEGORIES table with data"
+                // );
                 resolve(success);
             }
         );
@@ -525,7 +525,13 @@ const loadTasks = async () => {
                 );
                 tx.executeSql(
                     "insert into tasks (task_name, task_colour, task_icon, task_points, category_id) values (?,?,?,?,?)",
-                    ["Dry Dishes", "rebeccapurple", "silverware-fork-knife", 10, 1]
+                    [
+                        "Dry Dishes",
+                        "rebeccapurple",
+                        "silverware-fork-knife",
+                        10,
+                        1,
+                    ]
                 );
                 tx.executeSql(
                     "insert into tasks (task_name, task_colour, task_icon, task_points, category_id) values (?,?,?,?,?)",
@@ -576,7 +582,13 @@ const loadTasks = async () => {
 
                 tx.executeSql(
                     "insert into tasks (task_name, task_colour, task_icon, task_points, category_id) values (?,?,?,?,?)",
-                    ["Put rubbish out", "saddlebrown", "trash-can-outline", 10, 4]
+                    [
+                        "Put rubbish out",
+                        "saddlebrown",
+                        "trash-can-outline",
+                        10,
+                        4,
+                    ]
                 );
                 tx.executeSql(
                     "insert into tasks (task_name, task_colour, task_icon, task_points, category_id) values (?,?,?,?,?)",
@@ -598,7 +610,13 @@ const loadTasks = async () => {
 
                 tx.executeSql(
                     "insert into tasks (task_name, task_colour, task_icon, task_points, category_id) values (?,?,?,?,?)",
-                    ["Do Homework", "darkgreen", "book-open-page-variant", 10, 6]
+                    [
+                        "Do Homework",
+                        "darkgreen",
+                        "book-open-page-variant",
+                        10,
+                        6,
+                    ]
                 );
                 tx.executeSql(
                     "insert into tasks (task_name, task_colour, task_icon, task_points, category_id) values (?,?,?,?,?)",
@@ -619,12 +637,12 @@ const loadTasks = async () => {
                 );
             },
             (t, error) => {
-                console.log("db error on INSERT TASKS");
-                console.log(error);
+                // console.log("db error on INSERT TASKS");
+                // console.log(error);
                 resolve();
             },
             (t, success) => {
-                console.log("db - Successfully pre-loaded the TASKS table with data");
+                // console.log("db - Successfully pre-loaded the TASKS table with data");
                 resolve(success);
             }
         );
@@ -645,12 +663,12 @@ const loadRewards = async () => {
                 );
             },
             (t, error) => {
-                console.log("db error on INSERT REWARDS");
-                console.log(error);
+                // console.log("db error on INSERT REWARDS");
+                // console.log(error);
                 resolve();
             },
             (t, success) => {
-                console.log("db - Successfully pre-loaded the REWARDS table with data");
+                // console.log("db - Successfully pre-loaded the REWARDS table with data");
                 resolve(success);
             }
         );
@@ -1547,12 +1565,12 @@ const loadIcons = async () => {
                 );
             },
             (t, error) => {
-                console.log("db error on INSERT icon");
-                console.log(error);
+                // console.log("db error on INSERT icon");
+                // console.log(error);
                 resolve();
             },
             (t, success) => {
-                console.log("db - Successfully pre-loaded the ICONS table with data");
+                // console.log("db - Successfully pre-loaded the ICONS table with data");
                 resolve(success);
             }
         );

@@ -5,13 +5,13 @@ import * as SQLite from "expo-sqlite";
 import { array } from "yup";
 
 // open the database
-console.log("BEFORE Database");
+// console.log("BEFORE Database");
 const db = SQLite.openDatabase("db.db");
-console.log("AFTER Database");
+// console.log("AFTER Database");
 // get all items
 // We will pass in a function that can take the users from the query and set the state.
 const getItems = (setUserFunc) => {
-    console.log("AM I BEING CALLED GET ITEMS");
+    // console.log("AM I BEING CALLED GET ITEMS");
     try {
         db.transaction(
             (tx) => {
@@ -24,15 +24,15 @@ const getItems = (setUserFunc) => {
                 );
             },
             (t, error) => {
-                console.log("db error load ITEMS");
-                console.log(error);
+                // console.log("db error load ITEMS");
+                // console.log(error);
             },
             (_t, _success) => {
-                console.log("Retrieved ITEMS");
+                // console.log("Retrieved ITEMS");
             }
         );
     } catch (error) {
-        console.log("error = ", error);
+        // console.log("error = ", error);
     }
 };
 
@@ -46,8 +46,8 @@ const insertItem = (item, successFunc) => {
             ]);
         },
         (t, error) => {
-            console.log("db error INSERT ITEM");
-            console.log(error);
+            // console.log("db error INSERT ITEM");
+            // console.log(error);
         },
         (t, success) => {
             successFunc();

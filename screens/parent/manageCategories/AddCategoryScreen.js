@@ -28,7 +28,9 @@ function AddCategoryScreen({ navigation }) {
                         description: "",
                         category: null,
                     }}
-                    onSubmit={(values) => console.log(values)}
+                    onSubmit={(values) => {
+                        // console.log(values)
+                    }}
                 >
                     <AppButton
                         title="Add New Category"

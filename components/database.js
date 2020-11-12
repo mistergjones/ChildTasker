@@ -18,7 +18,7 @@ const dropDatabaseTablesAsync = async () => {
                     resolve(result);
                 },
                 (_, error) => {
-                    console.log("error dropping items table");
+                    // console.log("error dropping items table");
                     reject(error);
                 }
             );
@@ -29,7 +29,7 @@ const dropDatabaseTablesAsync = async () => {
                     resolve(result);
                 },
                 (_, error) => {
-                    console.log("error dropping categories table");
+                    // console.log("error dropping categories table");
                     reject(error);
                 }
             );
@@ -40,7 +40,7 @@ const dropDatabaseTablesAsync = async () => {
                     resolve(result);
                 },
                 (_, error) => {
-                    console.log("error dropping tasks table");
+                    // console.log("error dropping tasks table");
                     reject(error);
                 }
             );
@@ -51,7 +51,7 @@ const dropDatabaseTablesAsync = async () => {
                     resolve(result);
                 },
                 (_, error) => {
-                    console.log("error dropping rewards table");
+                    // console.log("error dropping rewards table");
                     reject(error);
                 }
             );
@@ -63,7 +63,7 @@ const dropDatabaseTablesAsync = async () => {
                     resolve(result);
                 },
                 (_, error) => {
-                    console.log("error dropping users");
+                    // console.log("error dropping users");
                     reject(error);
                 }
             );
@@ -74,7 +74,7 @@ const dropDatabaseTablesAsync = async () => {
                     resolve(result);
                 },
                 (_, error) => {
-                    console.log("error dropping icons");
+                    // console.log("error dropping icons");
                     reject(error);
                 }
             );
@@ -109,12 +109,12 @@ const setupDatabaseAsync = async () => {
             },
             // the error and success functions are called when the transaction is complete. We use the promise resolve and reject functions here.
             (_, error) => {
-                console.log("db error creating tables");
-                console.log(error);
+                // console.log("db error creating tables");
+                // console.log(error);
                 reject(error);
             },
             (_, success) => {
-                console.log("db success creating tables");
+                // console.log("db success creating tables");
                 resolve(success);
             }
         );
@@ -124,7 +124,7 @@ const setupDatabaseAsync = async () => {
 // get all items
 // We will pass in a function that can take the users from the query and set the state.
 const getItems = (setUserFunc) => {
-    console.log("AM I BEING CALLED HERE");
+    // console.log("AM I BEING CALLED HERE");
     db.transaction(
         (tx) => {
             tx.executeSql(
@@ -136,11 +136,11 @@ const getItems = (setUserFunc) => {
             );
         },
         (t, error) => {
-            console.log("db error load ITEMS");
-            console.log(error);
+            // console.log("db error load ITEMS");
+            // console.log(error);
         },
         (_t, _success) => {
-            console.log("Retrieved ITEMS");
+            // console.log("Retrieved ITEMS");
         }
     );
 };
@@ -159,11 +159,11 @@ const getCategories = (setUserFunc) => {
             );
         },
         (t, error) => {
-            console.log("db error load CATEGORIES");
-            console.log(error);
+            // console.log("db error load CATEGORIES");
+            // console.log(error);
         },
         (_t, _success) => {
-            console.log("Retrieved CATEGORIES");
+            // console.log("Retrieved CATEGORIES");
         }
     );
 };
@@ -183,11 +183,11 @@ const getTasks = (setUserFunc) => {
                 );
             },
             (t, error) => {
-                console.log("db error load tasks");
-                console.log(error);
+                // console.log("db error load tasks");
+                // console.log(error);
             },
             (_t, _success) => {
-                console.log("Retrieved tasks");
+                // console.log("Retrieved tasks");
             }
         );
     });
@@ -195,7 +195,7 @@ const getTasks = (setUserFunc) => {
 
 /******* get specific tasks given a category id */
 const getSpecficTasks = async (taskID, setUserFunc) => {
-    console.log("TASK ID IS: ", taskID);
+    // console.log("TASK ID IS: ", taskID);
     return new Promise(async (resolve, reject) => {
         db.transaction(
             (tx) => {
@@ -204,17 +204,17 @@ const getSpecficTasks = async (taskID, setUserFunc) => {
                     [taskID],
                     (_, { rows: { _array } }) => {
                         setUserFunc(_array);
-                        //console.log(_array);
+                        //// console.log(_array);
                     }
                 );
             },
             (t, error) => {
-                console.log("db error in try to obtain getSpecific Tasks");
-                console.log(error);
+                // console.log("db error in try to obtain getSpecific Tasks");
+                // console.log(error);
                 reject(error);
             },
             (_t, _success) => {
-                console.log("Retrieved Specific Tasks");
+                // console.log("Retrieved Specific Tasks");
 
                 resolve(_success);
             }
@@ -235,11 +235,11 @@ const getRewards = (setUserFunc) => {
             );
         },
         (t, error) => {
-            console.log("db error load tasks");
-            console.log(error);
+            // console.log("db error load tasks");
+            // console.log(error);
         },
         (_t, _success) => {
-            console.log("Retrieved Rewards");
+            // console.log("Retrieved Rewards");
         }
     );
 };
@@ -256,11 +256,11 @@ const getIcons = (setUserFunc) => {
             );
         },
         (t, error) => {
-            console.log("db error load tasks");
-            console.log(error);
+            // console.log("db error load tasks");
+            // console.log(error);
         },
         (_t, _success) => {
-            console.log("Retrieved Icons");
+            // console.log("Retrieved Icons");
         }
     );
 };
@@ -275,8 +275,8 @@ const insertItem = (item, successFunc) => {
             ]);
         },
         (t, error) => {
-            console.log("db error INSERT ITEM");
-            console.log(error);
+            // console.log("db error INSERT ITEM");
+            // console.log(error);
         },
         (t, success) => {
             successFunc();
@@ -298,8 +298,8 @@ const insertCategory = (
             ]);
         },
         (t, error) => {
-            console.log("db error INSERT CATEGORY");
-            console.log(error);
+            // console.log("db error INSERT CATEGORY");
+            // console.log(error);
         },
         (t, success) => {
             successFunc();
@@ -315,18 +315,18 @@ const getUsers = async (setUserFunc) => {
                     "select * from users",
                     [],
                     (_, { rows: { _array } }) => {
-                        console.log("_array" + _array.length);
+                        // console.log("_array" + _array.length);
                         setUserFunc(_array);
                     }
                 );
             },
             (t, error) => {
-                console.log("db error load users");
-                console.log(error);
+                // console.log("db error load users");
+                // console.log(error);
                 reject(error);
             },
             (_t, _success) => {
-                console.log("loaded users" + _t);
+                // console.log("loaded users" + _t);
                 resolve(_success);
             }
         );
@@ -341,18 +341,18 @@ const getKids = async (setUserFunc) => {
                     "select * from users where is_parent = 0",
                     [],
                     (_, { rows: { _array } }) => {
-                        console.log("_array" + _array.length);
+                        // console.log("_array" + _array.length);
                         setUserFunc(_array);
                     }
                 );
             },
             (t, error) => {
-                console.log("db error load kids");
-                console.log(error);
+                // console.log("db error load kids");
+                // console.log(error);
                 reject(error);
             },
             (_t, _success) => {
-                console.log("loaded kids" + _t);
+                // console.log("loaded kids" + _t);
                 resolve(_success);
             }
         );
@@ -360,7 +360,7 @@ const getKids = async (setUserFunc) => {
 };
 
 const removeKid = async (userId) => {
-    console.log("****userId = ", userId);
+    // console.log("****userId = ", userId);
     return new Promise(async (resolve, reject) => {
         db.transaction(
             (tx) => {
@@ -368,18 +368,18 @@ const removeKid = async (userId) => {
                     "delete from users where user_id = ?",
                     [userId],
                     (_, { rows: { _array } }) => {
-                        console.log("_array" + _array.length);
+                        // console.log("_array" + _array.length);
                         // setUserFunc(_array);
                     }
                 );
             },
             (t, error) => {
-                console.log("db error remove kids");
-                console.log(error);
+                // console.log("db error remove kids");
+                // console.log(error);
                 reject(error);
             },
             (_t, _success) => {
-                console.log("removed kid" + _t);
+                // console.log("removed kid" + _t);
                 resolve(_success);
             }
         );
@@ -387,7 +387,7 @@ const removeKid = async (userId) => {
 };
 
 const updateKid = async (kid) => {
-    console.log("Kid = ", kid.password, kid.userId, kid.userName);
+    // console.log("Kid = ", kid.password, kid.userId, kid.userName);
     return new Promise(async (resolve, reject) => {
         db.transaction(
             (tx) => {
@@ -397,12 +397,12 @@ const updateKid = async (kid) => {
                 );
             },
             (t, error) => {
-                console.log("db error update kids");
-                console.log(error);
+                // console.log("db error update kids");
+                // console.log(error);
                 reject(error);
             },
             (_t, _success) => {
-                console.log("updated kid");
+                // console.log("updated kid");
                 resolve(_success);
             }
         );
@@ -418,18 +418,18 @@ const newUser = async (userName) => {
                     "select * from users where user_name = ?",
                     [userName],
                     (_, { rows: { _array } }) => {
-                        console.log("Hello") + _array.length;
+                        // console.log("Hello") + _array.length;
                         results = _array;
                     }
                 );
             },
             (t, error) => {
-                console.log("db error reading users");
-                console.log(error);
+                // console.log("db error reading users");
+                // console.log(error);
                 reject(results);
             },
             (_t, _success) => {
-                console.log("loaded users" + _t);
+                // console.log("loaded users" + _t);
                 resolve(results.length > 0 ? false : true);
             }
         );
@@ -440,20 +440,20 @@ const insertUser = async (user, successFunc) => {
     return new Promise(async (resolve, reject) => {
         db.transaction(
             (tx) => {
-                console.log("insertUser" + user.username);
+                // console.log("insertUser" + user.username);
                 const a = tx.executeSql(
                     "insert into users (user_name, is_parent, password) values (?,?,?)",
                     [user.username, user.isParent ? 1 : 0, user.password]
                 );
-                console.log(a);
+                // console.log(a);
             },
             (t, error) => {
-                console.log("db error insert users");
-                console.log(error);
+                // console.log("db error insert users");
+                // console.log(error);
                 reject(error);
             },
             (_t, _success) => {
-                console.log("insert users success" + _t);
+                // console.log("insert users success" + _t);
                 successFunc(user); //test
                 resolve(_success);
             }
@@ -526,8 +526,8 @@ const insertUser = async (user, successFunc) => {
 //           ]);
 //         },
 //         (t, error) => {
-//           console.log("db error insert categories");
-//           console.log(error);
+//           // console.log("db error insert categories");
+//           // console.log(error);
 //           reject(error);
 //         },
 //         (_t, _success) => {
@@ -539,7 +539,7 @@ const insertUser = async (user, successFunc) => {
 // };
 
 // const updateKid = async (kid) => {
-//   console.log("Kid = ", kid.password, kid.userId, kid.userName);
+//   // console.log("Kid = ", kid.password, kid.userId, kid.userName);
 //   return new Promise(async (resolve, reject) => {
 //     db.transaction(
 //       (tx) => {
@@ -549,12 +549,12 @@ const insertUser = async (user, successFunc) => {
 //         );
 //       },
 //       (t, error) => {
-//         console.log("db error update kids");
-//         console.log(error);
+//         // console.log("db error update kids");
+//         // console.log(error);
 //         reject(error);
 //       },
 //       (_t, _success) => {
-//         console.log("updated kid");
+//         // console.log("updated kid");
 //         resolve(_success);
 //       }
 //     );
@@ -570,18 +570,18 @@ const insertUser = async (user, successFunc) => {
 //           "select * from users where user_name = ?",
 //           [userName],
 //           (_, { rows: { _array } }) => {
-//             console.log("Hello") + _array.length;
+//             // console.log("Hello") + _array.length;
 //             results = _array;
 //           }
 //         );
 //       },
 //       (t, error) => {
-//         console.log("db error reading users");
-//         console.log(error);
+//         // console.log("db error reading users");
+//         // console.log(error);
 //         reject(results);
 //       },
 //       (_t, _success) => {
-//         console.log("loaded users" + _t);
+//         // console.log("loaded users" + _t);
 //         resolve(results.length > 0 ? false : true);
 //       }
 //     );
@@ -592,20 +592,20 @@ const insertUser = async (user, successFunc) => {
 //   return new Promise(async (resolve, reject) => {
 //     db.transaction(
 //       (tx) => {
-//         console.log("insertUser" + user.username);
+//         // console.log("insertUser" + user.username);
 //         const a = tx.executeSql(
 //           "insert into users (user_name, is_parent, password) values (?,?,?)",
 //           [user.username, user.isParent ? 1 : 0, user.password]
 //         );
-//         console.log(a);
+//         // console.log(a);
 //       },
 //       (t, error) => {
-//         console.log("db error insertUser");
-//         console.log(error);
+//         // console.log("db error insertUser");
+//         // console.log(error);
 //         reject(error);
 //       },
 //       (t, success) => {
-//         console.log("t =" + t);
+//         // console.log("t =" + t);
 //         successFunc(user);
 //         resolve(success);
 //       }
@@ -647,8 +647,8 @@ const setupUsersAsync = async () => {
                 ]);
             },
             (t, error) => {
-                console.log("db error insertUser");
-                console.log(error);
+                // console.log("db error insertUser");
+                // console.log(error);
                 resolve();
             },
             (t, success) => {
@@ -696,8 +696,8 @@ const setupUsersAsync = async () => {
                 );
             },
             (t, error) => {
-                console.log("db error on INSERT CATEGORIES");
-                console.log(error);
+                // console.log("db error on INSERT CATEGORIES");
+                // console.log(error);
                 resolve();
             },
             (t, success) => {
@@ -777,8 +777,8 @@ const setupUsersAsync = async () => {
                 );
             },
             (t, error) => {
-                console.log("db error on INSERT TASKS");
-                console.log(error);
+                // console.log("db error on INSERT TASKS");
+                // console.log(error);
                 resolve();
             },
             (t, success) => {
@@ -797,8 +797,8 @@ const setupUsersAsync = async () => {
                 );
             },
             (t, error) => {
-                console.log("db error on INSERT REWARDFS");
-                console.log(error);
+                // console.log("db error on INSERT REWARDFS");
+                // console.log(error);
                 resolve();
             },
             (t, success) => {
@@ -846,8 +846,8 @@ const setupUsersAsync = async () => {
                 );
             },
             (t, error) => {
-                console.log("db error on INSERT icon");
-                console.log(error);
+                // console.log("db error on INSERT icon");
+                // console.log(error);
                 resolve();
             },
             (t, success) => {

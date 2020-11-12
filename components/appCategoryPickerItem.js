@@ -5,15 +5,15 @@ import Icon from "./Icon";
 import Text from "./appText";
 
 function appCategoryPickerItem({ item, onPress, numColumns }) {
-    //console.log(`The item is: `, item);
+    //// console.log(`The item is: `, item);
     var widthStyle = null;
 
     // the below determines the width percentage to be used depending on teh number of columns that will need to be displayed.
     if (numColumns % 2 === 0) {
-        //console.log("2 columns");
+        //// console.log("2 columns");
         widthStyle = "50%";
     } else if (numColumns % 3 === 0) {
-        //console.log("3 columns");
+        //// console.log("3 columns");
         widthStyle = "33%";
     } else if (numColumns === 1) {
         widthStyle = "100%";

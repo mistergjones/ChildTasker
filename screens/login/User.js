@@ -11,8 +11,8 @@ import colours from "../../config/colours";
 function User({ username, color, iconName, onPress, icon, uri }) {
     const navigation = useNavigation();
     const { user, setSwitchUserName, setSwitchUser } = useContext(AuthContext);
-    console.log("icon = " + icon);
-    console.log("uri = " + uri);
+    // console.log("icon = " + icon);
+    // console.log("uri = " + uri);
     return (
         <TouchableOpacity style={styles.container} onPress={onPress}>
             {icon ? (

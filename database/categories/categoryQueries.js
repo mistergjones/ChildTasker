@@ -22,12 +22,12 @@ const getCategories = (setUserFunc) => {
                 );
             },
             (t, error) => {
-                console.log("db error load CATEGORIES");
-                console.log(error);
+                // console.log("db error load CATEGORIES");
+                // console.log(error);
                 reject(error);
             },
             (_t, _success) => {
-                console.log("Retrieved CATEGORIES");
+                // console.log("Retrieved CATEGORIES");
                 resolve(_success);
             }
         );
@@ -53,18 +53,18 @@ const insertCategory = (
             );
         },
         (t, error) => {
-            console.log("db error INSERT CATEGORY");
-            console.log(error);
+            // console.log("db error INSERT CATEGORY");
+            // console.log(error);
         },
         (t, success) => {
-            console.log("CATEGORY insertion was successful");
+            // console.log("CATEGORY insertion was successful");
             successFunc();
         }
     );
 };
 
 const removeCategory = async (task_id) => {
-    console.log("Category ID is:  = ", task_id);
+    // console.log("Category ID is:  = ", task_id);
     return new Promise(async (resolve, reject) => {
         db.transaction(
             (tx) => {
@@ -72,18 +72,18 @@ const removeCategory = async (task_id) => {
                     "delete from categories where category_id = ?",
                     [task_id],
                     (_, { rows: { _array } }) => {
-                        console.log("_array" + _array.length);
+                        // console.log("_array" + _array.length);
                         // setUserFunc(_array);
                     }
                 );
             },
             (t, error) => {
-                console.log("db error in remove CAtegory");
-                console.log(error);
+                // console.log("db error in remove CAtegory");
+                // console.log(error);
                 reject(error);
             },
             (_t, _success) => {
-                console.log("removed Category" + _t);
+                // console.log("removed Category" + _t);
                 resolve(_success);
             }
         );
@@ -92,15 +92,15 @@ const removeCategory = async (task_id) => {
 
 // update category
 const updateCategory = async (category) => {
-    console.log(
-        "Category = ",
+    // console.log(
+    //     "Category = ",
 
-        category.category_name,
-        category.category_icon,
-        category.category_colour,
+    //     category.category_name,
+    //     category.category_icon,
+    //     category.category_colour,
 
-        category.category_id
-    );
+    //     category.category_id
+    // );
     return new Promise(async (resolve, reject) => {
         db.transaction(
             (tx) => {
@@ -115,12 +115,12 @@ const updateCategory = async (category) => {
                 );
             },
             (t, error) => {
-                console.log("db error update category");
-                console.log(`The error in updateCategory is:`, error);
+                // console.log("db error update category");
+                // console.log(`The error in updateCategory is:`, error);
                 reject(error);
             },
             (_t, _success) => {
-                console.log("updated Category");
+                // console.log("updated Category");
                 resolve(_success);
             }
         );
