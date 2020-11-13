@@ -16,8 +16,13 @@
         "assetBundlePatterns": ["**/*"],
         "ios": {
             "supportsTablet": true,
-            "bundleIdentifier": "com.mistergjones.ChildTasker",
+            "bundleIdentifier": "com.mistergjones.childtasker",
             "buildNumber": "1.0.0"
+        },
+        "android": {
+            "package": "com.mistergjones.childtasker",
+            "versionCode": 1,
+            "permissions": []
         },
         "web": {
             "favicon": "./assets/favicon.png"
