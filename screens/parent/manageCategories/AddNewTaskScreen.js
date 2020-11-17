@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import {
+    Alert,
     View,
     StyleSheet,
     TextInput,
@@ -36,6 +37,8 @@ import {
     establishCategoryTasksListInObjectFormat,
     establishIconListInObjectFormat,
 } from "../../../helpers/createObjectLists";
+
+import { checkForDuplicatesTasknamesAndTaskPoints } from "../../../helpers/checkForDuplicateTasknameAndPoints";
 
 export default function AddNewTaskScreen({ navigation }) {
     // need to utilise usersContext to make use of SQL
@@ -142,6 +145,7 @@ export default function AddNewTaskScreen({ navigation }) {
     // this function is to set the status of categories
     const handleSelectCategoryItem = (item) => {
         setSelectedCategoryItem(item);
+        //console.log("GLEN: what is going here?", item);
     };
 
     // this function is to capture the state is what has bene written for new task name
@@ -169,6 +173,31 @@ export default function AddNewTaskScreen({ navigation }) {
     //         navigation.navigate(screens.AddCategory);
     //     } catch (error) {
     //         // console.log("There as an error inserting a NEW TASK");
+    //     }
+    // };
+
+    // const checkForDuplicateTasksAndPoints = (task_name, task_points) => {
+    //     for (var i = 0; i < tasks.length; i++) {
+    //         if (
+    //             tasks[i].task_name.toLowerCase() === task_name.toLowerCase() &&
+    //             tasks[i].task_points == task_points
+    //         ) {
+    //             Alert.alert(
+    //                 "Cannot Submit Changes",
+    //                 "An existing task with the same points already exist. Please try again.",
+    //                 [
+    //                     {
+    //                         text: "Close",
+    //                         onPress: () => {
+    //                             // console.log("Cancel Pressed")
+    //                         },
+    //                         style: "cancel",
+    //                     },
+    //                 ],
+    //                 { cancelable: false }
+    //             );
+    //             return true;
+    //         }
     //     }
     // };
 
@@ -208,22 +237,39 @@ export default function AddNewTaskScreen({ navigation }) {
                         task_colour: "",
                         task_icon: "",
                         task_points: "",
-                        // category_id: null,
+                        category_id: null,
                     }}
                     onSubmit={async (fields, { setFieldError }) => {
-                        try {
-                            await addNewTask({
-                                task_name: fields.task_name,
-                                task_points: fields.task_points,
-                                task_colour: selectedColourItem.backgroundColor,
-                                task_icon: selectedIconItem.icon,
-                            });
-                            // console.log("WE are inside the try await ADD NEW TASK", fields);
-                            // console.log("Finished INSERTING TASK");
+                        // check for possible duplicate task name and task points before insertion
+                        // var checkResult = checkForDuplicateTasksAndPoints(
+                        //     fields.task_name,
+                        //     fields.task_points
+                        // );
 
-                            navigation.navigate(screens.AddCategory);
-                        } catch (error) {
-                            // console.log("ADD NEW TASK eRROR  = ", error);
+                        var checkResult = checkForDuplicatesTasknamesAndTaskPoints(
+                            tasks,
+                            fields.task_name,
+                            fields.task_points
+                        );
+
+                        // if tehre is no match (i.e a unique task name and points), proceed with task insertion
+                        if (checkResult !== true) {
+                            try {
+                                await addNewTask({
+                                    task_name: fields.task_name,
+                                    task_points: fields.task_points,
+                                    task_colour:
+                                        selectedColourItem.backgroundColor,
+                                    task_icon: selectedIconItem.icon,
+                                    category_id: selectedCategoryItem.value,
+                                });
+                                // console.log("WE are inside the try await ADD NEW TASK", fields);
+                                console.log("Finished INSERTING TASK");
+
+                                navigation.navigate(screens.AddCategory);
+                            } catch (error) {
+                                // console.log("ADD NEW TASK eRROR  = ", error);
+                            }
                         }
                     }}
                     validationSchema={taskSchema}

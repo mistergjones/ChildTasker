@@ -35,6 +35,7 @@ import { UsersContext } from "../../../context/UsersContext";
 
 import {
     establishCategoryTasksListInObjectFormat,
+    establishTasksListInObjectFormat,
     establishRewardListInObjectFormat,
     establishKidListInObjectFormat,
 } from "../../../helpers/createObjectLists";
@@ -126,7 +127,8 @@ function CreateTaskListForChildScreen({ navigation }) {
     // Tasks - make the selectable task list
     //*************************************/
     var taskList = [];
-    taskList = establishCategoryTasksListInObjectFormat(tasks);
+    taskList = establishTasksListInObjectFormat(tasks);
+    // console.log("Does the new task appear here?", tasks);
 
     //************************************ */
     // Kids - make the selectabel kid list

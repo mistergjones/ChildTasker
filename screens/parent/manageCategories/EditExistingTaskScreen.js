@@ -32,6 +32,8 @@ import * as Yup from "yup";
 
 import { renderOddColumnsNicely } from "../../../helpers/createBlankItem";
 
+import { checkForDuplicatesTasknamesAndTaskPoints } from "../../../helpers/checkForDuplicateTasknameAndPoints";
+
 export default function EditExistingTaskScreen({ navigation }) {
     // need to utilise usersContext to make use of SQL
     const usersContext = useContext(UsersContext);
@@ -97,33 +99,36 @@ export default function EditExistingTaskScreen({ navigation }) {
                         category_id: "",
                     }}
                     onSubmit={async (fields, { setFieldError }) => {
-                        // console.log(
-                        //     selectedTask.value,
-                        //     fields.task_name,
-                        //     selectedTask.backgroundColor,
-                        //     selectedTask.icon,
-                        //     fields.task_points,
-                        //     selectedTask.category_id
-                        // );
-                        try {
-                            await updateTask({
-                                task_id: Number(selectedTask.value),
-                                task_name: fields.task_name,
-                                task_colour: selectedTask.backgroundColor,
-                                task_icon: selectedTask.icon,
-                                task_points: Number(fields.task_points),
-                                category_id: Number(selectedTask.category_id),
-                            });
+                        var checkResult = checkForDuplicatesTasknamesAndTaskPoints(
+                            tasks,
+                            fields.task_name,
+                            fields.task_points
+                        );
 
-                            // console.log("WE are inside the try await edit existing", fields);
-                            // console.log("Finished updating task");
+                        // if tehre is no match (i.e a unique task name and points), proceed with task insertion
+                        if (checkResult !== true) {
+                            try {
+                                await updateTask({
+                                    task_id: Number(selectedTask.value),
+                                    task_name: fields.task_name,
+                                    task_colour: selectedTask.backgroundColor,
+                                    task_icon: selectedTask.icon,
+                                    task_points: Number(fields.task_points),
+                                    category_id: Number(
+                                        selectedTask.category_id
+                                    ),
+                                });
 
-                            navigation.navigate(screens.AddCategory);
-                        } catch (error) {
-                            // console.log(
-                            //     "Edit Existing Task screen with update error = ",
-                            //     error
-                            // );
+                                // console.log("WE are inside the try await edit existing", fields);
+                                // console.log("Finished updating task");
+
+                                navigation.navigate(screens.AddCategory);
+                            } catch (error) {
+                                // console.log(
+                                //     "Edit Existing Task screen with update error = ",
+                                //     error
+                                // );
+                            }
                         }
                     }}
                     validationSchema={taskSchema}
