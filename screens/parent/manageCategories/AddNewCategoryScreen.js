@@ -36,6 +36,8 @@ const categorySchema = Yup.object().shape({
     category_name: Yup.string().required().label("Category name"),
 });
 
+import { checkForDuplicateCategoryName } from "../../../helpers/checkForDuplicateCategoryName";
+
 function AddNewCategoryScreen({ navigation }) {
     // need to utilise usersContext to make use of SQL
     const usersContext = useContext(UsersContext);
@@ -150,27 +152,25 @@ function AddNewCategoryScreen({ navigation }) {
                     fields.category_colour =
                         selectedIconBackgroundColor.backgroundColor;
 
-                    //   console.log(
-                    //     "We are adding the following Category_name: " + fields.category_name
-                    //   );
-                    // console.log(
-                    //     "We are adding teh following icon: :",
+                    var checkResult = checkForDuplicateCategoryName(
+                        categories,
+                        fields.category_name
+                    );
 
-                    //     fields.category_icon
-                    //   );
-                    // console.log("WE are adding the colour: ", fields.category_colour);
-                    // console.log(fields);
-                    try {
-                        // await addNewCategory(
-                        //     fields.category_name,
-                        //     selectedIcon.icon,
-                        //     selectedIconBackgroundColor.backgroundColor
-                        // );
-                        await addNewCategory(fields);
+                    // if tehre is no match (i.e a unique category name), proceed with category insertion
+                    if (checkResult !== true) {
+                        try {
+                            // await addNewCategory(
+                            //     fields.category_name,
+                            //     selectedIcon.icon,
+                            //     selectedIconBackgroundColor.backgroundColor
+                            // );
+                            await addNewCategory(fields);
 
-                        navigation.navigate(screens.AddCategory);
-                    } catch (error) {
-                        // console.log("error = ", error);
+                            navigation.navigate(screens.AddCategory);
+                        } catch (error) {
+                            // console.log("error = ", error);
+                        }
                     }
                 }}
                 validationSchema={categorySchema}

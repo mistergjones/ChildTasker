@@ -2,13 +2,13 @@
     "expo": {
         "name": "ChildTasker",
         "slug": "ChildTasker",
-        "version": "1.0.0",
+        "version": "1.0.1",
         "orientation": "portrait",
         "icon": "./assets/Child_Tasker_Icon.png",
         "splash": {
-            "image": "./assets/splash.png",
+            "image": "./assets/avatar/9.png",
             "resizeMode": "contain",
-            "backgroundColor": "#ffffff"
+            "backgroundColor": "#A42CD6"
         },
         "updates": {
             "fallbackToCacheTimeout": 0
@@ -16,8 +16,13 @@
         "assetBundlePatterns": ["**/*"],
         "ios": {
             "supportsTablet": true,
-            "bundleIdentifier": "com.mistergjones.ChildTasker",
-            "buildNumber": "1.0.0"
+            "bundleIdentifier": "com.mistergjones.childtasker",
+            "buildNumber": "1.0.1"
+        },
+        "android": {
+            "package": "com.mistergjones.childtasker",
+            "versionCode": 2,
+            "permissions": []
         },
         "web": {
             "favicon": "./assets/favicon.png"

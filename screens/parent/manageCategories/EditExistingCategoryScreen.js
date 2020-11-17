@@ -25,6 +25,8 @@ import * as Yup from "yup";
 
 import { renderOddColumnsNicely } from "../../../helpers/createBlankItem";
 
+import { checkForDuplicateCategoryName } from "../../../helpers/checkForDuplicateCategoryName";
+
 export default function EditExistingCategoryScreen({ navigation }) {
     // need to obtain all the categires furst,
     // need to utilise usersContext to make use of SQL
@@ -116,22 +118,30 @@ export default function EditExistingCategoryScreen({ navigation }) {
                         category_icon: "",
                     }}
                     onSubmit={async (fields, { setFieldError }) => {
-                        try {
-                            await updateCategory({
-                                category_id: Number(selectedItem.value),
-                                category_name: fields.category_name,
-                                category_colour: selectedItem.backgroundColor,
-                                category_icon: selectedItem.icon,
-                            });
-                            // console.log("WE are inside the try await edit existing", fields);
-                            // console.log("Finished updating Category");
+                        var checkResult = checkForDuplicateCategoryName(
+                            categories,
+                            fields.category_name
+                        );
+                        // if tehre is no match (i.e a unique category name), proceed with category insertion
+                        if (checkResult !== true) {
+                            try {
+                                await updateCategory({
+                                    category_id: Number(selectedItem.value),
+                                    category_name: fields.category_name,
+                                    category_colour:
+                                        selectedItem.backgroundColor,
+                                    category_icon: selectedItem.icon,
+                                });
+                                // console.log("WE are inside the try await edit existing", fields);
+                                // console.log("Finished updating Category");
 
-                            navigation.navigate(screens.AddCategory);
-                        } catch (error) {
-                            // console.log(
-                            //   "Edit Existing Catagory screen with update error = ",
-                            //   error
-                            // );
+                                navigation.navigate(screens.AddCategory);
+                            } catch (error) {
+                                // console.log(
+                                //   "Edit Existing Catagory screen with update error = ",
+                                //   error
+                                // );
+                            }
                         }
                     }}
                     validationSchema={categorySchema}
