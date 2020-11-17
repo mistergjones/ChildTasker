@@ -148,6 +148,7 @@ export default function EditExistingCategoryScreen({ navigation }) {
                                 selectedItem={selectedItem}
                                 // justifyContent="center"
                                 width="90%"
+                                showModal={true}
                             />
 
                             {selectedItem && (

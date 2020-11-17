@@ -264,6 +264,7 @@ export default function AddNewTaskScreen({ navigation }) {
                                 placeholder="Select an Icon"
                                 justifyContent="center"
                                 width="90%"
+                                showModal={false}
                             />
 
                             {selectedIconItem && (
@@ -278,6 +279,7 @@ export default function AddNewTaskScreen({ navigation }) {
                                     placeholder="Select a background colour"
                                     justifyContent="center"
                                     width="90%"
+                                    showModal={true}
                                 />
                             )}
 
@@ -293,6 +295,7 @@ export default function AddNewTaskScreen({ navigation }) {
                                     placeholder="Assign task to category..."
                                     justifyContent="center"
                                     width="90%"
+                                    showModal={true}
                                 />
                             )}
 

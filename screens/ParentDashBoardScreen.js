@@ -19,10 +19,15 @@ function ParentDashBoardScreen({ navigation }) {
                 <AppHeading title="Parent Dashboard" />
 
                 <AppButton
-                    title="Create Tasks for Child"
+                    title="Manage Child Details"
                     onPress={() =>
-                        navigation.navigate(screens.CreateTaskListForChild)
+                        navigation.navigate(screens.ParentChildDashBoard)
                     }
+                />
+
+                <AppButton
+                    title="Manage Rewards"
+                    onPress={() => navigation.navigate(screens.ManageRewards)}
                 />
 
                 <AppButton
@@ -31,9 +36,15 @@ function ParentDashBoardScreen({ navigation }) {
                 />
 
                 <AppButton
-                    title="Manage Rewards"
-                    onPress={() => navigation.navigate(screens.ManageRewards)}
+                    title="Create Tasks for Child"
+                    onPress={() =>
+                        navigation.navigate(screens.CreateTaskListForChild)
+                    }
                 />
+
+
+
+
 
                 {/* <AppButton
                 title="Track Pocket Money"
@@ -45,12 +56,7 @@ function ParentDashBoardScreen({ navigation }) {
                 onPress={() => navigation.navigate(screens.ViewAccomplishments)}
             /> */}
 
-                <AppButton
-                    title="Manage Child Details"
-                    onPress={() =>
-                        navigation.navigate(screens.ParentChildDashBoard)
-                    }
-                />
+
 
                 {/* <AppButton
                 title="View Database users"

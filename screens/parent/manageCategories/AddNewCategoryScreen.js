@@ -200,6 +200,7 @@ function AddNewCategoryScreen({ navigation }) {
                             onSelectItem={handleSelectIcon}
                             selectedItem={selectedIcon}
                             width="90%"
+                            showModal={false}
                         />
 
                         {selectedIcon && (
@@ -213,6 +214,7 @@ function AddNewCategoryScreen({ navigation }) {
                                 onSelectItem={handleSelectBackgroundColor}
                                 selectedItem={selectedIconBackgroundColor}
                                 width="90%"
+                                showModal={true}
                             />
                         )}
 

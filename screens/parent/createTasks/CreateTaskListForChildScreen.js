@@ -12,7 +12,7 @@ import {
 import AppButton from "../../../components/appButton";
 import AppHeading from "../../../components/appHeading.js";
 import colours from "../../../config/colours";
-
+import _ from "lodash"
 import AppLabel from "../../../components/appLabel";
 // the below is to pass screens/child as per mosh bideo
 import Screen from "../../../components/appScreen";
@@ -149,7 +149,7 @@ function CreateTaskListForChildScreen({ navigation }) {
         for (let x = 0; x < rewards.length; x++) {
             let reward = rewards[x];
             // Flag used to determine if the reward is not assigned to the child already
-            let noMatch = true;
+            let match = false;
             // loop through chores
             for (let i = 0; i < chores.length; i++) {
                 let chore = chores[i];
@@ -161,12 +161,12 @@ function CreateTaskListForChildScreen({ navigation }) {
                     reward.reward_id === chore.reward_id &&
                     chore.kid_name === kidName
                 ) {
-                    noMatch = false;
+                    match = true;
                     break;
                 }
             }
             // if there is no match add rewards to filtered rewrds
-            if (noMatch) {
+            if (match) {
                 filteredRewards.push(reward);
             }
         }
@@ -237,7 +237,7 @@ function CreateTaskListForChildScreen({ navigation }) {
         var filteredRewards = getRewardsThaHaveNotBeenAssignedToKid(item.label);
 
         // set the rewrads list to only contain rewards that have not been assigned for the child selected
-        setRewardList(establishRewardListInObjectFormat(filteredRewards));
+        setRewardList(establishRewardListInObjectFormat(rewards));
     };
 
     // this function is to set the status of only the kids mapped to kids
@@ -313,8 +313,11 @@ function CreateTaskListForChildScreen({ navigation }) {
 
     // this function is submit the required fields to the database. TABLE: kidchores
     const handleSubmitChangesToDatabase = async () => {
+
         try {
             if (totalTaskPoints >= selectedReward.points) {
+                const rewardUniqueId = _.uniqueId();
+                console.log("rewardUniqueId" + rewardUniqueId)
                 // if (totalTaskPoints > -1) {
                 // need to iterate through each object to insert the item for the kidchore table.
                 for (
@@ -324,6 +327,7 @@ function CreateTaskListForChildScreen({ navigation }) {
                 ) {
                     // break each "record" into an object before database insertion
                     const items = {
+                        rewardUniqueId: rewardUniqueId,
                         category_id:
                             runningTasksToAssign[loopIterator].category_id,
                         category_name:
@@ -442,7 +446,7 @@ function CreateTaskListForChildScreen({ navigation }) {
                     reward_name: "",
                     reward_Points: "",
                 }}
-                // onSubmit={(values) => // console.log(values)}
+            // onSubmit={(values) => // console.log(values)}
             >
                 {/* <AppPicker
                     items={kidList}
@@ -474,6 +478,7 @@ function CreateTaskListForChildScreen({ navigation }) {
                         onSelectItem={handleSelectReward}
                         selectedItem={selectedReward}
                         width="90%"
+                        showModal={true}
                     />
                 )}
                 {selectedReward && (
@@ -486,6 +491,7 @@ function CreateTaskListForChildScreen({ navigation }) {
                         onSelectItem={handleSelectItem}
                         selectedItem={selectedCategory}
                         width="90%"
+                        showModal={true}
                     />
                 )}
                 {selectedCategory && (
@@ -499,6 +505,7 @@ function CreateTaskListForChildScreen({ navigation }) {
                         onSelectItem={handleSelectTask}
                         selectedItem={selectedTask}
                         width="90%"
+                        showModal={true}
                     />
                 )}
                 {selectedKid && selectedReward && (
@@ -527,7 +534,7 @@ function CreateTaskListForChildScreen({ navigation }) {
                         onPress={handleResetDropDownAndContinue}
                     />
                 )}
-                {selectedKid && saveAllChangesButtonEnabled && (
+                {selectedKid && (totalTaskPoints > 0 && totalTaskPoints >= selectedReward.points) && (
                     <AppButton
                         title="Save"
                         onPress={handleSubmitChangesToDatabase}

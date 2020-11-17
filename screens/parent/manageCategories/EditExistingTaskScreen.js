@@ -140,6 +140,7 @@ export default function EditExistingTaskScreen({ navigation }) {
                                 selectedItem={selectedTask}
                                 justifyContent="center"
                                 width="90%"
+                                showModal={true}
                             />
                             {selectedTask && (
                                 <AppTextInput

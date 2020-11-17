@@ -16,6 +16,7 @@ import PickerItem from "./appPickerItem";
 import Screen from "./appScreen";
 import colours from "../config/colours";
 import AppButton from "./appButton";
+import AppTextInput from "./AppTextInput";
 
 function AppPicker({
     icon,
@@ -28,10 +29,12 @@ function AppPicker({
     width = "100%",
     marginLeft = 0,
     onPickerPress,
+    showModal = false
 }) {
     // // console.log("Placeholder", placeholder);
     // // console.log("selectedItem", selectedItem);
-    const [modalVisible, setModalVisible] = useState(false);
+    const [modalVisible, setModalVisible] = useState(showModal);
+    const [itemsList, setItemsList] = useState(items)
     // // console.log("selected item keys = ", Object.keys(selectedItem))
     return (
         <SafeAreaView>
@@ -52,8 +55,8 @@ function AppPicker({
                     {selectedItem ? (
                         <Text style={styles.text}>{selectedItem.label}</Text>
                     ) : (
-                        <Text style={styles.placeholder}>{placeholder}</Text>
-                    )}
+                            <Text style={styles.placeholder}>{placeholder}</Text>
+                        )}
 
                     <MaterialCommunityIcons
                         name="chevron-down"
@@ -69,9 +72,25 @@ function AppPicker({
                         onPress={() => setModalVisible(false)}
                         style={{ color: colours.defaultButtonColour }}
                     />
+                    <AppTextInput
+                        labelText={"Search"}
+                        placeholder={"Enter search criteria"}
+                        icon={"magnify"}
+                        onChangeText={(text) => {
+                            setItemsList(items.filter((item) => {
+                                if (
+                                    String(item.label)
+                                        .toLowerCase()
+                                        .includes(text.toLowerCase())
+                                )
+                                    return item
+                                return ''
+                            }))
+
+                        }} />
                     <FlatList
                         contentContainerStyle={styles.pickerItem}
-                        data={items}
+                        data={itemsList}
                         keyExtractor={(item) => item.value.toString()}
                         numColumns={numberOfColumns}
                         renderItem={({ item }) => (
@@ -121,6 +140,12 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
     },
+    search: {
+        // backgroundColor: "grey",
+        width: "90%",
+
+    }
+
 });
 
 export default AppPicker;

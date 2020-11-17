@@ -111,6 +111,7 @@ export default function RemoveCategoryScreen({ navigation }) {
                     onSelectItem={handleSelectItem}
                     justifyContent="center"
                     width="90%"
+                    showModal={true}
                 />
 
                 {selectedItem && (
