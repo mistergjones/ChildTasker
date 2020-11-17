@@ -28,6 +28,7 @@ function ChoreStatusScreen({ navigation, route }) {
         );
         navigation.navigate(screens.ChoreProgress, {
             chores: route.params.chores,
+            chore_id: route.params.chore_id
         });
     };
     return (

@@ -28,10 +28,11 @@ function UserPicker({
     selectedItem,
     //width = "100%",
     marginLeft = 12,
+    showModal = true
 }) {
     // console.log("Placeholder", placeholder);
     // console.log("selectedItem", selectedItem);
-    const [modalVisible, setModalVisible] = useState(false);
+    const [modalVisible, setModalVisible] = useState(showModal);
 
     // console.log("What is the items?", items.length);
     // console.log("selected item", selectedItem)
@@ -49,32 +50,32 @@ function UserPicker({
                                     style={styles.icon}
                                 />
                             ) : (
-                                <Image
-                                    style={{
-                                        width: 30,
-                                        height: 30,
-                                        borderRadius: 15,
-                                    }}
-                                    source={{ uri: selectedItem.uri }}
-                                />
-                            )
+                                    <Image
+                                        style={{
+                                            width: 30,
+                                            height: 30,
+                                            borderRadius: 15,
+                                        }}
+                                        source={{ uri: selectedItem.uri }}
+                                    />
+                                )
                         ) : (
-                            <MaterialCommunityIcons
-                                name={"account"}
-                                size={20}
-                                color={colours.inputIcon}
-                                style={styles.icon}
-                            />
-                        )}
+                                <MaterialCommunityIcons
+                                    name={"account"}
+                                    size={20}
+                                    color={colours.inputIcon}
+                                    style={styles.icon}
+                                />
+                            )}
                         {selectedItem ? (
                             <Text style={styles.text}>
                                 {selectedItem.label}
                             </Text>
                         ) : (
-                            <Text style={styles.placeholder}>
-                                {placeholder}
-                            </Text>
-                        )}
+                                <Text style={styles.placeholder}>
+                                    {placeholder}
+                                </Text>
+                            )}
 
                         <MaterialCommunityIcons
                             name="chevron-down"

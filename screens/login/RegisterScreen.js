@@ -27,8 +27,8 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 const loginSchema = Yup.object().shape({
     username: Yup.string().required().label("Username"),
-    password: Yup.string().required().min(4).label("Password"),
-    confirmPassword: Yup.string().required().min(4).label("Confirm Password"),
+    password: Yup.string().required().length(4).label("Pin"),
+    confirmPassword: Yup.string().required().length(4).label("Confirm Pin"),
 });
 function RegisterScreen({ navigation }) {
     const {
@@ -43,7 +43,7 @@ function RegisterScreen({ navigation }) {
         UsersContext
     );
     const [alertLoaded, setAlertLoaded] = useState(firstLoad);
-    const [modalVisible, setModalVisible] = useState();
+    const [modalVisible, setModalVisible] = useState(false);
 
     useEffect(() => {
         if (firstLoad) {
@@ -69,10 +69,10 @@ function RegisterScreen({ navigation }) {
                         // console.log("pass", fields.password);
                         // console.log("cpass", fields.confirmPassword);
                         if (fields.password !== fields.confirmPassword) {
-                            setFieldError("password", "passwords do not match");
+                            setFieldError("password", "pins do not match");
                             setFieldError(
                                 "confirmPassword",
-                                "passwords do not match"
+                                "pins do not match"
                             );
 
                             return;
@@ -118,7 +118,7 @@ function RegisterScreen({ navigation }) {
                     {({ handleChange, handleSubmit, errors }) => (
                         <>
                             <AppTextInput
-                                placeholder="User Name"
+                                placeholder="Enter User Name"
                                 labelText="User Name"
                                 icon="account"
                                 onChangeText={handleChange("username")}
@@ -128,8 +128,8 @@ function RegisterScreen({ navigation }) {
                                 error={errors ? errors.username : ""}
                             />
                             <AppTextInput
-                                placeholder="Password"
-                                labelText="Password"
+                                placeholder="Enter Pin"
+                                labelText="Pin"
                                 icon="lock"
                                 secureTextEntry
                                 onChangeText={handleChange("password")}
@@ -137,10 +137,12 @@ function RegisterScreen({ navigation }) {
                                     color: colours.inputErrorMessage,
                                 }}
                                 error={errors ? errors.password : ""}
+                                maxLength={4}
+                                keyboardType="number-pad"
                             />
                             <AppTextInput
-                                placeholder="Confirm Password "
-                                labelText="Confirm Password"
+                                placeholder="Enter Confirm Pin"
+                                labelText="Confirm Pin"
                                 icon="lock"
                                 secureTextEntry
                                 onChangeText={handleChange("confirmPassword")}
@@ -148,6 +150,8 @@ function RegisterScreen({ navigation }) {
                                     color: colours.inputErrorMessage,
                                 }}
                                 error={errors ? errors.confirmPassword : ""}
+                                maxLength={4}
+                                keyboardType="number-pad"
                             />
 
                             <AppButton

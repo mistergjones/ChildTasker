@@ -82,12 +82,16 @@ const getChoresByKidName = (
                         array = _array;
                         // console.log("length = " + array.length);
                         //choresForRewards.push([array[0]]);
-
+                        array.map(chore => {
+                            console.log("chore id " + chore.chore_id + " reward name = " + chore.reward_name + "rewardUniqueId = " + chore.reward_unique_id)
+                        })
+                        console.log("kidchores length" + array.length)
                         if (array.length > 0) {
                             rewardsForChild.push({
                                 rewardName: array[0].reward_name,
                                 rewardID: array[0].reward_id,
                                 rewardIcon: array[0].reward_icon_name,
+                                rewardUniqueId: array[0].reward_unique_id,
                                 chores: [array[0]],
                             });
                         }
@@ -103,8 +107,8 @@ const getChoresByKidName = (
                                 //     rewardsForChild[x].chores[0].reward_id
                                 // );
                                 if (
-                                    chore.reward_id ===
-                                    rewardsForChild[x].chores[0].reward_id
+                                    chore.reward_unique_id ===
+                                    rewardsForChild[x].chores[0].reward_unique_id
                                 ) {
                                     //choresForRewards[x].push(chore);
                                     rewardsForChild[x].chores.push(chore);
@@ -119,6 +123,7 @@ const getChoresByKidName = (
                                     rewardName: chore.reward_name,
                                     rewardID: chore.reward_id,
                                     rewardIcon: chore.reward_icon_name,
+                                    rewardUniqueId: chore.reward_unique_id,
                                     chores: [chore],
                                 });
                             }
@@ -170,7 +175,7 @@ const insertChoresToKid = (kidChores, successFunc) => {
             (tx) => {
                 // console.log(`The kid chores are: `, kidChores);
                 tx.executeSql(
-                    "insert into kidchores (category_id, category_name, task_id, task_name, task_points, kid_id, kid_name, reward_id, reward_name, reward_points, is_completed, icon_name, reward_icon_name) values (?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                    "insert into kidchores (category_id, category_name, task_id, task_name, task_points, kid_id, kid_name, reward_id, reward_name, reward_points, is_completed, icon_name, reward_icon_name, reward_unique_id) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
                     [
                         kidChores.category_id,
                         kidChores.category_name,
@@ -185,6 +190,7 @@ const insertChoresToKid = (kidChores, successFunc) => {
                         kidChores.is_completed,
                         kidChores.icon_name,
                         kidChores.reward_icon_name,
+                        kidChores.rewardUniqueId
                     ]
                 );
             },

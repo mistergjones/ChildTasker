@@ -111,6 +111,7 @@ export default function RemoveTaskScreen({ navigation }) {
                     placeholder="Select Task to Remove"
                     justifyContent="center"
                     width="90%"
+                    showModal={true}
                 />
 
                 {selectedItem && (

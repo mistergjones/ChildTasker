@@ -12,6 +12,7 @@ import { Text } from "react-native";
 import screens from "../config/screens";
 import AppMaterialIcon from "../components/appMaterialCommunityIcon";
 import colours from "../config/colours";
+import Icon from "./Icon";
 
 function TaskIcon({
     title,
@@ -29,6 +30,7 @@ function TaskIcon({
     return (
         <TouchableOpacity
             onPress={() => {
+                console.log("chore id = " + chore_id)
                 if (!completed) {
                     navigation.navigate(screens.ChoreStatus, {
                         title,
@@ -46,11 +48,18 @@ function TaskIcon({
                 <View
                     style={{ backgroundColor: colours.white, borderRadius: 30 }}
                 >
-                    <AppMaterialIcon
+                    <Icon
+                        name={icon}
+                        size={60}
+                        color={color}
+                        backgroundColor={color}
+                    // style={styles.image}
+                    />
+                    {/* <AppMaterialIcon
                         iconName={icon}
                         iconSize={60}
                         iconColor={color}
-                    />
+                    /> */}
                 </View>
                 <Text style={styles.text}>{points}</Text>
             </View>
