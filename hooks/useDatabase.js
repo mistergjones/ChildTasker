@@ -21,7 +21,7 @@ export default function useDatabase() {
         const firstDBLoad = await getIsLoaded("firstDBLoad");
         // console.log("First db load = " + firstDBLoad);
         if (firstDBLoad) {
-            // await database.dropDatabaseTablesAsync();
+            //    await database.dropDatabaseTablesAsync();
             await database.createTablesDatabaseAsync();
             await database.loadDataIntoTablesAsync();
         }
