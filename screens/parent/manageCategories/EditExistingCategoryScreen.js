@@ -121,71 +121,74 @@ export default function EditExistingCategoryScreen({ navigation }) {
                     width="90%"
                     showModal={true}
                 />
-                {selectedItem && <Formik
-                    initialValues={{
-                        category_name: selectedItem.label,
-                        category_colour: "",
-                        category_id: "",
-                        category_icon: "",
-                    }}
-                    onSubmit={async (fields, { setFieldError }) => {
-                        var checkResult = checkForDuplicateCategoryName(
-                            categories,
-                            fields.category_name
-                        );
-                        // if tehre is no match (i.e a unique category name), proceed with category insertion
-                        if (checkResult !== true) {
-                            try {
-                                await updateCategory({
-                                    category_id: Number(selectedItem.value),
-                                    category_name: fields.category_name,
-                                    category_colour:
-                                        selectedItem.backgroundColor,
-                                    category_icon: selectedItem.icon,
-                                });
-                                // console.log("WE are inside the try await edit existing", fields);
-                                // console.log("Finished updating Category");
+                {selectedItem && (
+                    <Formik
+                        initialValues={{
+                            category_name: selectedItem.label,
+                            category_colour: "",
+                            category_id: "",
+                            category_icon: "",
+                        }}
+                        onSubmit={async (fields, { setFieldError }) => {
+                            var checkResult = checkForDuplicateCategoryName(
+                                categories,
+                                fields.category_name
+                            );
+                            // if tehre is no match (i.e a unique category name), proceed with category insertion
+                            if (checkResult !== true) {
+                                try {
+                                    await updateCategory({
+                                        category_id: Number(selectedItem.value),
+                                        category_name: fields.category_name,
+                                        category_colour:
+                                            selectedItem.backgroundColor,
+                                        category_icon: selectedItem.icon,
+                                    });
+                                    // console.log("WE are inside the try await edit existing", fields);
+                                    // console.log("Finished updating Category");
 
-                                navigation.navigate(screens.AddCategory);
-                            } catch (error) {
-                                // console.log(
-                                //   "Edit Existing Catagory screen with update error = ",
-                                //   error
-                                // );
-                            }
-                        }
-                    }}
-                    validationSchema={categorySchema}
-                >
-                    {({ handleChange, handleSubmit, errors }) => (
-                        <>
-
-
-                            {selectedItem && (
-                                <AppTextInput
-                                    placeholder="Rename Category"
-                                    labelText="New Category Name"
-                                    // labelText="Category"
-                                    icon="book-open-outline"
-                                    onChangeText={handleChange("category_name")}
-                                    errorStyle={{ color: "red" }}
-                                    error={errors ? errors.category_name : ""}
-                                    defaultValue={selectedItem.label}
-                                />
-                            )}
-
-                            <AppButton title="Save" onPress={handleSubmit} />
-
-                            <AppButton
-                                title="Return"
-                                onPress={() =>
-                                    navigation.navigate(screens.AddCategory)
+                                    navigation.navigate(screens.AddCategory);
+                                } catch (error) {
+                                    // console.log(
+                                    //   "Edit Existing Catagory screen with update error = ",
+                                    //   error
+                                    // );
                                 }
-                            />
-                        </>
-                    )}
-                </Formik>
-                }
+                            }
+                        }}
+                        validationSchema={categorySchema}
+                    >
+                        {({ handleChange, handleSubmit, errors }) => (
+                            <>
+                                {selectedItem && (
+                                    <AppTextInput
+                                        placeholder="Rename Category"
+                                        labelText="New Category Name"
+                                        // labelText="Category"
+                                        icon="book-open-outline"
+                                        onChangeText={handleChange(
+                                            "category_name"
+                                        )}
+                                        errorStyle={{ color: "red" }}
+                                        error={
+                                            errors ? errors.category_name : ""
+                                        }
+                                        defaultValue={selectedItem.label}
+                                    />
+                                )}
+
+                                <AppButton
+                                    title="Save"
+                                    onPress={handleSubmit}
+                                />
+                            </>
+                        )}
+                    </Formik>
+                )}
+                <AppButton
+                    title="Return"
+                    onPress={() => navigation.navigate(screens.AddCategory)}
+                />
                 {/* <Form
                     initialValues={{
                         category_name: "",

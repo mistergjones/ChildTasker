@@ -1,32 +1,34 @@
 {
-    "expo": {
-        "name": "ChildTasker",
-        "slug": "ChildTasker",
-        "version": "1.0.2",
-        "orientation": "portrait",
-        "icon": "./assets/Child_Tasker_Icon.png",
-        "splash": {
-            "image": "./assets/avatar/9.png",
-            "resizeMode": "contain",
-            "backgroundColor": "#A42CD6"
-        },
-        "updates": {
-            "fallbackToCacheTimeout": 0
-        },
-        "assetBundlePatterns": ["**/*"],
-        "ios": {
-            "supportsTablet": true,
-            "bundleIdentifier": "com.mistergjones.childtasker",
-            "buildNumber": "1.0.2"
-        },
-        "android": {
-            "package": "com.mistergjones.childtasker",
-            "versionCode": 3,
-            "permissions": []
-        },
-        "web": {
-            "favicon": "./assets/favicon.png"
-        },
-        "description": "An app to help parents create tasks for their children to complete"
-    }
+  "expo": {
+    "name": "ChildTasker",
+    "slug": "ChildTasker",
+    "version": "1.0.2",
+    "orientation": "portrait",
+    "icon": "./assets/Child_Tasker_Icon.png",
+    "splash": {
+      "image": "./assets/avatar/9.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#A42CD6"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.mistergjones.childtasker",
+      "buildNumber": "1.0.2"
+    },
+    "android": {
+      "package": "com.mistergjones.childtasker",
+      "versionCode": 3,
+      "permissions": []
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "description": "An app to help parents create tasks for their children to complete"
+  }
 }
