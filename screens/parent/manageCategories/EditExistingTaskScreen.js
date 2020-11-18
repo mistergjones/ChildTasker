@@ -187,17 +187,14 @@ export default function EditExistingTaskScreen({ navigation }) {
                                         onPress={handleSubmit}
                                     />
                                 )}
-
-                                <AppButton
-                                    title="Return"
-                                    onPress={() =>
-                                        navigation.navigate(screens.AddCategory)
-                                    }
-                                />
                             </>
                         )}
                     </Formik>
                 )}
+                <AppButton
+                    title="Return"
+                    onPress={() => navigation.navigate(screens.AddCategory)}
+                />
             </ScrollView>
             {/* </SafeAreaView> */}
         </Screen>

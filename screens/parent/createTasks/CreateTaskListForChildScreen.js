@@ -12,7 +12,7 @@ import {
 import AppButton from "../../../components/appButton";
 import AppHeading from "../../../components/appHeading.js";
 import colours from "../../../config/colours";
-import _ from "lodash"
+import _ from "lodash";
 import AppLabel from "../../../components/appLabel";
 // the below is to pass screens/child as per mosh bideo
 import Screen from "../../../components/appScreen";
@@ -315,11 +315,10 @@ function CreateTaskListForChildScreen({ navigation }) {
 
     // this function is submit the required fields to the database. TABLE: kidchores
     const handleSubmitChangesToDatabase = async () => {
-
         try {
             if (totalTaskPoints >= selectedReward.points) {
                 const rewardUniqueId = _.uniqueId();
-                console.log("rewardUniqueId" + rewardUniqueId)
+                //console.log("rewardUniqueId" + rewardUniqueId)
                 // if (totalTaskPoints > -1) {
                 // need to iterate through each object to insert the item for the kidchore table.
                 for (
@@ -448,7 +447,7 @@ function CreateTaskListForChildScreen({ navigation }) {
                     reward_name: "",
                     reward_Points: "",
                 }}
-            // onSubmit={(values) => // console.log(values)}
+                // onSubmit={(values) => // console.log(values)}
             >
                 {/* <AppPicker
                     items={kidList}
@@ -536,12 +535,14 @@ function CreateTaskListForChildScreen({ navigation }) {
                         onPress={handleResetDropDownAndContinue}
                     />
                 )}
-                {selectedKid && (totalTaskPoints > 0 && totalTaskPoints >= selectedReward.points) && (
-                    <AppButton
-                        title="Save"
-                        onPress={handleSubmitChangesToDatabase}
-                    />
-                )}
+                {selectedKid &&
+                    totalTaskPoints > 0 &&
+                    totalTaskPoints >= selectedReward.points && (
+                        <AppButton
+                            title="Save"
+                            onPress={handleSubmitChangesToDatabase}
+                        />
+                    )}
                 <AppButton
                     title="Return"
                     onPress={() => navigation.navigate(screens.ParentDashBoard)}
