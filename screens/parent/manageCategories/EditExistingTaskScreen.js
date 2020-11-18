@@ -34,6 +34,7 @@ import { renderOddColumnsNicely } from "../../../helpers/createBlankItem";
 
 import { checkForDuplicatesTasknamesAndTaskPoints } from "../../../helpers/checkForDuplicateTasknameAndPoints";
 
+
 export default function EditExistingTaskScreen({ navigation }) {
     // need to utilise usersContext to make use of SQL
     const usersContext = useContext(UsersContext);
@@ -48,6 +49,7 @@ export default function EditExistingTaskScreen({ navigation }) {
     // Task - make the selectable task list
     //************************************ */
     var taskList = [];
+    console.log(Object.keys(tasks[0]))
 
     // now loop through each item to obatin id and value and assign to an object. Push this object into the array
     for (var loopIterator = 0; loopIterator < tasks.length; loopIterator++) {
@@ -57,6 +59,7 @@ export default function EditExistingTaskScreen({ navigation }) {
         tempObject.category_id = tasks[loopIterator].category_id;
         tempObject.backgroundColor = tasks[loopIterator].task_colour;
         tempObject.icon = tasks[loopIterator].task_icon;
+        tempObject.points = tasks[loopIterator].task_points
         taskList.push(tempObject);
     }
 
@@ -89,16 +92,28 @@ export default function EditExistingTaskScreen({ navigation }) {
             {/* <SafeAreaView style={styles.container}> */}
             <ScrollView>
                 <AppHeading title="Edit Task" />
-
-                <Formik
+                <AppPicker
+                    items={taskList}
+                    icon="script"
+                    numberOfColumns={2}
+                    PickerItemComponent={CategoryPickerItem}
+                    placeholder="Select Task to Edit"
+                    onSelectItem={handleSelectedTask}
+                    selectedItem={selectedTask}
+                    justifyContent="center"
+                    width="90%"
+                    showModal={true}
+                />
+                {selectedTask && <Formik
                     initialValues={{
-                        task_name: "",
+                        task_name: selectedTask.label,
                         task_colour: "",
                         task_icon: "",
-                        task_points: "",
+                        task_points: selectedTask.points,
                         category_id: "",
                     }}
                     onSubmit={async (fields, { setFieldError }) => {
+                        console.log(Object.keys(selectedTask))
                         var checkResult = checkForDuplicatesTasknamesAndTaskPoints(
                             tasks,
                             fields.task_name,
@@ -135,18 +150,7 @@ export default function EditExistingTaskScreen({ navigation }) {
                 >
                     {({ handleChange, handleSubmit, errors }) => (
                         <>
-                            <AppPicker
-                                items={taskList}
-                                icon="script"
-                                numberOfColumns={2}
-                                PickerItemComponent={CategoryPickerItem}
-                                placeholder="Select Task to Edit"
-                                onSelectItem={handleSelectedTask}
-                                selectedItem={selectedTask}
-                                justifyContent="center"
-                                width="90%"
-                                showModal={true}
-                            />
+
                             {selectedTask && (
                                 <AppTextInput
                                     placeholder="Rename Task here"
@@ -156,6 +160,7 @@ export default function EditExistingTaskScreen({ navigation }) {
                                     onChangeText={handleChange("task_name")}
                                     errorStyle={{ color: "red" }}
                                     error={errors ? errors.task_name : ""}
+                                    defaultValue={selectedTask.label}
                                 />
                             )}
 
@@ -170,6 +175,7 @@ export default function EditExistingTaskScreen({ navigation }) {
                                     errorStyle={{ color: "red" }}
                                     error={errors ? errors.task_points : ""}
                                     keyboardType="number-pad"
+                                    defaultValue={selectedTask.points.toString()}
                                 />
                             )}
 
@@ -189,6 +195,7 @@ export default function EditExistingTaskScreen({ navigation }) {
                         </>
                     )}
                 </Formik>
+                }
             </ScrollView>
             {/* </SafeAreaView> */}
         </Screen>

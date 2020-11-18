@@ -39,7 +39,7 @@ function TrackReward({ navigation }) {
   const [graphData, setGraphData] = useState();
   // this function is to set the status of only the kids mapped to kids
   const handleSelectKid = async (item) => {
-    setSelectedKid(item);
+
     let choresForSelectedKid = await getChoresForKid(item.label);
     // console.log("choresForSelectedKid", choresForSelectedKid.length);
     setKidChoresForReward(choresForSelectedKid);
@@ -50,7 +50,9 @@ function TrackReward({ navigation }) {
 
     // set the rewrads list to only contain rewards that have not been assigned for the child selected
     setRewardList(establishRewardListInObjectFormat(filteredRewards));
+    console.log("handle selected kid filtered reards length = " + filteredRewards.length)
     setSelectedReward(null);
+    setSelectedKid(item);
   };
 
   const getRewardsHaveBeenAssignedToKid = (kidName, rewardsForKid) => {

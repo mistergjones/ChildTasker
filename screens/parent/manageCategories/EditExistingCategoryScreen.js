@@ -109,10 +109,21 @@ export default function EditExistingCategoryScreen({ navigation }) {
             {/* <SafeAreaView style={styles.container}> */}
             <ScrollView>
                 <AppHeading title="Rename Category" />
-
-                <Formik
+                <AppPicker
+                    items={categoryList}
+                    icon="book-open-outline"
+                    numberOfColumns={2}
+                    PickerItemComponent={CategoryPickerItem}
+                    placeholder="Select Category"
+                    onSelectItem={handleSelectItem}
+                    selectedItem={selectedItem}
+                    // justifyContent="center"
+                    width="90%"
+                    showModal={true}
+                />
+                {selectedItem && <Formik
                     initialValues={{
-                        category_name: "",
+                        category_name: selectedItem.label,
                         category_colour: "",
                         category_id: "",
                         category_icon: "",
@@ -148,18 +159,7 @@ export default function EditExistingCategoryScreen({ navigation }) {
                 >
                     {({ handleChange, handleSubmit, errors }) => (
                         <>
-                            <AppPicker
-                                items={categoryList}
-                                icon="book-open-outline"
-                                numberOfColumns={2}
-                                PickerItemComponent={CategoryPickerItem}
-                                placeholder="Select Category"
-                                onSelectItem={handleSelectItem}
-                                selectedItem={selectedItem}
-                                // justifyContent="center"
-                                width="90%"
-                                showModal={true}
-                            />
+
 
                             {selectedItem && (
                                 <AppTextInput
@@ -170,6 +170,7 @@ export default function EditExistingCategoryScreen({ navigation }) {
                                     onChangeText={handleChange("category_name")}
                                     errorStyle={{ color: "red" }}
                                     error={errors ? errors.category_name : ""}
+                                    defaultValue={selectedItem.label}
                                 />
                             )}
 
@@ -184,7 +185,7 @@ export default function EditExistingCategoryScreen({ navigation }) {
                         </>
                     )}
                 </Formik>
-
+                }
                 {/* <Form
                     initialValues={{
                         category_name: "",

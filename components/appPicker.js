@@ -62,8 +62,8 @@ function AppPicker({
                     {selectedItem ? (
                         <Text style={styles.text}>{selectedItem.label}</Text>
                     ) : (
-                        <Text style={styles.placeholder}>{placeholder}</Text>
-                    )}
+                            <Text style={styles.placeholder}>{placeholder}</Text>
+                        )}
 
                     <MaterialCommunityIcons
                         name="chevron-down"
