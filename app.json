@@ -2,7 +2,7 @@
     "expo": {
         "name": "ChildTasker",
         "slug": "ChildTasker",
-        "version": "1.0.1",
+        "version": "1.0.2",
         "orientation": "portrait",
         "icon": "./assets/Child_Tasker_Icon.png",
         "splash": {
@@ -17,16 +17,16 @@
         "ios": {
             "supportsTablet": true,
             "bundleIdentifier": "com.mistergjones.childtasker",
-            "buildNumber": "1.0.1"
+            "buildNumber": "1.0.2"
         },
         "android": {
             "package": "com.mistergjones.childtasker",
-            "versionCode": 2,
+            "versionCode": 3,
             "permissions": []
         },
         "web": {
             "favicon": "./assets/favicon.png"
         },
-        "description": ""
+        "description": "An app to help parents create tasks for their children to complete"
     }
 }
