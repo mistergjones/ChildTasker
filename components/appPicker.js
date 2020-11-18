@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
     View,
     StyleSheet,
@@ -18,6 +18,8 @@ import colours from "../config/colours";
 import AppButton from "./appButton";
 import AppTextInput from "./AppTextInput";
 
+import { renderOddColumnsNicely } from "../helpers/createBlankItem";
+
 function AppPicker({
     icon,
     items,
@@ -29,12 +31,17 @@ function AppPicker({
     width = "100%",
     marginLeft = 0,
     onPickerPress,
-    showModal = false
+    showModal = false,
 }) {
+    // add a blank item obtech to the modal screen to ensure nice 2 column alignment.
+    if (items.length % 2 !== 0) {
+        items = renderOddColumnsNicely(items);
+    }
+
     // // console.log("Placeholder", placeholder);
     // // console.log("selectedItem", selectedItem);
     const [modalVisible, setModalVisible] = useState(showModal);
-    const [itemsList, setItemsList] = useState(items)
+    const [itemsList, setItemsList] = useState(items);
     // // console.log("selected item keys = ", Object.keys(selectedItem))
     return (
         <SafeAreaView>
@@ -55,8 +62,8 @@ function AppPicker({
                     {selectedItem ? (
                         <Text style={styles.text}>{selectedItem.label}</Text>
                     ) : (
-                            <Text style={styles.placeholder}>{placeholder}</Text>
-                        )}
+                        <Text style={styles.placeholder}>{placeholder}</Text>
+                    )}
 
                     <MaterialCommunityIcons
                         name="chevron-down"
@@ -77,17 +84,28 @@ function AppPicker({
                         placeholder={"Enter search criteria"}
                         icon={"magnify"}
                         onChangeText={(text) => {
-                            setItemsList(items.filter((item) => {
+                            //console.log("The text is: ", text);
+                            let filteredItems = [];
+                            filteredItems = items.filter((item) => {
                                 if (
                                     String(item.label)
                                         .toLowerCase()
                                         .includes(text.toLowerCase())
                                 )
-                                    return item
-                                return ''
-                            }))
+                                    return item;
+                                return "";
+                            });
+                            console.log("Filtered items is:", filteredItems);
 
-                        }} />
+                            if (filteredItems.length % 2 !== 0) {
+                                setItemsList(
+                                    renderOddColumnsNicely(filteredItems)
+                                );
+                            } else {
+                                setItemsList(filteredItems);
+                            }
+                        }}
+                    />
                     <FlatList
                         contentContainerStyle={styles.pickerItem}
                         data={itemsList}
@@ -143,9 +161,7 @@ const styles = StyleSheet.create({
     search: {
         // backgroundColor: "grey",
         width: "90%",
-
-    }
-
+    },
 });
 
 export default AppPicker;
