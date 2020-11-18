@@ -82,10 +82,17 @@ const getChoresByKidName = (
                         array = _array;
                         // console.log("length = " + array.length);
                         //choresForRewards.push([array[0]]);
-                        array.map(chore => {
-                            console.log("chore id " + chore.chore_id + " reward name = " + chore.reward_name + "rewardUniqueId = " + chore.reward_unique_id)
-                        })
-                        console.log("kidchores length" + array.length)
+                        // array.map((chore) => {
+                        //     console.log(
+                        //         "chore id " +
+                        //             chore.chore_id +
+                        //             " reward name = " +
+                        //             chore.reward_name +
+                        //             "rewardUniqueId = " +
+                        //             chore.reward_unique_id
+                        //     );
+                        // });
+                        // console.log("kidchores length" + array.length)
                         if (array.length > 0) {
                             rewardsForChild.push({
                                 rewardName: array[0].reward_name,
@@ -108,7 +115,8 @@ const getChoresByKidName = (
                                 // );
                                 if (
                                     chore.reward_unique_id ===
-                                    rewardsForChild[x].chores[0].reward_unique_id
+                                    rewardsForChild[x].chores[0]
+                                        .reward_unique_id
                                 ) {
                                     //choresForRewards[x].push(chore);
                                     rewardsForChild[x].chores.push(chore);
@@ -190,7 +198,7 @@ const insertChoresToKid = (kidChores, successFunc) => {
                         kidChores.is_completed,
                         kidChores.icon_name,
                         kidChores.reward_icon_name,
-                        kidChores.rewardUniqueId
+                        kidChores.rewardUniqueId,
                     ]
                 );
             },

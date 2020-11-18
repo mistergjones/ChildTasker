@@ -30,7 +30,7 @@ function TaskIcon({
     return (
         <TouchableOpacity
             onPress={() => {
-                console.log("chore id = " + chore_id)
+                // console.log("chore id = " + chore_id)
                 if (!completed) {
                     navigation.navigate(screens.ChoreStatus, {
                         title,
@@ -53,7 +53,7 @@ function TaskIcon({
                         size={60}
                         color={color}
                         backgroundColor={color}
-                    // style={styles.image}
+                        // style={styles.image}
                     />
                     {/* <AppMaterialIcon
                         iconName={icon}
