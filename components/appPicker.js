@@ -62,8 +62,8 @@ function AppPicker({
                     {selectedItem ? (
                         <Text style={styles.text}>{selectedItem.label}</Text>
                     ) : (
-                            <Text style={styles.placeholder}>{placeholder}</Text>
-                        )}
+                        <Text style={styles.placeholder}>{placeholder}</Text>
+                    )}
 
                     <MaterialCommunityIcons
                         name="chevron-down"
@@ -95,7 +95,7 @@ function AppPicker({
                                     return item;
                                 return "";
                             });
-                            console.log("Filtered items is:", filteredItems);
+                            // console.log("Filtered items is:", filteredItems);
 
                             if (filteredItems.length % 2 !== 0) {
                                 setItemsList(

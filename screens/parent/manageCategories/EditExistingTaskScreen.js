@@ -34,7 +34,6 @@ import { renderOddColumnsNicely } from "../../../helpers/createBlankItem";
 
 import { checkForDuplicatesTasknamesAndTaskPoints } from "../../../helpers/checkForDuplicateTasknameAndPoints";
 
-
 export default function EditExistingTaskScreen({ navigation }) {
     // need to utilise usersContext to make use of SQL
     const usersContext = useContext(UsersContext);
@@ -49,7 +48,7 @@ export default function EditExistingTaskScreen({ navigation }) {
     // Task - make the selectable task list
     //************************************ */
     var taskList = [];
-    console.log(Object.keys(tasks[0]))
+    //console.log(Object.keys(tasks[0]))
 
     // now loop through each item to obatin id and value and assign to an object. Push this object into the array
     for (var loopIterator = 0; loopIterator < tasks.length; loopIterator++) {
@@ -59,7 +58,7 @@ export default function EditExistingTaskScreen({ navigation }) {
         tempObject.category_id = tasks[loopIterator].category_id;
         tempObject.backgroundColor = tasks[loopIterator].task_colour;
         tempObject.icon = tasks[loopIterator].task_icon;
-        tempObject.points = tasks[loopIterator].task_points
+        tempObject.points = tasks[loopIterator].task_points;
         taskList.push(tempObject);
     }
 
@@ -104,98 +103,101 @@ export default function EditExistingTaskScreen({ navigation }) {
                     width="90%"
                     showModal={true}
                 />
-                {selectedTask && <Formik
-                    initialValues={{
-                        task_name: selectedTask.label,
-                        task_colour: "",
-                        task_icon: "",
-                        task_points: selectedTask.points,
-                        category_id: "",
-                    }}
-                    onSubmit={async (fields, { setFieldError }) => {
-                        console.log(Object.keys(selectedTask))
-                        var checkResult = checkForDuplicatesTasknamesAndTaskPoints(
-                            tasks,
-                            fields.task_name,
-                            fields.task_points
-                        );
+                {selectedTask && (
+                    <Formik
+                        initialValues={{
+                            task_name: selectedTask.label,
+                            task_colour: "",
+                            task_icon: "",
+                            task_points: selectedTask.points,
+                            category_id: "",
+                        }}
+                        onSubmit={async (fields, { setFieldError }) => {
+                            //console.log(Object.keys(selectedTask))
+                            var checkResult = checkForDuplicatesTasknamesAndTaskPoints(
+                                tasks,
+                                fields.task_name,
+                                fields.task_points
+                            );
 
-                        // if tehre is no match (i.e a unique task name and points), proceed with task insertion
-                        if (checkResult !== true) {
-                            try {
-                                await updateTask({
-                                    task_id: Number(selectedTask.value),
-                                    task_name: fields.task_name,
-                                    task_colour: selectedTask.backgroundColor,
-                                    task_icon: selectedTask.icon,
-                                    task_points: Number(fields.task_points),
-                                    category_id: Number(
-                                        selectedTask.category_id
-                                    ),
-                                });
+                            // if tehre is no match (i.e a unique task name and points), proceed with task insertion
+                            if (checkResult !== true) {
+                                try {
+                                    await updateTask({
+                                        task_id: Number(selectedTask.value),
+                                        task_name: fields.task_name,
+                                        task_colour:
+                                            selectedTask.backgroundColor,
+                                        task_icon: selectedTask.icon,
+                                        task_points: Number(fields.task_points),
+                                        category_id: Number(
+                                            selectedTask.category_id
+                                        ),
+                                    });
 
-                                // console.log("WE are inside the try await edit existing", fields);
-                                // console.log("Finished updating task");
+                                    // console.log("WE are inside the try await edit existing", fields);
+                                    // console.log("Finished updating task");
 
-                                navigation.navigate(screens.AddCategory);
-                            } catch (error) {
-                                // console.log(
-                                //     "Edit Existing Task screen with update error = ",
-                                //     error
-                                // );
-                            }
-                        }
-                    }}
-                    validationSchema={taskSchema}
-                >
-                    {({ handleChange, handleSubmit, errors }) => (
-                        <>
-
-                            {selectedTask && (
-                                <AppTextInput
-                                    placeholder="Rename Task here"
-                                    labelText="Rename Task:"
-                                    // labelText="Task"
-                                    icon="script"
-                                    onChangeText={handleChange("task_name")}
-                                    errorStyle={{ color: "red" }}
-                                    error={errors ? errors.task_name : ""}
-                                    defaultValue={selectedTask.label}
-                                />
-                            )}
-
-                            {selectedTask && (
-                                <AppTextInput
-                                    placeholder="Update Points Here"
-                                    labelText="Update Points:"
-                                    type=""
-                                    // labelText="Task"
-                                    icon="numeric-1-circle-outline"
-                                    onChangeText={handleChange("task_points")}
-                                    errorStyle={{ color: "red" }}
-                                    error={errors ? errors.task_points : ""}
-                                    keyboardType="number-pad"
-                                    defaultValue={selectedTask.points.toString()}
-                                />
-                            )}
-
-                            {selectedTask && (
-                                <AppButton
-                                    title="Save"
-                                    onPress={handleSubmit}
-                                />
-                            )}
-
-                            <AppButton
-                                title="Return"
-                                onPress={() =>
-                                    navigation.navigate(screens.AddCategory)
+                                    navigation.navigate(screens.AddCategory);
+                                } catch (error) {
+                                    // console.log(
+                                    //     "Edit Existing Task screen with update error = ",
+                                    //     error
+                                    // );
                                 }
-                            />
-                        </>
-                    )}
-                </Formik>
-                }
+                            }
+                        }}
+                        validationSchema={taskSchema}
+                    >
+                        {({ handleChange, handleSubmit, errors }) => (
+                            <>
+                                {selectedTask && (
+                                    <AppTextInput
+                                        placeholder="Rename Task here"
+                                        labelText="Rename Task:"
+                                        // labelText="Task"
+                                        icon="script"
+                                        onChangeText={handleChange("task_name")}
+                                        errorStyle={{ color: "red" }}
+                                        error={errors ? errors.task_name : ""}
+                                        defaultValue={selectedTask.label}
+                                    />
+                                )}
+
+                                {selectedTask && (
+                                    <AppTextInput
+                                        placeholder="Update Points Here"
+                                        labelText="Update Points:"
+                                        type=""
+                                        // labelText="Task"
+                                        icon="numeric-1-circle-outline"
+                                        onChangeText={handleChange(
+                                            "task_points"
+                                        )}
+                                        errorStyle={{ color: "red" }}
+                                        error={errors ? errors.task_points : ""}
+                                        keyboardType="number-pad"
+                                        defaultValue={selectedTask.points.toString()}
+                                    />
+                                )}
+
+                                {selectedTask && (
+                                    <AppButton
+                                        title="Save"
+                                        onPress={handleSubmit}
+                                    />
+                                )}
+
+                                <AppButton
+                                    title="Return"
+                                    onPress={() =>
+                                        navigation.navigate(screens.AddCategory)
+                                    }
+                                />
+                            </>
+                        )}
+                    </Formik>
+                )}
             </ScrollView>
             {/* </SafeAreaView> */}
         </Screen>

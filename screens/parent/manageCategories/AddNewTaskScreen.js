@@ -264,7 +264,7 @@ export default function AddNewTaskScreen({ navigation }) {
                                     category_id: selectedCategoryItem.value,
                                 });
                                 // console.log("WE are inside the try await ADD NEW TASK", fields);
-                                console.log("Finished INSERTING TASK");
+                                //console.log("Finished INSERTING TASK");
 
                                 navigation.navigate(screens.AddCategory);
                             } catch (error) {
