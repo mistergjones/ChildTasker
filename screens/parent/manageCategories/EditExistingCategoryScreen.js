@@ -120,6 +120,7 @@ export default function EditExistingCategoryScreen({ navigation }) {
                     // justifyContent="center"
                     width="90%"
                     showModal={true}
+                    heading="Select Category"
                 />
                 {selectedItem && (
                     <Formik

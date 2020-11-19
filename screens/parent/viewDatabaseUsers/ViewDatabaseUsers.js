@@ -187,6 +187,7 @@ export default function UserListScreen({ navigation }) {
                     onSelectItem={handleSelectItem}
                     selectedItem={selectedCategory}
                     showModal={true}
+                    heading="Select Item"
                 />
                 {selectedCategory && (
                     <AppPicker
@@ -197,6 +198,7 @@ export default function UserListScreen({ navigation }) {
                         onSelectItem={handleSelectTask}
                         selectedItem={selectedTask}
                         showModal={true}
+                        heading="Select Task"
                     />
                 )}
                 {/* <Picker

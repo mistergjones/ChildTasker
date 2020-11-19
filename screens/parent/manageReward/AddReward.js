@@ -119,6 +119,7 @@ function AddReward({ navigation }) {
               selectedItem={selectedIcon}
               width="90%"
               showModal={false}
+              heading="Select Icon"
             />
             {selectedIcon && (
               <AppButton

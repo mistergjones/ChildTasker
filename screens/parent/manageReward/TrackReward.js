@@ -181,6 +181,7 @@ function TrackReward({ navigation }) {
                         selectedItem={selectedReward}
                         width="90%"
                         showModal={true}
+                        heading="Select Reward"
                     />
                 )}
                 {selectedReward && (

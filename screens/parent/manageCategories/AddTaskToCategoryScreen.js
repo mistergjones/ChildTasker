@@ -39,12 +39,14 @@ function AddTaskToCategoryScreen({ navigation }) {
                 items={dummyTasks}
                 icon="account-child"
                 placeholder="Select Task"
+                heading="Select Task"
             />
 
             <AppPicker
                 items={dummyTaskPoints}
                 icon="account-child"
                 placeholder="Assign Points"
+                heading="Select Point"
             />
 
             <AppButton title="Add New Tasks" />

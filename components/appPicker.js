@@ -19,6 +19,7 @@ import AppButton from "./appButton";
 import AppTextInput from "./AppTextInput";
 
 import { renderOddColumnsNicely } from "../helpers/createBlankItem";
+import AppText from "./appText";
 
 function AppPicker({
     icon,
@@ -32,6 +33,7 @@ function AppPicker({
     marginLeft = 0,
     onPickerPress,
     showModal = false,
+    heading
 }) {
     // add a blank item obtech to the modal screen to ensure nice 2 column alignment.
     if (items.length % 2 !== 0) {
@@ -79,6 +81,7 @@ function AppPicker({
                         onPress={() => setModalVisible(false)}
                         style={{ color: colours.defaultButtonColour }}
                     />
+                    <AppText style={styles.heading}>{heading}</AppText>
                     <AppTextInput
                         labelText={"Search"}
                         placeholder={"Enter search criteria"}
@@ -162,6 +165,11 @@ const styles = StyleSheet.create({
         // backgroundColor: "grey",
         width: "90%",
     },
+    heading:{
+        textAlign:"center",
+        color: defaultStyles.colors.white,
+        fontWeight: "bold",
+    }
 });
 
 export default AppPicker;

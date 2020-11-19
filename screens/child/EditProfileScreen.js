@@ -229,6 +229,7 @@ function EditProfileScreen({ navigation }) {
                                 width={"90%"}
                                 onPickerPress={handlePickerPress}
                                 // showModal={true}
+                                heading="Select Icon"
                             />
                         }
                     </Screen>

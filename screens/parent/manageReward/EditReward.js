@@ -127,6 +127,7 @@ function EditReward({ navigation }) {
                             selectedItem={selectedIcon}
                             defaultValue={selectedIcon}
                             // showModal={true}
+                            heading="Select Icon"
                         />
                         <AppButton title="SAVE" onPress={handleSubmit} />
                     </>

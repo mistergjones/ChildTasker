@@ -201,6 +201,7 @@ function AddNewCategoryScreen({ navigation }) {
                             selectedItem={selectedIcon}
                             width="90%"
                             showModal={false}
+                            heading="Select Icon"
                         />
 
                         {selectedIcon && (
@@ -215,6 +216,7 @@ function AddNewCategoryScreen({ navigation }) {
                                 selectedItem={selectedIconBackgroundColor}
                                 width="90%"
                                 showModal={true}
+                                heading="Select Color"
                             />
                         )}
 
