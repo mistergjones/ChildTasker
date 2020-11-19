@@ -41,13 +41,14 @@ function SelectATaskForChildScreen(props) {
                 items={dummyTasks}
                 icon="account-child"
                 placeholder="Select Task"
+                heading="Select Task"
             />
 
             <AppPicker
                 items={dummyTaskPoints}
                 icon="account-child"
                 placeholder="Points are read only"
-
+                heading="Select Task Point"
             />
 
             <View style={{ marginBottom: 30 }}></View>

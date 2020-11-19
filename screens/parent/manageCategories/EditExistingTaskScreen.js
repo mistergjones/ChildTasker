@@ -102,6 +102,7 @@ export default function EditExistingTaskScreen({ navigation }) {
                     justifyContent="center"
                     width="90%"
                     showModal={true}
+                    heading="Select Task"
                 />
                 {selectedTask && (
                     <Formik

@@ -292,6 +292,7 @@ function viewDatabaseUsers({ navigation }) {
                     items={categories}
                     icon="apps"
                     placeholder="Select Task"
+                    heading="Select Category"
                 />
 
                 <AppButton title="Console Results" onPress={getResults} />

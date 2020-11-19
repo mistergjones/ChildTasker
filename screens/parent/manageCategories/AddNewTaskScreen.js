@@ -311,6 +311,7 @@ export default function AddNewTaskScreen({ navigation }) {
                                 justifyContent="center"
                                 width="90%"
                                 showModal={false}
+                                heading="Select Icon"
                             />
 
                             {selectedIconItem && (
@@ -326,6 +327,7 @@ export default function AddNewTaskScreen({ navigation }) {
                                     justifyContent="center"
                                     width="90%"
                                     showModal={true}
+                                    heading="Select Color"
                                 />
                             )}
 
@@ -342,6 +344,7 @@ export default function AddNewTaskScreen({ navigation }) {
                                     justifyContent="center"
                                     width="90%"
                                     showModal={true}
+                                    heading="Select Category"
                                 />
                             )}
 

@@ -480,6 +480,7 @@ function CreateTaskListForChildScreen({ navigation }) {
                         selectedItem={selectedReward}
                         width="90%"
                         showModal={true}
+                        heading="Select Reward"
                     />
                 )}
                 {selectedReward && (
@@ -493,6 +494,7 @@ function CreateTaskListForChildScreen({ navigation }) {
                         selectedItem={selectedCategory}
                         width="90%"
                         showModal={true}
+                        heading="Select Category"
                     />
                 )}
                 {selectedCategory && (
@@ -507,6 +509,7 @@ function CreateTaskListForChildScreen({ navigation }) {
                         selectedItem={selectedTask}
                         width="90%"
                         showModal={true}
+                        heading="Select Task"
                     />
                 )}
                 {selectedKid && selectedReward && (
