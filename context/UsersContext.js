@@ -51,7 +51,7 @@ export const UsersContextProvider = (props) => {
 
     //Icon
     const [icons, setIcons] = useState();
-    const loadDataFromDB = async () => {};
+    const loadDataFromDB = async () => { };
     // We have a useEffect call to instantiate the users list from the database. We only call this function on the first render
     useEffect(() => {
         // console.log("***** User Context ****");
@@ -219,6 +219,17 @@ export const UsersContextProvider = (props) => {
             setSelectedRewardDetails
         );
     };
+
+    // Unique reward id 
+    const getUniqueRewardId = async () => {
+
+        return await databaseRewards.getUniqueRewardId();
+    }
+
+    const updateUniqueRewardId = async (id) => {
+        // console.log("id = " + id)
+        return await databaseRewards.updateUniqueRewardId(id);
+    }
     // END REWARDS
     //*************************************************************************
 
@@ -341,6 +352,8 @@ export const UsersContextProvider = (props) => {
         updateChoresForKid,
         choresForKidScore,
         choresTotalPoints,
+        getUniqueRewardId,
+        updateUniqueRewardId
     };
     // pass the value in provider and return
     return (

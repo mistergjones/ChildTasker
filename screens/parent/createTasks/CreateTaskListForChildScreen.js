@@ -67,6 +67,8 @@ function CreateTaskListForChildScreen({ navigation }) {
         choresForKid,
         getChoresForKid,
         chores,
+        getUniqueRewardId,
+        updateUniqueRewardId
     } = usersContext;
 
     // ITEM: used to set the item name and insert into table
@@ -315,9 +317,13 @@ function CreateTaskListForChildScreen({ navigation }) {
 
     // this function is submit the required fields to the database. TABLE: kidchores
     const handleSubmitChangesToDatabase = async () => {
+        // console.log("hello")
         try {
             if (totalTaskPoints >= selectedReward.points) {
-                const rewardUniqueId = _.uniqueId();
+                const currentId = await getUniqueRewardId();
+                // console.log("test = " + test)
+                const rewardUniqueId = currentId + 1;
+                await updateUniqueRewardId(rewardUniqueId);
                 //console.log("rewardUniqueId" + rewardUniqueId)
                 // if (totalTaskPoints > -1) {
                 // need to iterate through each object to insert the item for the kidchore table.
@@ -447,7 +453,7 @@ function CreateTaskListForChildScreen({ navigation }) {
                     reward_name: "",
                     reward_Points: "",
                 }}
-                // onSubmit={(values) => // console.log(values)}
+            // onSubmit={(values) => // console.log(values)}
             >
                 {/* <AppPicker
                     items={kidList}

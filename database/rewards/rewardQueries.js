@@ -149,10 +149,69 @@ const getRewardByID = async (reward_id, setUserFunc) => {
         );
     });
 };
+
+const getUniqueRewardId = async () => {
+    let value = 0;
+    return new Promise(async (resolve, reject) => {
+        db.transaction(
+            (tx) => {
+                tx.executeSql(
+                    "select * from uniquerewardid",
+                    [],
+                    (_, { rows: { _array } }) => {
+                        // setUserFunc(_array);
+                        value = _array[0].id;
+                    }
+                );
+            },
+            (t, error) => {
+                console.log("db error in getUniqueRewardId");
+                // console.log(error);
+                reject(error);
+            },
+            (_t, _success) => {
+                // console.log("Retrieved Specific Reward");
+
+                resolve(value);
+            }
+        );
+    });
+}
+
+const updateUniqueRewardId = async (id) => {
+
+    return new Promise(async (resolve, reject) => {
+        db.transaction(
+            (tx) => {
+                tx.executeSql(
+                    "update uniquerewardid set id = ?",
+                    [id],
+                    (_, { rows: { _array } }) => {
+                        // setUserFunc(_array);
+                        // value = _array[0].id;
+                    }
+                );
+            },
+            (t, error) => {
+                // console.log("db error in update UniqueRewardId");
+                // console.log(error);
+                reject(error);
+            },
+            (_t, _success) => {
+                // console.log("success");
+
+                resolve(_success);
+            }
+        );
+    });
+}
 export const databaseRewards = {
     getRewards,
     insertReward,
     deleteReward,
     updateReward,
     getRewardByID,
+    getUniqueRewardId,
+    updateUniqueRewardId
+    // insertUniqueRewardId
 };
