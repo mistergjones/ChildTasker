@@ -130,6 +130,9 @@ const createTablesDatabaseAsync = async () => {
                 tx.executeSql(
                     "create table if not exists kidchores (chore_id integer primary key autoincrement not null, category_id integer NOT null, category_name TEXT not null, task_id integer not null, task_name TEXT not null, task_points INTEGER not null, kid_id integer NOT null, kid_name TEXT not null, reward_id integer NOT null, reward_name TEXT not null, reward_points integer not null, is_completed integer not null, icon_name TEXT not null, reward_icon_name TEXT not null, reward_unique_id)"
                 );
+                tx.executeSql(
+                    "create table if not exists uniquerewardid (unique_reward_id integer primary key autoincrement not null, id integer not null)"
+                );
             },
             // the error and success functions are called when the transaction is complete. We use the promise resolve and reject functions here.
             (_, error) => {
@@ -413,7 +416,26 @@ const loadKidChores = async () => {
         );
     });
 };
-
+const loadUniqueRewardId = async () => {
+    return new Promise((resolve, _reject) => {
+        db.transaction(
+            (tx) => {
+                tx.executeSql("insert into uniquerewardid (id) values (?)", [
+                    1,
+                ]);
+            },
+            (t, error) => {
+                // console.log("db error insert Item");
+                // console.log(error);
+                resolve();
+            },
+            (t, success) => {
+                // console.log("db - Successfully pre-loaded the ITEMS table with data");
+                resolve(success);
+            }
+        );
+    });
+}
 const loadItems = async () => {
     return new Promise((resolve, _reject) => {
         db.transaction(
@@ -1587,6 +1609,7 @@ const loadDataIntoTablesAsync = async () => {
         // GJ: the below are commentd out as i used them for test purposes
         // await loadKidChores();
         // await loadUsers();
+        await loadUniqueRewardId();
         resolve();
     });
 };
