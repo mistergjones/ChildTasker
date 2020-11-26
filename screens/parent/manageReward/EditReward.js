@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, ScrollView } from "react-native";
 import * as Yup from "yup";
 import AppButton from "../../../components/appButton";
 import AppHeading from "../../../components/appHeading.js";
@@ -63,82 +63,84 @@ function EditReward({ navigation }) {
 
     return (
         <Screen style={styles.container}>
-            <AppHeading title="Edit Reward Form" />
-            <Formik
-                initialValues={{
-                    label: rewardName,
-                    point: point,
-                    icon: selectedIcon,
-                }}
-                onSubmit={async (fields, { setFieldError }) => {
-                    try {
-                        // // console.log(
-                        //   "hit edit reward button",
-                        //   fields.label,
-                        //   fields.point,
-                        //   selectedIcon.icon,
-                        //   selectedIcon.value,
-                        //   selectedReward
-                        // );
-                        await updateReward({
-                            reward_name: fields.label,
-                            reward_points: fields.point,
-                            icon_id: selectedIcon.value,
-                            reward_id: selectedReward,
-                            icon_name: selectedIcon.icon,
-                        });
-                        navigation.navigate("ViewReward");
-                    } catch (error) {
-                        // console.log("error = ", error);
-                    }
-                }}
-                validationSchema={validationSchema}
-            >
-                {({ handleChange, handleSubmit, errors }) => (
-                    <>
-                        <AppTextInput
-                            labelText="Reward Name"
-                            icon="trophy"
-                            onChangeText={handleChange("label")}
-                            errorStyle={{ color: "white" }}
-                            error={errors ? errors.label : ""}
-                            defaultValue={rewardName}
-                        />
+            <ScrollView>
+                <AppHeading title="Edit Reward Form" />
+                <Formik
+                    initialValues={{
+                        label: rewardName,
+                        point: point,
+                        icon: selectedIcon,
+                    }}
+                    onSubmit={async (fields, { setFieldError }) => {
+                        try {
+                            // // console.log(
+                            //   "hit edit reward button",
+                            //   fields.label,
+                            //   fields.point,
+                            //   selectedIcon.icon,
+                            //   selectedIcon.value,
+                            //   selectedReward
+                            // );
+                            await updateReward({
+                                reward_name: fields.label,
+                                reward_points: fields.point,
+                                icon_id: selectedIcon.value,
+                                reward_id: selectedReward,
+                                icon_name: selectedIcon.icon,
+                            });
+                            navigation.navigate("ViewReward");
+                        } catch (error) {
+                            // console.log("error = ", error);
+                        }
+                    }}
+                    validationSchema={validationSchema}
+                >
+                    {({ handleChange, handleSubmit, errors }) => (
+                        <>
+                            <AppTextInput
+                                labelText="Reward Name"
+                                icon="trophy"
+                                onChangeText={handleChange("label")}
+                                errorStyle={{ color: "white" }}
+                                error={errors ? errors.label : ""}
+                                defaultValue={rewardName}
+                            />
 
-                        <AppTextInput
-                            labelText="Reward Points"
-                            icon="numeric-1-circle-outline"
-                            onChangeText={handleChange("point")}
-                            errorStyle={{ color: "white" }}
-                            error={errors ? errors.point : ""}
-                            defaultValue={point.toString()}
-                            keyboardType="number-pad"
-                        />
+                            <AppTextInput
+                                labelText="Reward Points"
+                                icon="numeric-1-circle-outline"
+                                onChangeText={handleChange("point")}
+                                errorStyle={{ color: "white" }}
+                                error={errors ? errors.point : ""}
+                                defaultValue={point.toString()}
+                                keyboardType="number-pad"
+                            />
 
-                        <AppPicker
-                            items={iconData}
-                            name="icon"
-                            numberOfColumns={2}
-                            PickerItemComponent={CategoryPickerItem}
-                            placeholder={selectedIcon.label}
-                            width="90%"
-                            icon={selectedIcon.icon}
-                            onSelectItem={handleSelectedIcon}
-                            selectedItem={selectedIcon}
-                            defaultValue={selectedIcon}
-                            // showModal={true}
-                            heading="Select Icon"
-                        />
-                        <AppButton title="SAVE" onPress={handleSubmit} />
-                    </>
-                )}
-            </Formik>
-            <View>
-                <AppButton
-                    title="Return"
-                    onPress={() => navigation.navigate("ViewReward")}
-                />
-            </View>
+                            <AppPicker
+                                items={iconData}
+                                name="icon"
+                                numberOfColumns={2}
+                                PickerItemComponent={CategoryPickerItem}
+                                placeholder={selectedIcon.label}
+                                width="90%"
+                                icon={selectedIcon.icon}
+                                onSelectItem={handleSelectedIcon}
+                                selectedItem={selectedIcon}
+                                defaultValue={selectedIcon}
+                                // showModal={true}
+                                heading="Select Icon"
+                            />
+                            <AppButton title="SAVE" onPress={handleSubmit} />
+                        </>
+                    )}
+                </Formik>
+                <View>
+                    <AppButton
+                        title="Return"
+                        onPress={() => navigation.navigate("ViewReward")}
+                    />
+                </View>
+            </ScrollView>
         </Screen>
     );
 }

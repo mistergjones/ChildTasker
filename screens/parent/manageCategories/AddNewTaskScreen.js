@@ -228,9 +228,9 @@ export default function AddNewTaskScreen({ navigation }) {
     return (
         <Screen>
             {/* <SafeAreaView style={styles.container}> */}
-            <ScrollView>
-                <AppHeading title="Add New Task" />
 
+            <AppHeading title="Add New Task" />
+            <ScrollView>
                 <Formik
                     initialValues={{
                         task_name: "",

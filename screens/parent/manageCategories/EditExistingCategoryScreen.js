@@ -107,8 +107,9 @@ export default function EditExistingCategoryScreen({ navigation }) {
     return (
         <Screen>
             {/* <SafeAreaView style={styles.container}> */}
+
+            <AppHeading title="Rename Category" />
             <ScrollView>
-                <AppHeading title="Rename Category" />
                 <AppPicker
                     items={categoryList}
                     icon="book-open-outline"

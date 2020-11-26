@@ -97,9 +97,9 @@ export default function RemoveTaskScreen({ navigation }) {
     return (
         <Screen style={styles.container}>
             {/* <SafeAreaView style={styles.container}> */}
-            <ScrollView>
-                <AppHeading title="Remove a task" />
 
+            <AppHeading title="Remove a task" />
+            <ScrollView>
                 <AppPicker
                     items={taskList}
                     icon="script"

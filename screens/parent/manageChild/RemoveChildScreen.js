@@ -69,9 +69,9 @@ function RemoveChildScreen({ navigation }) {
 
     return (
         <Screen>
-            <ScrollView style={styles.container}>
-                <AppHeading title="Remove Child" />
 
+            <AppHeading title="Remove Child" />
+            <ScrollView style={styles.container}>
                 <UserPicker
                     items={kidsData}
                     icon="account-child"

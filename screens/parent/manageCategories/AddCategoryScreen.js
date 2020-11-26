@@ -18,9 +18,9 @@ import {
 function AddCategoryScreen({ navigation }) {
     return (
         <Screen>
-            <ScrollView /*style={styles.container}*/>
-                <AppHeading title="Categories and Tasks" />
 
+            <AppHeading title="Categories and Tasks" />
+            <ScrollView /*style={styles.container}*/>
                 <Form
                     initialValues={{
                         title: "",

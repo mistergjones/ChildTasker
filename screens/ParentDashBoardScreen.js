@@ -15,9 +15,9 @@ function ParentDashBoardScreen({ navigation }) {
         <Screen>
 
 
-            <ScrollView style={styles.container}>
-                <AppHeading title="Parent Dashboard" />
 
+            <AppHeading title="Parent Dashboard" />
+            <ScrollView style={styles.container}>
                 <AppButton
                     title="Manage Child Details"
                     onPress={() =>

@@ -440,22 +440,23 @@ function CreateTaskListForChildScreen({ navigation }) {
         <Screen style={styles.container}>
             {/* <ScrollView> */}
             <AppHeading title="Create Task For Child" />
-            <Form
-                initialValues={{
-                    category_id: "",
-                    category_name: "",
-                    task_id: "",
-                    task_name: "",
-                    task_points: "",
-                    kid_id: "",
-                    kid_name: "",
-                    reward_id: "",
-                    reward_name: "",
-                    reward_Points: "",
-                }}
-            // onSubmit={(values) => // console.log(values)}
-            >
-                {/* <AppPicker
+            <ScrollView>
+                <Form
+                    initialValues={{
+                        category_id: "",
+                        category_name: "",
+                        task_id: "",
+                        task_name: "",
+                        task_points: "",
+                        kid_id: "",
+                        kid_name: "",
+                        reward_id: "",
+                        reward_name: "",
+                        reward_Points: "",
+                    }}
+                // onSubmit={(values) => // console.log(values)}
+                >
+                    {/* <AppPicker
                     items={kidList}
                     icon="face"
                     PickerItemComponent={CategoryPickerItem}
@@ -465,99 +466,100 @@ function CreateTaskListForChildScreen({ navigation }) {
                     selectedItem={selectedKid}
                     width="90%"
                 /> */}
-                <UserPicker
-                    style={styles.picker}
-                    items={kidList}
-                    icon="account-child"
-                    placeholder="Select Child"
-                    onSelectItem={handleSelectKid}
-                    selectedItem={selectedKid}
-                    numberOfColumns={1}
-                />
+                    <UserPicker
+                        style={styles.picker}
+                        items={kidList}
+                        icon="account-child"
+                        placeholder="Select Child"
+                        onSelectItem={handleSelectKid}
+                        selectedItem={selectedKid}
+                        numberOfColumns={1}
+                    />
 
-                {selectedKid && (
-                    <AppPicker
-                        items={rewardList}
-                        icon={selectedReward ? selectedReward.icon : "trophy"}
-                        placeholder="Select Reward"
-                        numberOfColumns={2}
-                        PickerItemComponent={CategoryPickerItem}
-                        onSelectItem={handleSelectReward}
-                        selectedItem={selectedReward}
-                        width="90%"
-                        showModal={true}
-                        heading="Select Reward"
-                    />
-                )}
-                {selectedReward && (
-                    <AppPicker
-                        items={categoryList}
-                        icon="sitemap"
-                        placeholder="Select Category"
-                        numberOfColumns={2}
-                        PickerItemComponent={CategoryPickerItem}
-                        onSelectItem={handleSelectItem}
-                        selectedItem={selectedCategory}
-                        width="90%"
-                        showModal={true}
-                        heading="Select Category"
-                    />
-                )}
-                {selectedCategory && (
-                    <AppPicker
-                        //numberofElements={}
-                        items={pickableTasks}
-                        icon="star-box-outline"
-                        placeholder="Select Task"
-                        numberOfColumns={2}
-                        PickerItemComponent={CategoryPickerItem}
-                        onSelectItem={handleSelectTask}
-                        selectedItem={selectedTask}
-                        width="90%"
-                        showModal={true}
-                        heading="Select Task"
-                    />
-                )}
-                {selectedKid && selectedReward && (
-                    <View style={styles.score}>
-                        <View style={styles.currentRewardTaskContainer}>
-                            <Text style={styles.currentRewardTaskScore}>
-                                Reward Total:
-                            </Text>
-                            <Text style={styles.currentRewardTaskValue}>
-                                {selectedReward.points}
-                            </Text>
-                        </View>
-                        <View style={styles.currentRewardTaskContainer}>
-                            <Text style={styles.currentRewardTaskScore}>
-                                Tasks Total:
-                            </Text>
-                            <Text style={styles.currentRewardTaskValue}>
-                                {isInitialScreenLoaded ? "0" : totalTaskPoints}
-                            </Text>
-                        </View>
-                    </View>
-                )}
-                {selectedKid && selectedReward && selectedTask && (
-                    <AppButton
-                        title="Add Another task"
-                        onPress={handleResetDropDownAndContinue}
-                    />
-                )}
-                {selectedKid &&
-                    totalTaskPoints > 0 &&
-                    totalTaskPoints >= selectedReward.points && (
-                        <AppButton
-                            title="Save"
-                            onPress={handleSubmitChangesToDatabase}
+                    {selectedKid && (
+                        <AppPicker
+                            items={rewardList}
+                            icon={selectedReward ? selectedReward.icon : "trophy"}
+                            placeholder="Select Reward"
+                            numberOfColumns={2}
+                            PickerItemComponent={CategoryPickerItem}
+                            onSelectItem={handleSelectReward}
+                            selectedItem={selectedReward}
+                            width="90%"
+                            showModal={true}
+                            heading="Select Reward"
                         />
                     )}
-                <AppButton
-                    title="Return"
-                    onPress={() => navigation.navigate(screens.ParentDashBoard)}
-                />
-            </Form>
-            {/* </ScrollView> */}
+                    {selectedReward && (
+                        <AppPicker
+                            items={categoryList}
+                            icon="sitemap"
+                            placeholder="Select Category"
+                            numberOfColumns={2}
+                            PickerItemComponent={CategoryPickerItem}
+                            onSelectItem={handleSelectItem}
+                            selectedItem={selectedCategory}
+                            width="90%"
+                            showModal={true}
+                            heading="Select Category"
+                        />
+                    )}
+                    {selectedCategory && (
+                        <AppPicker
+                            //numberofElements={}
+                            items={pickableTasks}
+                            icon="star-box-outline"
+                            placeholder="Select Task"
+                            numberOfColumns={2}
+                            PickerItemComponent={CategoryPickerItem}
+                            onSelectItem={handleSelectTask}
+                            selectedItem={selectedTask}
+                            width="90%"
+                            showModal={true}
+                            heading="Select Task"
+                        />
+                    )}
+                    {selectedKid && selectedReward && (
+                        <View style={styles.score}>
+                            <View style={styles.currentRewardTaskContainer}>
+                                <Text style={styles.currentRewardTaskScore}>
+                                    Reward Total:
+                            </Text>
+                                <Text style={styles.currentRewardTaskValue}>
+                                    {selectedReward.points}
+                                </Text>
+                            </View>
+                            <View style={styles.currentRewardTaskContainer}>
+                                <Text style={styles.currentRewardTaskScore}>
+                                    Tasks Total:
+                            </Text>
+                                <Text style={styles.currentRewardTaskValue}>
+                                    {isInitialScreenLoaded ? "0" : totalTaskPoints}
+                                </Text>
+                            </View>
+                        </View>
+                    )}
+                    {selectedKid && selectedReward && selectedTask && (
+                        <AppButton
+                            title="Add Another task"
+                            onPress={handleResetDropDownAndContinue}
+                        />
+                    )}
+                    {selectedKid &&
+                        totalTaskPoints > 0 &&
+                        totalTaskPoints >= selectedReward.points && (
+                            <AppButton
+                                title="Save"
+                                onPress={handleSubmitChangesToDatabase}
+                            />
+                        )}
+                    <AppButton
+                        title="Return"
+                        onPress={() => navigation.navigate(screens.ParentDashBoard)}
+                    />
+                </Form>
+                {/* </ScrollView> */}
+            </ScrollView>
         </Screen>
     );
 }

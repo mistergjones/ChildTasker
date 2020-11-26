@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from "react";
-import { View, StyleSheet, Text } from "react-native";
+import { View, StyleSheet, Text, ScrollView } from "react-native";
 import AppButton from "../../components/appButton";
 
 import AuthContext from "../../components/auth/context";
@@ -21,25 +21,27 @@ function SwitchUser({ navigation, route }) {
   return (
     <Screen>
       <AppHeading title="Switch User" />
-      <View style={styles.container}>
-        {users.map((u, index) => (user.username !== u.user_name && <User iconName="human-child" key={index} username={u.user_name} color={colours.text} uri={u.uri} icon={u.icon} onPress={() => {
-          user.isParent
-            ? navigation.jumpTo("Parent")
-            : navigation.jumpTo("Child");
-          setSwitchUser(true);
-          setSwitchUserName(u.user_name)
-        }} />))}
+      <ScrollView>
+        <View style={styles.container}>
+          {users.map((u, index) => (user.username !== u.user_name && <User iconName="human-child" key={index} username={u.user_name} color={colours.text} uri={u.uri} icon={u.icon} onPress={() => {
+            user.isParent
+              ? navigation.jumpTo("Parent")
+              : navigation.jumpTo("Child");
+            setSwitchUser(true);
+            setSwitchUserName(u.user_name)
+          }} />))}
 
-      </View>
-      <AppButton
-        title="Logout"
-        onPress={() => {
-          user.isParent
-            ? navigation.jumpTo("Parent")
-            : navigation.jumpTo("Child");
-          setSwitchUser(true);
-        }}
-      />
+        </View>
+        <AppButton
+          title="Logout"
+          onPress={() => {
+            user.isParent
+              ? navigation.jumpTo("Parent")
+              : navigation.jumpTo("Child");
+            setSwitchUser(true);
+          }}
+        />
+      </ScrollView>
     </Screen>
   );
 }

@@ -9,7 +9,7 @@
 // import screens from "../../../config/screens";
 
 import React, { useContext, useState } from "react";
-import { View, StyleSheet, SafeAreaView, Button, Text } from "react-native";
+import { View, StyleSheet, SafeAreaView, Button, Text, ScrollView } from "react-native";
 import AppTextInput from "../../../components/AppTextInput";
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -38,70 +38,73 @@ function AddNewChildScreen({ navigation }) {
 
     return (
         <Screen>
+
             <AppHeading title="Add Child" />
-            <Formik
-                initialValues={{ childname: "" }}
-                onSubmit={async (fields, { setFieldError }) => {
-                    // Check if username already exists
-                    // console.log(1);
-                    const isNewUser = await checkIfNewUser(fields.childname);
+            <ScrollView>
+                <Formik
+                    initialValues={{ childname: "" }}
+                    onSubmit={async (fields, { setFieldError }) => {
+                        // Check if username already exists
+                        // console.log(1);
+                        const isNewUser = await checkIfNewUser(fields.childname);
 
-                    // add user to db
-                    // console.log("new user", isNewUser);
-                    if (isNewUser) {
-                        try {
-                            await addNewUser({
-                                username: fields.childname,
-                                isParent: false,
-                                password: newPin,
-                            });
+                        // add user to db
+                        // console.log("new user", isNewUser);
+                        if (isNewUser) {
+                            try {
+                                await addNewUser({
+                                    username: fields.childname,
+                                    isParent: false,
+                                    password: newPin,
+                                });
 
-                            navigation.navigate(screens.ParentChildDashBoard);
-                        } catch (error) {
-                            // console.log("error = ", error);
-                        }
-                    } else {
-                        setFieldError("childname", "username already exists");
-                    }
-                }}
-                validationSchema={loginSchema}
-            >
-                {({ handleChange, handleSubmit, errors }) => (
-                    <>
-                        <AppTextInput
-                            placeholder="Child name"
-                            labelText="Child name"
-                            icon="account"
-                            onChangeText={handleChange("childname")}
-                            errorStyle={{ color: colours.inputErrorMessage }}
-                            error={errors ? errors.childname : ""}
-                        />
-                        {newPin && <AppLabel labelText={newPin} />}
-                        {
-                            <AppButton
-                                title="Generate New Pin"
-                                onPress={() => {
-                                    const pin =
-                                        Math.floor(Math.random() * 8999) + 1000;
-                                    setNewPin(String(pin));
-                                }}
-                            />
-                        }
-                        {newPin && (
-                            <AppButton title="SAVE" onPress={handleSubmit} />
-                        )}
-
-                        <AppButton
-                            title="Return"
-                            onPress={() =>
-                                navigation.navigate(
-                                    screens.ParentChildDashBoard
-                                )
+                                navigation.navigate(screens.ParentChildDashBoard);
+                            } catch (error) {
+                                // console.log("error = ", error);
                             }
-                        />
-                    </>
-                )}
-            </Formik>
+                        } else {
+                            setFieldError("childname", "username already exists");
+                        }
+                    }}
+                    validationSchema={loginSchema}
+                >
+                    {({ handleChange, handleSubmit, errors }) => (
+                        <>
+                            <AppTextInput
+                                placeholder="Child name"
+                                labelText="Child name"
+                                icon="account"
+                                onChangeText={handleChange("childname")}
+                                errorStyle={{ color: colours.inputErrorMessage }}
+                                error={errors ? errors.childname : ""}
+                            />
+                            {newPin && <AppLabel labelText={newPin} />}
+                            {
+                                <AppButton
+                                    title="Generate New Pin"
+                                    onPress={() => {
+                                        const pin =
+                                            Math.floor(Math.random() * 8999) + 1000;
+                                        setNewPin(String(pin));
+                                    }}
+                                />
+                            }
+                            {newPin && (
+                                <AppButton title="SAVE" onPress={handleSubmit} />
+                            )}
+
+                            <AppButton
+                                title="Return"
+                                onPress={() =>
+                                    navigation.navigate(
+                                        screens.ParentChildDashBoard
+                                    )
+                                }
+                            />
+                        </>
+                    )}
+                </Formik>
+            </ScrollView>
         </Screen>
     );
 }

@@ -61,8 +61,9 @@ function EditChildScreen({ navigation }) {
     };
     return (
         <Screen>
+
+            <AppHeading title="Edit Child" />
             <ScrollView style={styles.container}>
-                <AppHeading title="Edit Child" />
                 <UserPicker
                     style={styles.picker}
                     items={kidsData}

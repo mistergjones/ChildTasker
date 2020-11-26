@@ -66,8 +66,9 @@ function ChildDashBoardScreen({ navigation }) {
 
     return (
         <Screen>
+
+            <AppHeading title="Reward Dashboard" />
             <ScrollView style={styles.container}>
-                <AppHeading title="Reward Dashboard" />
                 {/* GJ: Added the reward heading */}
                 {/* <View style={styles.reward}>
                     <View style={styles.rewardContainer}>

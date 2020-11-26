@@ -9,10 +9,11 @@ import Screen from "../../../components/appScreen"
 function ParentChildDashBoardScreen({ navigation, route }) {
   return (
     <Screen >
+
+
+      <AppHeading title="Manage Child Dashboard" />
       <ScrollView>
         <View style={styles.container}>
-          <AppHeading title="Manage Child Dashboard" />
-
           <AppButton
             title="Add New Child"
             onPress={() => navigation.navigate(screens.AddChild)}
@@ -34,6 +35,8 @@ function ParentChildDashBoardScreen({ navigation, route }) {
           />
         </View>
       </ScrollView>
+
+
     </Screen>
   );
 }
