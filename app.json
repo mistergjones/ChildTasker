@@ -2,7 +2,7 @@
     "expo": {
         "name": "ChildTasker",
         "slug": "ChildTasker",
-        "version": "1.0.5",
+        "version": "1.0.6",
         "orientation": "portrait",
         "icon": "./assets/Child_Tasker_Icon.png",
         "splash": {
@@ -17,11 +17,11 @@
         "ios": {
             "supportsTablet": true,
             "bundleIdentifier": "com.mistergjones.childtasker",
-            "buildNumber": "1.0.5"
+            "buildNumber": "1.0.6"
         },
         "android": {
             "package": "com.mistergjones.childtasker",
-            "versionCode": 5,
+            "versionCode": 6,
             "permissions": []
         },
         "web": {
