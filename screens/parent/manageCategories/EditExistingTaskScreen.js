@@ -89,8 +89,9 @@ export default function EditExistingTaskScreen({ navigation }) {
     return (
         <Screen>
             {/* <SafeAreaView style={styles.container}> */}
+
+            <AppHeading title="Edit Task" />
             <ScrollView>
-                <AppHeading title="Edit Task" />
                 <AppPicker
                     items={taskList}
                     icon="script"

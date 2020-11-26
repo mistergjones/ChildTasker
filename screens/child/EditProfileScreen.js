@@ -113,8 +113,9 @@ function EditProfileScreen({ navigation }) {
     };
     return (
         <Screen style={{ height: "100%" }}>
+
+            <AppHeading title="Edit Profile" />
             <ScrollView>
-                <AppHeading title="Edit Profile" />
                 <Text
                     style={{
                         alignSelf: "center",
@@ -152,22 +153,22 @@ function EditProfileScreen({ navigation }) {
                                 }}
                             />
                         ) : (
-                            <>
-                                {selectedItem ? (
-                                    <MaterialCommunityIcons
-                                        name={selectedItem.icon}
-                                        size={200}
-                                        color={"white"}
-                                    />
-                                ) : (
-                                    <MaterialCommunityIcons
-                                        name={"account"}
-                                        size={200}
-                                        color={"white"}
-                                    />
-                                )}
-                            </>
-                        )}
+                                <>
+                                    {selectedItem ? (
+                                        <MaterialCommunityIcons
+                                            name={selectedItem.icon}
+                                            size={200}
+                                            color={"white"}
+                                        />
+                                    ) : (
+                                            <MaterialCommunityIcons
+                                                name={"account"}
+                                                size={200}
+                                                color={"white"}
+                                            />
+                                        )}
+                                </>
+                            )}
                     </View>
                     <Text
                         style={{
@@ -206,32 +207,34 @@ function EditProfileScreen({ navigation }) {
                                 setModalVisible(false);
                             }}
                         />
-                        {
-                            <AppButton
-                                title="select image"
-                                onPress={async () => {
-                                    await pickImage();
-                                }}
-                            />
-                        }
-                        {
-                            <AppPicker
-                                items={iconData}
-                                icon={
-                                    selectedItem ? selectedItem.icon : "account"
-                                }
-                                PickerItemComponent={CategoryPickerItem}
-                                // PickerItemComponent={PickerItem}
-                                placeholder="Select Icon"
-                                onSelectItem={handleSelectItem}
-                                selectedItem={selectedItem}
-                                numberOfColumns={2}
-                                width={"90%"}
-                                onPickerPress={handlePickerPress}
-                                // showModal={true}
-                                heading="Select Icon"
-                            />
-                        }
+                        <ScrollView>
+                            {
+                                <AppButton
+                                    title="select image"
+                                    onPress={async () => {
+                                        await pickImage();
+                                    }}
+                                />
+                            }
+                            {
+                                <AppPicker
+                                    items={iconData}
+                                    icon={
+                                        selectedItem ? selectedItem.icon : "account"
+                                    }
+                                    PickerItemComponent={CategoryPickerItem}
+                                    // PickerItemComponent={PickerItem}
+                                    placeholder="Select Icon"
+                                    onSelectItem={handleSelectItem}
+                                    selectedItem={selectedItem}
+                                    numberOfColumns={2}
+                                    width={"90%"}
+                                    onPickerPress={handlePickerPress}
+                                    // showModal={true}
+                                    heading="Select Icon"
+                                />
+                            }
+                        </ScrollView>
                     </Screen>
                 </Modal>
             </ScrollView>

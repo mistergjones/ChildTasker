@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { StyleSheet, Switch, Text, View } from "react-native";
+import { ScrollView, StyleSheet, Switch, Text, View } from "react-native";
 // import * as Yup from "yup";
 
 import ChoresCard from "../../components/appChoresCard";
@@ -34,50 +34,52 @@ function ChoreStatusScreen({ navigation, route }) {
     return (
         <Screen style={styles.container}>
             <Heading title="Chore Status" />
-            <View style={styles.body}>
-                <View style={styles.bodyContent}>
-                    <ChoresCard
-                        title={route.params.title}
-                        icon={route.params.icon}
-                        subTitle={`Points: ${route.params.points}`}
-                    />
-                </View>
-                <View style={styles.bodyForm}>
-                    <Form
-                        initialValues={{ completed: false }}
-                        onSubmit={(values) => {
-                            // console.log(values);
-                        }}
-                    >
-                        <View style={styles.switch}>
-                            <Text style={styles.text}>Completed</Text>
-                            <Switch
-                                value={choreCompleted}
-                                onChange={() =>
-                                    setChoreCompleted(!choreCompleted)
-                                }
-                                trackColor={{
-                                    true: colours.defaultButtonColour,
-                                }}
-                                thumbColor={"#dfe6ed"}
-                            />
-                            <Text style={styles.text}>
-                                {choreCompleted ? "Yes" : "No"}
-                            </Text>
-                        </View>
-
-                        {choreCompleted && (
-                            <AppButton title="Save" onPress={handleCompleted} />
-                        )}
-                        <AppButton
-                            title="Return"
-                            onPress={() =>
-                                navigation.navigate(screens.ChildDashBoard)
-                            }
+            <ScrollView >
+                <View style={styles.body}>
+                    <View style={styles.bodyContent}>
+                        <ChoresCard
+                            title={route.params.title}
+                            icon={route.params.icon}
+                            subTitle={`Points: ${route.params.points}`}
                         />
-                    </Form>
+                    </View>
+                    <View style={styles.bodyForm}>
+                        <Form
+                            initialValues={{ completed: false }}
+                            onSubmit={(values) => {
+                                // console.log(values);
+                            }}
+                        >
+                            <View style={styles.switch}>
+                                <Text style={styles.text}>Completed</Text>
+                                <Switch
+                                    value={choreCompleted}
+                                    onChange={() =>
+                                        setChoreCompleted(!choreCompleted)
+                                    }
+                                    trackColor={{
+                                        true: colours.defaultButtonColour,
+                                    }}
+                                    thumbColor={"#dfe6ed"}
+                                />
+                                <Text style={styles.text}>
+                                    {choreCompleted ? "Yes" : "No"}
+                                </Text>
+                            </View>
+
+                            {choreCompleted && (
+                                <AppButton title="Save" onPress={handleCompleted} />
+                            )}
+                            <AppButton
+                                title="Return"
+                                onPress={() =>
+                                    navigation.navigate(screens.ChildDashBoard)
+                                }
+                            />
+                        </Form>
+                    </View>
                 </View>
-            </View>
+            </ScrollView>
         </Screen>
     );
 }
@@ -95,7 +97,7 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         width: "90%",
-        height: "50%",
+        height: "100%",
         alignSelf: "center",
     },
     bodyForm: {
@@ -118,7 +120,7 @@ const styles = StyleSheet.create({
     text: {
         color: colours.white,
         fontSize: 24,
-    },
+    }
 });
 
 export default ChoreStatusScreen;

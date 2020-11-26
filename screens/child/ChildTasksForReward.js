@@ -26,8 +26,9 @@ function ChildTasksForReward({ navigation, route }) {
     }, []);
     return (
         <Screen>
+
+            <AppHeading title="Tasks For Reward" />
             <ScrollView>
-                <AppHeading title="Tasks For Reward" />
                 <View style={styles.reward}>
                     <View style={styles.rewardContainer}>
                         <Text style={styles.currentScore}>

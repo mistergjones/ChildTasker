@@ -97,9 +97,9 @@ export default function RemoveCategoryScreen({ navigation }) {
     return (
         <Screen>
             {/* <SafeAreaView style={styles.container}> */}
-            <ScrollView>
-                <AppHeading title="Remove Category" />
 
+            <AppHeading title="Remove Category" />
+            <ScrollView>
                 <AppPicker
                     items={categoryList}
                     icon="book-open-outline"

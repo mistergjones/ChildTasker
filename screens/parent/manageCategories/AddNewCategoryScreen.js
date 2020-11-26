@@ -1,6 +1,6 @@
 SafeAreaView;
 import React, { useState, useEffect, useContext } from "react";
-import { View, StyleSheet, SafeAreaView } from "react-native";
+import { View, StyleSheet, SafeAreaView, ScrollView } from "react-native";
 import { Formik } from "formik";
 import * as Yup from "yup";
 
@@ -137,102 +137,104 @@ function AddNewCategoryScreen({ navigation }) {
 
     return (
         <Screen>
+
             <AppHeading title="Add New Category" />
+            <ScrollView>
+                <Formik
+                    initialValues={{
+                        category_name: "",
+                        category_icon: "",
+                        category_colour: "",
+                    }}
+                    onSubmit={async (fields, { setFieldError }) => {
+                        // add cateogry to db
 
-            <Formik
-                initialValues={{
-                    category_name: "",
-                    category_icon: "",
-                    category_colour: "",
-                }}
-                onSubmit={async (fields, { setFieldError }) => {
-                    // add cateogry to db
+                        fields.category_icon = selectedIcon.icon;
+                        fields.category_colour =
+                            selectedIconBackgroundColor.backgroundColor;
 
-                    fields.category_icon = selectedIcon.icon;
-                    fields.category_colour =
-                        selectedIconBackgroundColor.backgroundColor;
+                        var checkResult = checkForDuplicateCategoryName(
+                            categories,
+                            fields.category_name
+                        );
 
-                    var checkResult = checkForDuplicateCategoryName(
-                        categories,
-                        fields.category_name
-                    );
+                        // if tehre is no match (i.e a unique category name), proceed with category insertion
+                        if (checkResult !== true) {
+                            try {
+                                // await addNewCategory(
+                                //     fields.category_name,
+                                //     selectedIcon.icon,
+                                //     selectedIconBackgroundColor.backgroundColor
+                                // );
+                                await addNewCategory(fields);
 
-                    // if tehre is no match (i.e a unique category name), proceed with category insertion
-                    if (checkResult !== true) {
-                        try {
-                            // await addNewCategory(
-                            //     fields.category_name,
-                            //     selectedIcon.icon,
-                            //     selectedIconBackgroundColor.backgroundColor
-                            // );
-                            await addNewCategory(fields);
-
-                            navigation.navigate(screens.AddCategory);
-                        } catch (error) {
-                            // console.log("error = ", error);
+                                navigation.navigate(screens.AddCategory);
+                            } catch (error) {
+                                // console.log("error = ", error);
+                            }
                         }
-                    }
-                }}
-                validationSchema={categorySchema}
-            >
-                {({ handleChange, handleSubmit, errors }) => (
-                    <>
-                        <AppTextInput
-                            placeholder="Type New Category"
-                            labelText="New Category Name"
-                            type="text"
-                            name="category"
-                            // labelText="Category"
-                            icon="book-open-outline"
-                            onChangeText={handleChange("category_name")}
-                            // value={textInputValue}
-                            errorStyle={{ color: "red" }}
-                            error={errors ? errors.category_name : ""}
-                        />
+                    }}
+                    validationSchema={categorySchema}
+                >
+                    {({ handleChange, handleSubmit, errors }) => (
+                        <>
+                            <AppTextInput
+                                placeholder="Type New Category"
+                                labelText="New Category Name"
+                                type="text"
+                                name="category"
+                                // labelText="Category"
+                                icon="book-open-outline"
+                                onChangeText={handleChange("category_name")}
+                                // value={textInputValue}
+                                errorStyle={{ color: "red" }}
+                                error={errors ? errors.category_name : ""}
+                            />
 
-                        <AppPicker
-                            items={iconList}
-                            icon="star-circle"
-                            numberOfColumns={2}
-                            PickerItemComponent={CategoryPickerItem}
-                            labelText="Select Category Icon"
-                            placeholder="Select Category Icon"
-                            onSelectItem={handleSelectIcon}
-                            selectedItem={selectedIcon}
-                            width="90%"
-                            showModal={false}
-                            heading="Select Icon"
-                        />
-
-                        {selectedIcon && (
                             <AppPicker
-                                items={selectedColor}
+                                items={iconList}
                                 icon="star-circle"
                                 numberOfColumns={2}
                                 PickerItemComponent={CategoryPickerItem}
-                                labelText="Select Icon Background Colour"
-                                placeholder="Select Icon Background Colour"
-                                onSelectItem={handleSelectBackgroundColor}
-                                selectedItem={selectedIconBackgroundColor}
+                                labelText="Select Category Icon"
+                                placeholder="Select Category Icon"
+                                onSelectItem={handleSelectIcon}
+                                selectedItem={selectedIcon}
                                 width="90%"
-                                showModal={true}
-                                heading="Select Color"
+                                showModal={false}
+                                heading="Select Icon"
                             />
-                        )}
 
-                        {selectedIcon && selectedIconBackgroundColor && (
-                            <AppButton title="Save" onPress={handleSubmit} />
-                        )}
+                            {selectedIcon && (
+                                <AppPicker
+                                    items={selectedColor}
+                                    icon="star-circle"
+                                    numberOfColumns={2}
+                                    PickerItemComponent={CategoryPickerItem}
+                                    labelText="Select Icon Background Colour"
+                                    placeholder="Select Icon Background Colour"
+                                    onSelectItem={handleSelectBackgroundColor}
+                                    selectedItem={selectedIconBackgroundColor}
+                                    width="90%"
+                                    showModal={true}
+                                    heading="Select Color"
+                                />
+                            )}
 
-                        <AppButton
-                            title="Return"
-                            onPress={() =>
-                                navigation.navigate(screens.AddCategory)
-                            }
-                        />
-                    </>
-                )}
-            </Formik>
+                            {selectedIcon && selectedIconBackgroundColor && (
+                                <AppButton title="Save" onPress={handleSubmit} />
+                            )}
+
+                            <AppButton
+                                title="Return"
+                                onPress={() =>
+                                    navigation.navigate(screens.AddCategory)
+                                }
+                            />
+                        </>
+                    )}
+                </Formik>
+            </ScrollView>
         </Screen>
     );
 }

@@ -55,9 +55,9 @@ function RegisterScreen({ navigation }) {
 
     return (
         <Screen>
-            <ScrollView>
-                <AppHeading title="Register Parent" />
 
+            <AppHeading title="Register Parent" />
+            <ScrollView>
                 <Formik
                     initialValues={{
                         username: "",

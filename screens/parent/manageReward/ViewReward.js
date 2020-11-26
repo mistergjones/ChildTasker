@@ -78,8 +78,8 @@ function ViewReward({ navigation }) {
                         />
                     </TouchableHighlight>
                 )}
-                // ListHeaderComponent={}
-                // ListFooterComponent={<></>}
+            // ListHeaderComponent={}
+            // ListFooterComponent={<></>}
             />
             <AppButton
                 width="90%"
@@ -90,59 +90,62 @@ function ViewReward({ navigation }) {
             <>
                 <Modal visible={modalVisible} animationType="slide">
                     <Screen>
+
                         <AppButton
                             title="Close"
                             onPress={() => {
                                 setModalVisible(false);
                             }}
                         />
-                        <View>
-                            <AppButton
-                                title="REMOVE"
-                                onPress={() =>
-                                    Alert.alert(
-                                        "Remove Reward",
-                                        "Click Ok to remove reward",
-                                        [
-                                            {
-                                                text: "Cancel",
-                                                onPress: () => {
-                                                    // console.log("Cancel Pressed")
+                        <ScrollView>
+                            <View>
+                                <AppButton
+                                    title="REMOVE"
+                                    onPress={() =>
+                                        Alert.alert(
+                                            "Remove Reward",
+                                            "Click Ok to remove reward",
+                                            [
+                                                {
+                                                    text: "Cancel",
+                                                    onPress: () => {
+                                                        // console.log("Cancel Pressed")
+                                                    },
+                                                    style: "cancel",
                                                 },
-                                                style: "cancel",
-                                            },
-                                            {
-                                                text: "OK",
-                                                onPress: async () => {
-                                                    setModalVisible(
-                                                        !modalVisible
-                                                    );
-                                                    deleteReward(
-                                                        selectedReward
-                                                    );
-                                                    // // console.log("Long pressed deleted", selectedReward);
-                                                    // Alert.alert("Deleted");
-                                                    navigation.navigate(
-                                                        screens.ViewReward
-                                                    );
+                                                {
+                                                    text: "OK",
+                                                    onPress: async () => {
+                                                        setModalVisible(
+                                                            !modalVisible
+                                                        );
+                                                        deleteReward(
+                                                            selectedReward
+                                                        );
+                                                        // // console.log("Long pressed deleted", selectedReward);
+                                                        // Alert.alert("Deleted");
+                                                        navigation.navigate(
+                                                            screens.ViewReward
+                                                        );
+                                                    },
                                                 },
-                                            },
-                                        ],
-                                        { cancelable: false }
-                                    )
-                                }
-                            />
-                            <AppButton
-                                title="Edit Reward"
-                                onPress={async () => {
-                                    setModalVisible(!modalVisible);
-                                    // // console.log("1", selectedRewardDetails);
-                                    await getRewardByID(selectedReward);
-                                    // // console.log("2", selectedRewardDetails);
-                                    navigation.navigate("EditReward");
-                                }}
-                            />
-                        </View>
+                                            ],
+                                            { cancelable: false }
+                                        )
+                                    }
+                                />
+                                <AppButton
+                                    title="Edit Reward"
+                                    onPress={async () => {
+                                        setModalVisible(!modalVisible);
+                                        // // console.log("1", selectedRewardDetails);
+                                        await getRewardByID(selectedReward);
+                                        // // console.log("2", selectedRewardDetails);
+                                        navigation.navigate("EditReward");
+                                    }}
+                                />
+                            </View>
+                        </ScrollView>
                     </Screen>
                 </Modal>
             </>
