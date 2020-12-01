@@ -35,50 +35,52 @@ function ChoreStatusScreen({ navigation, route }) {
         <Screen style={styles.container}>
             <Heading title="Chore Status" />
             <ScrollView >
-                <View style={styles.body}>
-                    <View style={styles.bodyContent}>
-                        <ChoresCard
-                            title={route.params.title}
-                            icon={route.params.icon}
-                            subTitle={`Points: ${route.params.points}`}
-                        />
-                    </View>
-                    <View style={styles.bodyForm}>
-                        <Form
-                            initialValues={{ completed: false }}
-                            onSubmit={(values) => {
-                                // console.log(values);
-                            }}
-                        >
-                            <View style={styles.switch}>
-                                <Text style={styles.text}>Completed</Text>
-                                <Switch
-                                    value={choreCompleted}
-                                    onChange={() =>
-                                        setChoreCompleted(!choreCompleted)
-                                    }
-                                    trackColor={{
-                                        true: colours.defaultButtonColour,
-                                    }}
-                                    thumbColor={"#dfe6ed"}
-                                />
-                                <Text style={styles.text}>
-                                    {choreCompleted ? "Yes" : "No"}
-                                </Text>
-                            </View>
+                {/* <View style={styles.body}> */}
+                <View style={styles.bodyContent}>
+                    <ChoresCard
 
-                            {choreCompleted && (
-                                <AppButton title="Save" onPress={handleCompleted} />
-                            )}
-                            <AppButton
-                                title="Return"
-                                onPress={() =>
-                                    navigation.navigate(screens.ChildDashBoard)
-                                }
-                            />
-                        </Form>
-                    </View>
+                        title={route.params.title}
+                        icon={route.params.icon}
+                        subTitle={`Points: ${route.params.points}`}
+                    />
                 </View>
+                <View style={styles.bodyForm}>
+                    <Form
+                        initialValues={{ completed: false }}
+                        onSubmit={(values) => {
+                            // console.log(values);
+                        }}
+                    >
+                        <View style={styles.switch}>
+                            <Text style={styles.text}>Completed</Text>
+                            <Switch
+                                value={choreCompleted}
+                                onChange={() =>
+                                    setChoreCompleted(!choreCompleted)
+                                }
+                                trackColor={{
+                                    true: colours.defaultButtonColour,
+                                }}
+                                thumbColor={"#dfe6ed"}
+                            />
+                            <Text style={styles.text}>
+                                {choreCompleted ? "Yes" : "No"}
+                            </Text>
+                        </View>
+
+                        {choreCompleted && (
+                            <AppButton title="Save" onPress={handleCompleted} />
+                        )}
+                        <AppButton
+                            title="Return"
+                            onPress={() =>
+                                navigation.navigate(screens.ChildDashBoard)
+                            }
+                        />
+
+                    </Form>
+                </View>
+                {/* </View> */}
             </ScrollView>
         </Screen>
     );
@@ -92,19 +94,21 @@ const styles = StyleSheet.create({
     body: {
         flex: 1,
         padding: 10,
+        height: "100%"
     },
     bodyContent: {
         justifyContent: "center",
         alignItems: "center",
         width: "90%",
-        height: "100%",
+        height: 300,
         alignSelf: "center",
+        marginBottom: 10
     },
     bodyForm: {
         justifyContent: "center",
         alignItems: "center",
         width: "100%",
-        height: "50%",
+        // height: "50%",
     },
     switch: {
         flexDirection: "row",
