@@ -440,9 +440,9 @@ function CreateTaskListForChildScreen({ navigation }) {
         // this function is to ensure that if a user has partially assinged tasks but hits RETURN, it clears the array.
         runningTasksToAssign = [];
         navigation.navigate(screens.ParentDashBoard);
-        console.log(
-            `The value of runing Tasks is: ${runningTasksToAssign} asdfsdfs`
-        );
+        // console.log(
+        //     `The value of runing Tasks is: ${runningTasksToAssign} asdfsdfs`
+        // );
     };
 
     return (
