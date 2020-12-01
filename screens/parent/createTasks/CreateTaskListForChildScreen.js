@@ -68,7 +68,7 @@ function CreateTaskListForChildScreen({ navigation }) {
         getChoresForKid,
         chores,
         getUniqueRewardId,
-        updateUniqueRewardId
+        updateUniqueRewardId,
     } = usersContext;
 
     // ITEM: used to set the item name and insert into table
@@ -436,6 +436,15 @@ function CreateTaskListForChildScreen({ navigation }) {
         }
     };
 
+    const handleReturn = () => {
+        // this function is to ensure that if a user has partially assinged tasks but hits RETURN, it clears the array.
+        runningTasksToAssign = [];
+        navigation.navigate(screens.ParentDashBoard);
+        console.log(
+            `The value of runing Tasks is: ${runningTasksToAssign} asdfsdfs`
+        );
+    };
+
     return (
         <Screen style={styles.container}>
             {/* <ScrollView> */}
@@ -454,7 +463,7 @@ function CreateTaskListForChildScreen({ navigation }) {
                         reward_name: "",
                         reward_Points: "",
                     }}
-                // onSubmit={(values) => // console.log(values)}
+                    // onSubmit={(values) => // console.log(values)}
                 >
                     {/* <AppPicker
                     items={kidList}
@@ -479,7 +488,9 @@ function CreateTaskListForChildScreen({ navigation }) {
                     {selectedKid && (
                         <AppPicker
                             items={rewardList}
-                            icon={selectedReward ? selectedReward.icon : "trophy"}
+                            icon={
+                                selectedReward ? selectedReward.icon : "trophy"
+                            }
                             placeholder="Select Reward"
                             numberOfColumns={2}
                             PickerItemComponent={CategoryPickerItem}
@@ -524,7 +535,7 @@ function CreateTaskListForChildScreen({ navigation }) {
                             <View style={styles.currentRewardTaskContainer}>
                                 <Text style={styles.currentRewardTaskScore}>
                                     Reward Total:
-                            </Text>
+                                </Text>
                                 <Text style={styles.currentRewardTaskValue}>
                                     {selectedReward.points}
                                 </Text>
@@ -532,9 +543,11 @@ function CreateTaskListForChildScreen({ navigation }) {
                             <View style={styles.currentRewardTaskContainer}>
                                 <Text style={styles.currentRewardTaskScore}>
                                     Tasks Total:
-                            </Text>
+                                </Text>
                                 <Text style={styles.currentRewardTaskValue}>
-                                    {isInitialScreenLoaded ? "0" : totalTaskPoints}
+                                    {isInitialScreenLoaded
+                                        ? "0"
+                                        : totalTaskPoints}
                                 </Text>
                             </View>
                         </View>
@@ -555,7 +568,10 @@ function CreateTaskListForChildScreen({ navigation }) {
                         )}
                     <AppButton
                         title="Return"
-                        onPress={() => navigation.navigate(screens.ParentDashBoard)}
+                        // onPress={() =>
+                        //     navigation.navigate(screens.ParentDashBoard)
+                        // }
+                        onPress={handleReturn}
                     />
                 </Form>
                 {/* </ScrollView> */}
