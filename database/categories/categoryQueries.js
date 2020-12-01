@@ -108,7 +108,7 @@ const updateCategory = async (category) => {
                     "update categories set category_name = ?, category_icon =?, category_colour =? where category_id =?",
                     [
                         category.category_name,
-                        "school",
+                        category.category_icon,
                         category.category_colour,
                         category.category_id,
                     ]
