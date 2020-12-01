@@ -37,6 +37,7 @@ function ViewReward({ navigation }) {
     return (
         <Screen>
             <AppHeading title="View Reward Category & Points" />
+
             <AppText style={{ textAlign: "center", color: "white" }}>
                 Long press the icon to edit or delete the reward
             </AppText>
@@ -81,11 +82,13 @@ function ViewReward({ navigation }) {
             // ListHeaderComponent={}
             // ListFooterComponent={<></>}
             />
-            <AppButton
-                width="90%"
-                title="Return"
-                onPress={() => navigation.navigate(screens.ManageRewards)}
-            />
+            <ScrollView>
+                <AppButton
+                    width="90%"
+                    title="Return"
+                    onPress={() => navigation.navigate(screens.ManageRewards)}
+                />
+            </ScrollView>
 
             <>
                 <Modal visible={modalVisible} animationType="slide">

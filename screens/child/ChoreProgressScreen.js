@@ -122,37 +122,38 @@ function ChoreProgressScreen({ navigation, route }) {
     return (
         <Screen>
             {/* <SafeAreaView> */}
-            {/* <ScrollView style={styles.container}> */}
             <AppHeading title="Your Progress is:" />
-            <View style={styles.reward}>
-                <View style={styles.rewardContainer}>
-                    <Text style={styles.currentScore}>Reward:</Text>
-                    <Text style={styles.currentScoreValue}>{rewardName}</Text>
-                </View>
-            </View>
+            <ScrollView>
 
-            <PieChartWithLabels data={graphData} />
-
-            <View style={styles.score}>
-                <View style={styles.currentScoreContainer}>
-                    <Text style={styles.currentScore}>Completed</Text>
-                    <Text style={styles.currentScoreValue}>
-                        {tasksComplete}
-                    </Text>
+                <View style={styles.reward}>
+                    <View style={styles.rewardContainer}>
+                        <Text style={styles.currentScore}>Reward:</Text>
+                        <Text style={styles.currentScoreValue}>{rewardName}</Text>
+                    </View>
                 </View>
-                <View style={styles.currentScoreContainer}>
-                    <Text style={styles.currentScore}>Remaining</Text>
-                    <Text style={styles.currentScoreValue}>
-                        {tasksNotComplete}
-                    </Text>
-                </View>
-            </View>
 
-            <AppButton
-                title="Return"
-                onPress={() => navigation.navigate(screens.ChildDashBoard)}
-            />
-            {/* </ScrollView> */}
+                <PieChartWithLabels data={graphData} />
+
+                <View style={styles.score}>
+                    <View style={styles.currentScoreContainer}>
+                        <Text style={styles.currentScore}>Completed</Text>
+                        <Text style={styles.currentScoreValue}>
+                            {tasksComplete}
+                        </Text>
+                    </View>
+                    <View style={styles.currentScoreContainer}>
+                        <Text style={styles.currentScore}>Remaining</Text>
+                        <Text style={styles.currentScoreValue}>
+                            {tasksNotComplete}
+                        </Text>
+                    </View>
+                </View>
+
+                <AppButton
+                    title="Return"
+                    onPress={() => navigation.navigate(screens.ChildDashBoard)}
+                />
+            </ScrollView>
             {/* </SafeAreaView> */}
         </Screen>
     );
